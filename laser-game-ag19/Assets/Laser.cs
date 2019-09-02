@@ -22,17 +22,27 @@ public class Laser : MonoBehaviour
     void Update()
     {
         RaycastHit raycastHit;
-        bool hit = Physics.Raycast(transform.position, forward, out raycastHit, LayerMask.GetMask("Mirror"));
-        if(hit){
+        Vector3 nextHit = transform.position;
+        Vector3 nextDir = forward;
+        List<Vector3> points = new List <Vector3>();
+        points.Add(nextHit);
+        
+        while(Physics.Raycast(nextHit, nextDir, out raycastHit, LayerMask.GetMask("Mirror"))){
             Vector3 point = raycastHit.point;
             Vector3 normal = raycastHit.normal;
-            Vector3 v = point - transform.position;
+            Vector3 v = point - nextHit;
+            Debug.Log(point);
             Vector3 r = 2*v - 2*Vector3.Project(v, normal);
+            nextHit = point;
+            nextDir = r;
+            Debug.Log(r);
+            points.Add(point);
 
-            lineRender.SetVertexCount(3);
-            lineRender.SetPosition(0, transform.position); 
-            lineRender.SetPosition(1, point);
-            lineRender.SetPosition(2, r);
+            
+        }
+        lineRender.SetVertexCount(points.Count);
+        for(int i = 0; i< points.Count; i++){
+            lineRender.SetPosition(i, points[i]); 
         }
         
         
