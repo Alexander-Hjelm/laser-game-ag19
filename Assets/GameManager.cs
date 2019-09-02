@@ -92,7 +92,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Set the position of an object that has previously been spawned
-    public static void SetRotationOfSpawnedObject(long id, Vector3 newPos)
+    public static void SetPositionOfSpawnedObject(long id, Vector3 newPos)
     {
         if(_spawnedObjectsById.ContainsKey(id))
         {
@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Set the rotation of an object that has previously been spawned
-    public static void RemoveSpawnedObject(long id, Vector3 newFwd)
+    public static void SetRotationOfSpawnedObject(long id, Vector3 newFwd)
     {
         if(_spawnedObjectsById.ContainsKey(id))
         {
