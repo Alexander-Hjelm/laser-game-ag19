@@ -53,7 +53,7 @@ public class Laser : MonoBehaviour
         if (laserShouldStop)
             points.Add(nextHit);
         else
-            points.Add(nextHit + nextDir*20);
+            points.Add(nextHit + nextDir*10000);
         lineRender.SetVertexCount(points.Count);
         for(int i = 0; i< points.Count; i++){
             lineRender.SetPosition(i, points[i]); 
