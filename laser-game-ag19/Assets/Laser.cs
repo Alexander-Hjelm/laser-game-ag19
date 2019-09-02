@@ -32,7 +32,7 @@ public class Laser : MonoBehaviour
             Vector3 normal = raycastHit.normal;
             Vector3 v = point - nextHit;
             Debug.Log(point);
-            Vector3 r = 2*v - 2*Vector3.Project(v, normal);
+            Vector3 r = v - 2*Vector3.Project(v, normal);
             nextHit = point;
             nextDir = r;
             Debug.Log(r);
@@ -40,10 +40,12 @@ public class Laser : MonoBehaviour
 
             
         }
+        points.Add(nextHit + nextDir*20);
         lineRender.SetVertexCount(points.Count);
         for(int i = 0; i< points.Count; i++){
             lineRender.SetPosition(i, points[i]); 
         }
+
         
         
 
