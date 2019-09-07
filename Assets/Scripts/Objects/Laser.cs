@@ -5,18 +5,23 @@ using UnityEngine;
 public class Laser : MonoBehaviour
 {   
     // The original direction of the laser
-    [SerializeField] Vector3 forward;
+    [SerializeField] private Vector3 forward;
 
-    LineRenderer lineRender;
+    // The color of the laser
+    [SerializeField] private Color color;
+
+    private LineRenderer lineRender;
 
     // Start is called before the first frame update
     void Start()
     {
         Debug.Log("Hello");
         lineRender = GetComponent <LineRenderer>();
+        lineRender.material = new Material(Shader.Find("Unlit/Color"));
+        lineRender.material.color = color;
+        //lineRender.material.mainTexture = sometexture2D // Update is called once per frame
     }
 
-    // Update is called once per frame
     void Update()
     {
         RaycastHit raycastHit;
@@ -85,6 +90,18 @@ public class Laser : MonoBehaviour
         for(int i = 0; i< points.Count; i++){
             lineRender.SetPosition(i, points[i]); 
         }
+    }
+
+    // Set the color of this laser
+    // NOTE: Must be called before start() on the instanced laser object, otherwise it will have no effect
+    public void SetColor(Color color)
+    {
+        this.color = color;
+    }
+
+    public Color GetColor()
+    {
+        return this.color;
     }
 
 }
