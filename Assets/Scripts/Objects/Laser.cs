@@ -59,6 +59,14 @@ public class Laser : MonoBehaviour
                     // Laser should not continue to raycast
                     laserShouldStop = true;
                     break;
+                case "Wall":
+                    // Set final hitpoint 
+                    nextHit = raycastHit.point;
+
+                    // Laser should not continue to raycast
+                    laserShouldStop = true;
+                    break;
+
 
                 // TODO: Add more cases here for different objects that the laser can interact with
 
