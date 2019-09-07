@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using TUIOsharp.DataProcessors;
 using UnityEngine;
-using Object = System.Object;
-
 
 public enum Objects
 {
@@ -16,7 +13,7 @@ public class ObjectManager : MonoBehaviour
 {
     private Dictionary<int, long> _gameObjects;
 
-    void Awake()
+    private void Awake()
     {
         _gameObjects = new Dictionary<int, long>();
         TUIOInput.OnObjectAdded += OnObjectAdded;
@@ -28,7 +25,7 @@ public class ObjectManager : MonoBehaviour
     {
         if (_gameObjects.ContainsKey(e.Object.Id))
         {
-            Debug.LogError(("An object input was received for an object that already exists"));
+            Debug.LogError("An object input was received for an object that already exists");
             return;
         }
 
@@ -38,7 +35,7 @@ public class ObjectManager : MonoBehaviour
             return;
         }
 
-        var type = (Objects)e.Object.ClassId;
+        var type = (Objects) e.Object.ClassId;
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         var gameId = GameManager.SpawnPrefab(type.ToString(), ScreenToWorld(e.Object.X, e.Object.Y), rot);
         _gameObjects.Add(e.Object.Id, gameId);
@@ -49,9 +46,10 @@ public class ObjectManager : MonoBehaviour
         if (!_gameObjects.ContainsKey(e.Object.Id))
         {
             //TODO: Perhaps we should just add it instead?
-            Debug.LogError(("Tried to update an object that was not added priorly."));
+            Debug.LogError("Tried to update an object that was not added priorly.");
             return;
         }
+
         Debug.Log(e.Object.Angle);
         var gameId = _gameObjects[e.Object.Id];
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
@@ -63,7 +61,7 @@ public class ObjectManager : MonoBehaviour
     {
         if (!_gameObjects.ContainsKey(e.Object.Id))
         {
-            Debug.LogError(("Tried to remove an object that was not added priorly."));
+            Debug.LogError("Tried to remove an object that was not added priorly.");
             return;
         }
 
