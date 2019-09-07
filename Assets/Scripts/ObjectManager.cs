@@ -50,7 +50,6 @@ public class ObjectManager : MonoBehaviour
             return;
         }
 
-        Debug.Log(e.Object.Angle);
         var gameId = _gameObjects[e.Object.Id];
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(e.Object.X, e.Object.Y));
@@ -66,6 +65,7 @@ public class ObjectManager : MonoBehaviour
         }
 
         GameManager.RemoveSpawnedObject(_gameObjects[e.Object.Id]);
+        _gameObjects.Remove(e.Object.Id);
     }
 
     private Vector3 ScreenToWorld(float x, float y)
