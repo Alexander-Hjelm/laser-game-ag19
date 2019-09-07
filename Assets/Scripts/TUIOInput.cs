@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TUIOsharp;
 using TUIOsharp.DataProcessors;
@@ -7,6 +8,15 @@ using UnityEngine;
 public class TUIOInput : MonoBehaviour
 {
     private static TUIOInput instance = null;
+
+    public static event EventHandler<TuioObjectEventArgs> OnObjectAdded;
+    public static event EventHandler<TuioObjectEventArgs> OnObjectRemoved;
+    public static event EventHandler<TuioObjectEventArgs> OnObjectUpdated;
+
+    // We want to stagger all events to make them run on the main unity thread
+    private List<(object, TuioObjectEventArgs)> staggeredOnObjectAdded;
+    private List<(object, TuioObjectEventArgs)> staggeredOnObjectRemoved;
+    private List<(object, TuioObjectEventArgs)> staggeredOnObjectUpdated;
 
     private int port = 3333;
     private TuioServer tuioServer;
@@ -17,6 +27,9 @@ public class TUIOInput : MonoBehaviour
         {
             throw new UnityException("Two instances of a TUIOInput was found. Please remove one.");
         }
+        staggeredOnObjectAdded = new List<(object, TuioObjectEventArgs)>();
+        staggeredOnObjectRemoved = new List<(object, TuioObjectEventArgs)>();
+        staggeredOnObjectUpdated = new List<(object, TuioObjectEventArgs)>();
         ListenForTUIO();
         instance = this;
         Debug.Log("Started TUIO Client");
@@ -27,82 +40,53 @@ public class TUIOInput : MonoBehaviour
         tuioServer.Disconnect();
         tuioServer = null;
         instance = null;
+        OnObjectAdded = null;
+        OnObjectRemoved = null;
+        OnObjectUpdated = null;
+    }
+
+    private void Update()
+    {
+        staggeredOnObjectAdded.RemoveAll((args) =>
+        {
+            OnObjectAdded?.Invoke(args.Item1, args.Item2);
+            return true;
+        });
+        staggeredOnObjectRemoved.RemoveAll((args) =>
+        {
+            OnObjectRemoved?.Invoke(args.Item1, args.Item2);
+            return true;
+        });
+        staggeredOnObjectUpdated.RemoveAll((args) =>
+        {
+            OnObjectUpdated?.Invoke(args.Item1, args.Item2);
+            return true;
+        });
     }
 
     private void ListenForTUIO()
     {
-        Debug.Log(string.Format("TUIO listening on port {0}.", port));
-
         // tuio
         tuioServer = new TuioServer(port);
-
-        CursorProcessor cursorProcessor = new CursorProcessor();
-        cursorProcessor.CursorAdded += OnCursorAdded;
-        cursorProcessor.CursorUpdated += OnCursorUpdated;
-        cursorProcessor.CursorRemoved += OnCursorRemoved;
-
-        BlobProcessor blobProcessor = new BlobProcessor();
-        blobProcessor.BlobAdded += OnBlobAdded;
-        blobProcessor.BlobUpdated += OnBlobUpdated;
-        blobProcessor.BlobRemoved += OnBlobRemoved;
-
-        ObjectProcessor objectProcessor = new ObjectProcessor();
-        objectProcessor.ObjectAdded += OnObjectAdded;
-        objectProcessor.ObjectUpdated += OnObjectUpdated;
-        objectProcessor.ObjectRemoved += OnObjectRemoved;
-
-        // listen...
         tuioServer.Connect();
 
-        tuioServer.AddDataProcessor(cursorProcessor);
-        tuioServer.AddDataProcessor(blobProcessor);
+        Debug.Log(string.Format("TUIO listening on port {0}.", port));
+
+        // Add Object Processor
+        ObjectProcessor objectProcessor = new ObjectProcessor();
+        objectProcessor.ObjectAdded += (sender, e) =>
+        {
+            staggeredOnObjectAdded.Add((sender, e));
+        };
+        objectProcessor.ObjectUpdated += (sender, e) =>
+        {
+            staggeredOnObjectUpdated.Add((sender, e));
+        }; ;
+        objectProcessor.ObjectRemoved += (sender, e) =>
+        {
+            staggeredOnObjectRemoved.Add((sender, e));
+        };
         tuioServer.AddDataProcessor(objectProcessor);
-    }
-
-    private void OnObjectRemoved(object sender, TuioObjectEventArgs e)
-    {
-        
-        Debug.Log("OnObjectRemoved");
-    }
-
-    private void OnObjectUpdated(object sender, TuioObjectEventArgs e)
-    {
-        Debug.Log($"OnObjectUpdated, classId={e.Object.ClassId}, Id={e.Object.Id}");
-    }
-
-    private void OnObjectAdded(object sender, TuioObjectEventArgs e)
-    {
-        Debug.Log($"OnObjectAdded, classId={e.Object.ClassId}, Id={e.Object.Id}");
-    }
-
-    private void OnBlobRemoved(object sender, TuioBlobEventArgs e)
-    {
-        Debug.Log("OnBlobRemoved");
-    }
-
-    private void OnBlobUpdated(object sender, TuioBlobEventArgs e)
-    {
-        Debug.Log("OnBlobUpdated");
-    }
-
-    private void OnBlobAdded(object sender, TuioBlobEventArgs e)
-    {
-        Debug.Log("OnBlobAdded");
-    }
-
-    private void OnCursorRemoved(object sender, TuioCursorEventArgs e)
-    {
-        Debug.Log("OnCursorRemoved");
-    }
-
-    private void OnCursorUpdated(object sender, TuioCursorEventArgs e)
-    {
-        Debug.Log("OnCursorUpdated");
-    }
-
-    private void OnCursorAdded(object sender, TuioCursorEventArgs e)
-    {
-        Debug.Log("OnCursorAdded");
     }
 }
 
