@@ -1,0 +1,24 @@
+<table class="portraitTable">
+  {% for item in site.data.contribution %}
+  <tr>
+    {% assign remainder = forloop.index | modulo: 2 %}
+    {% if remainder == 0 %}
+    <td class="portraitTable">
+      <h3> {{item.name}} </h3>
+      <img class="portrait" src="{{item.url}}"/>
+    </td>
+    {% endif %}
+    <td class="portraitTable">
+      <p>
+        {{item.contribution}}
+      </p>
+    </td>
+    {% if remainder == 1 %}
+    <td class="portraitTable">
+      <h3> {{item.name}} </h3>
+      <img class="portrait" src="{{item.url}}"/>
+    </td>
+    {% endif %}
+  </tr>
+  {% endfor %}
+</table>

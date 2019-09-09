@@ -1,0 +1,18 @@
+- name: Microsoft Surface - PixelSense
+  description: The actual game is played on the PixelSense where one places object ontop in order to interact with the game and solve the puzzle
+  image: /assets/images/microsoft.svg
+- name: Unity Game Engine
+  description: The game was made using Unity as it is a very versitile and powerful enough for what we wanted to do.
+  image: /assets/images/.png
+- name: C#
+  description: Coding Language
+  image: /assets/images/CSharp.png
+- name: Blender
+  description: We used Blender for all the modelling of this project
+  image: /assets/images/blender.png
+- name: GitHub
+  description: Source control
+  image: /assets/images/github.png
+- name: Discord
+  description: Communications for important project data.
+  image: /assets/images/.png

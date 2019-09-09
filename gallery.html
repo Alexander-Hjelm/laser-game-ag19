@@ -1,0 +1,18 @@
+---
+layout: default
+title: Gallery
+---
+<h1> This is the gallerypage </h1>
+
+<iframe src="https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com" width="600px" height="480px">
+</iframe>
+
+<div id="GalleryContainer">
+
+{% for item in site.data.images %}
+
+<img class="smallGallery" src="{{item.url}}" alt="could not find image"/>
+
+{% endfor %}
+
+</div>
