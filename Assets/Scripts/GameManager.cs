@@ -5,6 +5,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private struct SplitLaserStruct
+    {
+        public Laser SplitLaser1;
+        public Laser SplitLaser2;
+
+        public SplitLaserStruct(Laser splitLaser1, Laser splitLaser2)
+        {
+            SplitLaser1 = splitLaser1;
+            SplitLaser2 = splitLaser2;
+        }
+    }
+
     // All prefabs that can be spawned
     [SerializeField] private GameObject[] _spawnablePrefabs;
 
@@ -16,6 +28,10 @@ public class GameManager : MonoBehaviour
 
     // All spawned objects by id reference
     private static Dictionary<long, GameObject> _spawnedObjectsById = new Dictionary<long, GameObject>();
+
+    private static Dictionary<Laser, SplitLaserStruct> _splitLasersThisFrame = new Dictionary<Laser, SplitLaserStruct>();
+
+    private static Dictionary<Laser, bool> _notifiedLasersThisFrame = new Dictionary<Laser, bool>();
 
     private void Awake()
     {
@@ -38,6 +54,30 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        // TODO
+        // Remove any lasers that have not been updated on this frame
+        foreach (Laser laser in _notifiedLasersThisFrame.Keys)
+        {
+            if(!_notifiedLasersThisFrame[laser])
+            {
+                // Split lasers should be deleted
+                Laser splitLaser1 = _splitLasersThisFrame[laser].SplitLaser1;
+                Laser splitLaser2 = _splitLasersThisFrame[laser].SplitLaser2;
+                Destroy(splitLaser1);
+                Destroy(splitLaser2);
+                _splitLasersThisFrame.Remove(laser);
+            }
+            else
+            {
+                // Split lasers have been updated this frame, only set the Updated flag to false
+                _notifiedLasersThisFrame[laser] = false;
+            }
+        }
+
+    }
+
     // Register a Target. Must be called by the Targets themselves on Awake
     public static void RegisterTarget(int id)
     {
@@ -48,6 +88,48 @@ public class GameManager : MonoBehaviour
     public static void HitTarget(int id)
     {
         _hitTargetIds.Add(id);
+    }
+
+    public static void NotifyLaserShouldSplit(Laser laser, Vector3 position, Vector3 forward)
+    {
+        Laser splitLaser1;
+        Laser splitLaser2;
+
+        if(!_splitLasersThisFrame.ContainsKey(laser))
+        {
+            // Split the laser
+            Color splitColor1;
+            Color splitColor2;
+            LaserColorDefinitions.GetSplitColors(laser.GetColor(), out splitColor1, out splitColor2);
+            splitLaser1 = SpawnLaser(splitColor1);
+            splitLaser2 = SpawnLaser(splitColor2);
+            _splitLasersThisFrame[laser] = new SplitLaserStruct(splitLaser1, splitLaser2);
+        }
+        else
+        {
+            // Get split laser references
+            splitLaser1 = _splitLasersThisFrame[laser].SplitLaser1;
+            splitLaser2 = _splitLasersThisFrame[laser].SplitLaser2;
+        }
+
+        splitLaser1.transform.position = position;
+        splitLaser2.transform.position = position;
+
+        Vector3 laser1fwd = Quaternion.AngleAxis(45, Vector3.up) * forward;
+        Vector3 laser2fwd = Quaternion.AngleAxis(-45, Vector3.up) * forward;
+
+        splitLaser1.transform.rotation = Quaternion.LookRotation(laser1fwd);
+        splitLaser2.transform.rotation = Quaternion.LookRotation(laser2fwd);
+
+        _notifiedLasersThisFrame[laser] = true;
+    }
+
+    private static Laser SpawnLaser(Color color)
+    {
+        GameObject laserPrefab = Resources.Load<GameObject>("Prefabs/LaserStartPosition");
+        GameObject laserInstance = GameObject.Instantiate(laserPrefab);
+        laserInstance.GetComponent<Laser>().SetColor(color);
+        return laserInstance.GetComponent<Laser>();
     }
     
     // Spawn a prefab at a given location, with a given forward vector
