@@ -1,10 +1,10 @@
 - name: Home
-  link: /
+  link:
 - name: About
-  link: /about.html
+  link: about.html
 - name: Technologies
-  link: /technologies.html
+  link: technologies.html
 - name: Related Work
-  link: /relatedwork.html
+  link: relatedwork.html
 - name: Gallery
-  link: /gallery.html
+  link: gallery.html
