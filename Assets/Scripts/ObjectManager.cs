@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TUIOsharp.DataProcessors;
 using UnityEngine;
 
@@ -11,11 +12,23 @@ public enum Objects
 
 public class ObjectManager : MonoBehaviour
 {
-    private Dictionary<int, long> _gameObjects;
+    [System.Serializable]
+    public class MaxObject { public Objects type; public int max; }
 
+    [SerializeField()]
+    public MaxObject[] MaxObjectsPerType;
+
+    private struct TUIOObject
+    {
+        public int? id;
+        public long gameId;
+        public Objects type;
+    }
+
+    private Dictionary<int, TUIOObject> _gameObjects;
     private void Awake()
     {
-        _gameObjects = new Dictionary<int, long>();
+        _gameObjects = new Dictionary<int, TUIOObject>();
         TUIOInput.OnObjectAdded += OnObjectAdded;
         TUIOInput.OnObjectUpdated += OnObjectUpdated;
         TUIOInput.OnObjectRemoved += OnObjectRemoved;
@@ -36,21 +49,34 @@ public class ObjectManager : MonoBehaviour
         }
 
         var type = (Objects) e.Object.ClassId;
+        var maxStruct = MaxObjectsPerType.FirstOrDefault(m => m.type == type);
+
+        if (maxStruct != null && _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max)
+        {
+            Debug.Log("More than one");
+            return;
+        }
+
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         var gameId = GameManager.SpawnPrefab(type.ToString(), ScreenToWorld(e.Object.X, e.Object.Y), rot);
-        _gameObjects.Add(e.Object.Id, gameId);
+        var tuioObj = new TUIOObject()
+        {
+            id = e.Object.Id,
+            gameId = gameId,
+            type = type
+        };
+        _gameObjects.Add(e.Object.Id, tuioObj);
     }
 
     private void OnObjectUpdated(object sender, TuioObjectEventArgs e)
     {
         if (!_gameObjects.ContainsKey(e.Object.Id))
         {
-            //TODO: Perhaps we should just add it instead?
-            Debug.LogError("Tried to update an object that was not added priorly.");
+            Debug.LogWarning("Tried to update an object that was not added before. Maybe you reached max objects?");
             return;
         }
 
-        var gameId = _gameObjects[e.Object.Id];
+        var gameId = _gameObjects[e.Object.Id].gameId;
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(e.Object.X, e.Object.Y));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
@@ -64,7 +90,7 @@ public class ObjectManager : MonoBehaviour
             return;
         }
 
-        GameManager.RemoveSpawnedObject(_gameObjects[e.Object.Id]);
+        GameManager.RemoveSpawnedObject(_gameObjects[e.Object.Id].gameId);
         _gameObjects.Remove(e.Object.Id);
     }
 
