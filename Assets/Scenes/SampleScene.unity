@@ -631,7 +631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forward: {x: 0, y: 0, z: 1}
-  color: {r: 0, g: 0.28588247, b: 1, a: 1}
+  color: {r: 0, g: 0, b: 1, a: 1}
 --- !u!4 &1166288327
 Transform:
   m_ObjectHideFlags: 0
