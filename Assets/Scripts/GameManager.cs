@@ -29,8 +29,10 @@ public class GameManager : MonoBehaviour
     // All spawned objects by id reference
     private static Dictionary<long, GameObject> _spawnedObjectsById = new Dictionary<long, GameObject>();
 
+    // All lasers that were split on this frame
     private static Dictionary<Laser, SplitLaserStruct> _splitLasersThisFrame = new Dictionary<Laser, SplitLaserStruct>();
 
+    // A flag for each laser that says if its split lasers should be deleted on this frame or not
     private static Dictionary<Laser, bool> _notifiedLasersThisFrame = new Dictionary<Laser, bool>();
 
     private void Awake()
@@ -56,9 +58,10 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
     {
+        // Temporary lists to avoid the _notifiedLasersThisFrame collection being modified in the loop
         List<Laser> lasersToBeDisabledNextFrame = new List<Laser>();
         List<Laser> lasersToBeDereffed = new List<Laser>();
-        // TODO
+
         // Remove any lasers that have not been updated on this frame
         foreach (Laser laser in _notifiedLasersThisFrame.Keys)
         {
@@ -73,17 +76,19 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                // Split lasers have been updated this frame, only set the Updated flag to false
+                // Split lasers have been updated this frame, so don't delete them, only set the Updated flag to false
                 lasersToBeDisabledNextFrame.Add(laser);
             }
         }
 
-        //foreach (Laser laser in lasersToBeDisabledNextFrame)
+        // Set the Updated flag to false for all lasers
+        // Next frame they will be deleted unless they call the GameManager to set their Updated to true first
         foreach (Laser laser in lasersToBeDisabledNextFrame)
         {
             _notifiedLasersThisFrame[laser] = false;
         }
 
+        // Delete the GameManager reference to all lasers that were deleted in the game world
         foreach (Laser laser in lasersToBeDereffed)
         {
             _notifiedLasersThisFrame.Remove(laser);
@@ -103,6 +108,8 @@ public class GameManager : MonoBehaviour
         _hitTargetIds.Add(id);
     }
 
+    // Notify the game manager that a laser has split at the given prism and position.
+    // The game manager takes over and spawns 2 new split lasers
     public static void NotifyLaserShouldSplit(Laser laser, Vector3 position, Vector3 forward, Prism rootPrism)
     {
         Laser splitLaser1;
@@ -110,9 +117,10 @@ public class GameManager : MonoBehaviour
 
         if(!_splitLasersThisFrame.ContainsKey(laser))
         {
-            // Split the laser
+            // Create 2 new split lasers
             Color splitColor1;
             Color splitColor2;
+            // Get the split laser colors
             LaserColorDefinitions.GetSplitColors(laser.GetColor(), out splitColor1, out splitColor2);
             splitLaser1 = SpawnLaser(splitColor1, rootPrism);
             splitLaser2 = SpawnLaser(splitColor2, rootPrism);
@@ -120,6 +128,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            // 2 split lasers from this laser existed on the previous frame,
+            // get the reference to them instead of creating them again
+            
             // Get split laser references
             splitLaser1 = _splitLasersThisFrame[laser].SplitLaser1;
             splitLaser2 = _splitLasersThisFrame[laser].SplitLaser2;
@@ -130,15 +141,18 @@ public class GameManager : MonoBehaviour
 
         Vector3 laser1fwd = Quaternion.AngleAxis(45, Vector3.up) * forward;
         Vector3 laser2fwd = Quaternion.AngleAxis(-45, Vector3.up) * forward;
-
         splitLaser1.GetComponent<Laser>().SetForward(laser1fwd);
         splitLaser2.GetComponent<Laser>().SetForward(laser2fwd);
 
+        // During LateUpdate next frame, don't remove these 2 split lasers
         _notifiedLasersThisFrame[laser] = true;
     }
 
+    // Spawn a laser with the given color and root prism
+    // Don't set the start position or rotation, they have to be set later
     private static Laser SpawnLaser(Color color, Prism rootPrism)
     {
+        // Laser resource
         GameObject laserPrefab = Resources.Load<GameObject>("Prefabs/LaserStartPosition");
         Laser laserInstance = GameObject.Instantiate(laserPrefab).GetComponent<Laser>();
         laserInstance.SetColor(color);
