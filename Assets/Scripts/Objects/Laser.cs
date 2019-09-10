@@ -56,9 +56,14 @@ public class Laser : MonoBehaviour
                 case "Target":
                     // Get Target ID
                     int targetId = raycastHit.collider.GetComponent<Target>().GetId();
+                    Color targetColor = raycastHit.collider.GetComponent<Target>().GetColor();
 
-                    // Notify the GameManager that the Target has been hit on this frame
-                    GameManager.HitTarget(targetId);
+                    if(targetColor == color)
+                    {
+                        // Notify the GameManager that the Target has been hit on this frame
+                        GameManager.HitTarget(targetId);
+                    }
+
                     nextHit = raycastHit.point;
 
                     // Laser should not continue to raycast
