@@ -15,6 +15,9 @@ public class Laser : MonoBehaviour
     // The prism that spawned this laser, if any
     private Prism _rootPrism;
 
+    // 
+    private Collider currentHole;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,11 +37,19 @@ public class Laser : MonoBehaviour
         points.Add(nextHit);    // Add start position to LineRenderer
         bool laserShouldStop = false;   // Should the laser stop before the next raycast?
 
+        // TODO move these
+        // Variables that define constants like how often the line breaks and gravity constants etc 
+        bool inHole = false; //is the raycast in a black hole?
+        float gravityConstant = 50f;
+        float deltaLine = 0.1f;
+        float maxDistance = 1000;
+
         // Main raycast loop
         // Raycasts will start from the successive hit points, and continue while the laser is hitting objects
         // nextHit and nextDir are updated internally for every hit
-        while(Physics.Raycast(nextHit, nextDir, out raycastHit, LayerMask.GetMask("Laser Hittable"))){
-            switch(raycastHit.collider.tag)
+        while (Physics.Raycast(nextHit, nextDir, out raycastHit, maxDistance, LayerMask.GetMask("Laser Hittable")) || inHole){
+            if(raycastHit.collider != null)
+            switch (raycastHit.collider.tag)
             {
                 case "Mirror":
                     Vector3 point = raycastHit.point;
@@ -103,10 +114,37 @@ public class Laser : MonoBehaviour
                     }
 
                     break;
+                case "Hole":
+                    Debug.Log("Hit hole");
+                    inHole = !inHole;
+
+                    currentHole = raycastHit.collider;
+
+                    nextDir = BlackHoleDealer(raycastHit.point, nextDir, gravityConstant);
+
+                    nextHit = raycastHit.point + nextDir * deltaLine;
+
+                    points.Add(raycastHit.point);
+
+                    break;
 
                 // TODO: Add more cases here for different objects that the laser can interact with
 
             }
+
+            if (inHole) {
+                Debug.Log("Still in hole");
+
+                points.Add(nextHit);
+
+                nextDir = BlackHoleDealer(nextHit, nextDir, gravityConstant);
+
+                nextHit = nextHit + nextDir * deltaLine;
+                maxDistance = nextDir.magnitude * deltaLine;
+
+                if ((nextHit - currentHole.transform.position).magnitude < 1 || (nextHit - currentHole.transform.position).magnitude > 10) inHole = false;
+            }  else
+                maxDistance = 1000;
 
             if(laserShouldStop) break;
         }
@@ -121,6 +159,19 @@ public class Laser : MonoBehaviour
         for(int i = 0; i< points.Count; i++){
             lineRender.SetPosition(i, points[i]); 
         }
+    }
+
+    private Vector3 BlackHoleDealer(Vector3 point, Vector3 currentTrajectory, float gravityConstant) {
+        // Center of the black hole
+        Vector3 blackHolePos = currentHole.transform.position;
+        //Vector3 point = raycastHit.point;
+
+        Vector3 distance = (blackHolePos - point);
+        Vector3 gravityPull = distance.normalized * (gravityConstant / Mathf.Pow(distance.magnitude, 2));
+
+        currentTrajectory += gravityPull;
+        currentTrajectory.y = 0;
+        return currentTrajectory;
     }
 
     // Set the color of this laser
