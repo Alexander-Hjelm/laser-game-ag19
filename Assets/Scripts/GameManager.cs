@@ -62,8 +62,6 @@ public class GameManager : MonoBehaviour
         // Remove any lasers that have not been updated on this frame
         foreach (Laser laser in _notifiedLasersThisFrame.Keys)
         {
-            Debug.Log(laser.gameObject.name);
-            //Debug.Log(_notifiedLasersThisFrame[laser]);
             if(!_notifiedLasersThisFrame[laser])
             {
                 // Split lasers should be deleted
@@ -72,13 +70,11 @@ public class GameManager : MonoBehaviour
                 Destroy(splitLaser1.gameObject);
                 Destroy(splitLaser2.gameObject);
                 lasersToBeDereffed.Add(laser);
-                Debug.Log("Removed split lasers");
             }
             else
             {
                 // Split lasers have been updated this frame, only set the Updated flag to false
                 lasersToBeDisabledNextFrame.Add(laser);
-                Debug.Log("Set laser notified to false");
             }
         }
 
@@ -135,8 +131,8 @@ public class GameManager : MonoBehaviour
         Vector3 laser1fwd = Quaternion.AngleAxis(45, Vector3.up) * forward;
         Vector3 laser2fwd = Quaternion.AngleAxis(-45, Vector3.up) * forward;
 
-        splitLaser1.transform.rotation = Quaternion.LookRotation(laser1fwd);
-        splitLaser2.transform.rotation = Quaternion.LookRotation(laser2fwd);
+        splitLaser1.GetComponent<Laser>().SetForward(laser1fwd);
+        splitLaser2.GetComponent<Laser>().SetForward(laser2fwd);
 
         _notifiedLasersThisFrame[laser] = true;
     }

@@ -76,7 +76,6 @@ public class Laser : MonoBehaviour
                 case "Prism":
                     if(raycastHit.collider.GetComponent<Prism>() == _rootPrism)
                     {
-                        Debug.Log("RaycastHit Prism matched root prism: " + _rootPrism);
                         nextHit = nextHit + nextDir*0.1f;
                     }
                     else
@@ -117,6 +116,11 @@ public class Laser : MonoBehaviour
     public void SetColor(Color color)
     {
         this.color = color;
+    }
+
+    public void SetForward(Vector3 forward)
+    {
+        this.forward = forward;
     }
 
     public void SetRootPrism(Prism prism)
