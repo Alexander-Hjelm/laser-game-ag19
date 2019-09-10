@@ -11,11 +11,11 @@ public class Laser : MonoBehaviour
     [SerializeField] private Color color;
 
     private LineRenderer lineRender;
+    private Prism _rootPrism;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Hello");
         lineRender = GetComponent <LineRenderer>();
         lineRender.material = new Material(Shader.Find("Unlit/Color"));
         lineRender.material.color = color;
@@ -74,14 +74,22 @@ public class Laser : MonoBehaviour
                     break;
 
                 case "Prism":
-                    // Set final hitpoint 
-                    nextHit = raycastHit.point;
+                    if(raycastHit.collider.GetComponent<Prism>() == _rootPrism)
+                    {
+                        Debug.Log("RaycastHit Prism matched root prism: " + _rootPrism);
+                        nextHit = nextHit + nextDir*0.1f;
+                    }
+                    else
+                    {
+                        // Set final hitpoint 
+                        nextHit = raycastHit.point;
 
-                    // Laser should not continue to raycast
-                    laserShouldStop = true;
+                        // Laser should not continue to raycast
+                        laserShouldStop = true;
 
-                    // Notify that this laser should split at this point
-                    GameManager.NotifyLaserShouldSplit(this, nextHit, nextDir);
+                        // Notify that this laser should split at this point
+                        GameManager.NotifyLaserShouldSplit(this, nextHit, nextDir, raycastHit.collider.GetComponent<Prism>());
+                    }
 
                     break;
 
@@ -109,6 +117,11 @@ public class Laser : MonoBehaviour
     public void SetColor(Color color)
     {
         this.color = color;
+    }
+
+    public void SetRootPrism(Prism prism)
+    {
+        _rootPrism = prism;
     }
 
     public Color GetColor()
