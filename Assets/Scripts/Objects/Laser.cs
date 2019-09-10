@@ -12,14 +12,17 @@ public class Laser : MonoBehaviour
 
     private LineRenderer lineRender;
 
+    // The prism that spawned this laser, if any
+    private Prism _rootPrism;
+
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log("Hello");
+        // Set LineRenderer reference
         lineRender = GetComponent <LineRenderer>();
+        // Set material color
         lineRender.material = new Material(Shader.Find("Unlit/Color"));
         lineRender.material.color = color;
-        //lineRender.material.mainTexture = sometexture2D // Update is called once per frame
     }
 
     void Update()
@@ -56,14 +59,20 @@ public class Laser : MonoBehaviour
                 case "Target":
                     // Get Target ID
                     int targetId = raycastHit.collider.GetComponent<Target>().GetId();
+                    Color targetColor = raycastHit.collider.GetComponent<Target>().GetColor();
 
-                    // Notify the GameManager that the Target has been hit on this frame
-                    GameManager.HitTarget(targetId);
+                    if(targetColor == color)
+                    {
+                        // Notify the GameManager that the Target has been hit on this frame
+                        GameManager.HitTarget(targetId);
+                    }
+
                     nextHit = raycastHit.point;
 
                     // Laser should not continue to raycast
                     laserShouldStop = true;
                     break;
+
                 case "Wall":
                     // Set final hitpoint 
                     nextHit = raycastHit.point;
@@ -72,6 +81,28 @@ public class Laser : MonoBehaviour
                     laserShouldStop = true;
                     break;
 
+                case "Prism":
+                    if(raycastHit.collider.GetComponent<Prism>() == _rootPrism)
+                    {
+                        // The prism we collided with was the root prism (that spawned this laser), so ignore it and continue
+                        // along the same line until we have exited its collision bounds
+                        nextHit = nextHit + nextDir*0.1f;
+                    }
+                    else
+                    {
+                        // We hit a new prism. The laser splits and stops here
+                        
+                        // Set final hitpoint 
+                        nextHit = raycastHit.point;
+
+                        // Laser should not continue to raycast
+                        laserShouldStop = true;
+
+                        // Notify that this laser should split at this point
+                        GameManager.NotifyLaserShouldSplit(this, nextHit, nextDir, raycastHit.collider.GetComponent<Prism>());
+                    }
+
+                    break;
 
                 // TODO: Add more cases here for different objects that the laser can interact with
 
@@ -97,6 +128,19 @@ public class Laser : MonoBehaviour
     public void SetColor(Color color)
     {
         this.color = color;
+    }
+
+    // Set the forward vector of this laser
+    public void SetForward(Vector3 forward)
+    {
+        this.forward = forward;
+    }
+
+    // Set the root prism object of this laser
+    // NOTE: Must be called before start() on the instanced laser object, otherwise it will have no effect
+    public void SetRootPrism(Prism prism)
+    {
+        _rootPrism = prism;
     }
 
     public Color GetColor()

@@ -5,6 +5,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private struct SplitLaserStruct
+    {
+        public Laser SplitLaser1;
+        public Laser SplitLaser2;
+
+        public SplitLaserStruct(Laser splitLaser1, Laser splitLaser2)
+        {
+            SplitLaser1 = splitLaser1;
+            SplitLaser2 = splitLaser2;
+        }
+    }
+
     // All prefabs that can be spawned
     [SerializeField] private GameObject[] _spawnablePrefabs;
 
@@ -16,6 +28,12 @@ public class GameManager : MonoBehaviour
 
     // All spawned objects by id reference
     private static Dictionary<long, GameObject> _spawnedObjectsById = new Dictionary<long, GameObject>();
+
+    // All lasers that were split on this frame
+    private static Dictionary<Laser, SplitLaserStruct> _splitLasersThisFrame = new Dictionary<Laser, SplitLaserStruct>();
+
+    // A flag for each laser that says if its split lasers should be deleted on this frame or not
+    private static Dictionary<Laser, bool> _notifiedLasersThisFrame = new Dictionary<Laser, bool>();
 
     private void Awake()
     {
@@ -38,6 +56,46 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        // Temporary lists to avoid the _notifiedLasersThisFrame collection being modified in the loop
+        List<Laser> lasersToBeDisabledNextFrame = new List<Laser>();
+        List<Laser> lasersToBeDereffed = new List<Laser>();
+
+        // Remove any lasers that have not been updated on this frame
+        foreach (Laser laser in _notifiedLasersThisFrame.Keys)
+        {
+            if(!_notifiedLasersThisFrame[laser])
+            {
+                // Split lasers should be deleted
+                Laser splitLaser1 = _splitLasersThisFrame[laser].SplitLaser1;
+                Laser splitLaser2 = _splitLasersThisFrame[laser].SplitLaser2;
+                Destroy(splitLaser1.gameObject);
+                Destroy(splitLaser2.gameObject);
+                lasersToBeDereffed.Add(laser);
+            }
+            else
+            {
+                // Split lasers have been updated this frame, so don't delete them, only set the Updated flag to false
+                lasersToBeDisabledNextFrame.Add(laser);
+            }
+        }
+
+        // Set the Updated flag to false for all lasers
+        // Next frame they will be deleted unless they call the GameManager to set their Updated to true first
+        foreach (Laser laser in lasersToBeDisabledNextFrame)
+        {
+            _notifiedLasersThisFrame[laser] = false;
+        }
+
+        // Delete the GameManager reference to all lasers that were deleted in the game world
+        foreach (Laser laser in lasersToBeDereffed)
+        {
+            _notifiedLasersThisFrame.Remove(laser);
+            _splitLasersThisFrame.Remove(laser);
+        }
+    }
+
     // Register a Target. Must be called by the Targets themselves on Awake
     public static void RegisterTarget(int id)
     {
@@ -48,6 +106,58 @@ public class GameManager : MonoBehaviour
     public static void HitTarget(int id)
     {
         _hitTargetIds.Add(id);
+    }
+
+    // Notify the game manager that a laser has split at the given prism and position.
+    // The game manager takes over and spawns 2 new split lasers
+    public static void NotifyLaserShouldSplit(Laser laser, Vector3 position, Vector3 forward, Prism rootPrism)
+    {
+        Laser splitLaser1;
+        Laser splitLaser2;
+
+        if(!_splitLasersThisFrame.ContainsKey(laser))
+        {
+            // Create 2 new split lasers
+            Color splitColor1;
+            Color splitColor2;
+            // Get the split laser colors
+            LaserColorDefinitions.GetSplitColors(laser.GetColor(), out splitColor1, out splitColor2);
+            splitLaser1 = SpawnLaser(splitColor1, rootPrism);
+            splitLaser2 = SpawnLaser(splitColor2, rootPrism);
+            _splitLasersThisFrame[laser] = new SplitLaserStruct(splitLaser1, splitLaser2);
+        }
+        else
+        {
+            // 2 split lasers from this laser existed on the previous frame,
+            // get the reference to them instead of creating them again
+            
+            // Get split laser references
+            splitLaser1 = _splitLasersThisFrame[laser].SplitLaser1;
+            splitLaser2 = _splitLasersThisFrame[laser].SplitLaser2;
+        }
+
+        splitLaser1.transform.position = position;
+        splitLaser2.transform.position = position;
+
+        Vector3 laser1fwd = Quaternion.AngleAxis(45, Vector3.up) * forward;
+        Vector3 laser2fwd = Quaternion.AngleAxis(-45, Vector3.up) * forward;
+        splitLaser1.GetComponent<Laser>().SetForward(laser1fwd);
+        splitLaser2.GetComponent<Laser>().SetForward(laser2fwd);
+
+        // During LateUpdate next frame, don't remove these 2 split lasers
+        _notifiedLasersThisFrame[laser] = true;
+    }
+
+    // Spawn a laser with the given color and root prism
+    // Don't set the start position or rotation, they have to be set later
+    private static Laser SpawnLaser(Color color, Prism rootPrism)
+    {
+        // Laser resource
+        GameObject laserPrefab = Resources.Load<GameObject>("Prefabs/LaserStartPosition");
+        Laser laserInstance = GameObject.Instantiate(laserPrefab).GetComponent<Laser>();
+        laserInstance.SetColor(color);
+        laserInstance.SetRootPrism(rootPrism);
+        return laserInstance;
     }
     
     // Spawn a prefab at a given location, with a given forward vector
