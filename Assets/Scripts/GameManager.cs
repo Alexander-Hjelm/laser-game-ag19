@@ -163,19 +163,19 @@ public class GameManager : MonoBehaviour
     // Spawn a prefab at a given location, with a given forward vector
     // nameRef must match the prefab's resource name
     // The unique id is returned, which can be used to move, rotate or destroy the object later
-    public static long SpawnPrefab(string nameRef, Vector3 position, Vector3 forward)
+    public static long SpawnPrefab(string nameRef, Vector3 position, Quaternion rotation)
     {
         // Check available prefabs for one whose name matches
-        foreach(GameObject prefab in _instance._spawnablePrefabs)
+        foreach (GameObject prefab in _instance._spawnablePrefabs)
         {
-            if(prefab.name == nameRef)
+            if (prefab.name == nameRef)
             {
                 // Spawn the prefab
-                GameObject instance = Instantiate(prefab, position, Quaternion.LookRotation(forward, Vector3.up));
+                GameObject instance = Instantiate(prefab, position, rotation);
 
                 // Generate a unique id
                 long id = DateTime.UtcNow.Ticks;
-                while(_spawnedObjectsById.ContainsKey(id))
+                while (_spawnedObjectsById.ContainsKey(id))
                     id++;
 
                 // Save the instance and return the id
@@ -185,6 +185,11 @@ public class GameManager : MonoBehaviour
         }
         Debug.LogError("Tried to spawn Prefab with name: " + nameRef + ", but that prefab has not been set in the GameManager");
         return -1;
+    }
+
+    public static long SpawnPrefab(string nameRef, Vector3 position, Vector3 forward)
+    {
+        return SpawnPrefab(nameRef, position, Quaternion.LookRotation(forward, Vector3.up));
     }
 
     // Remove an object that has previously been spawned
@@ -215,16 +220,21 @@ public class GameManager : MonoBehaviour
     }
 
     // Set the rotation of an object that has previously been spawned
-    public static void SetRotationOfSpawnedObject(long id, Vector3 newFwd)
+    public static void SetRotationOfSpawnedObject(long id, Quaternion newQuat)
     {
-        if(_spawnedObjectsById.ContainsKey(id))
+        if (_spawnedObjectsById.ContainsKey(id))
         {
-            _spawnedObjectsById[id].transform.rotation = Quaternion.LookRotation(newFwd, Vector3.up);
+            _spawnedObjectsById[id].transform.rotation = newQuat;
         }
         else
         {
             Debug.LogError("Tried to set rot Object with id = " + id + ", but that object has not been spawed by the GameManager");
         }
+    }
+
+    public static void SetRotationOfSpawnedObject(long id, Vector3 newFwd)
+    {
+        SetRotationOfSpawnedObject(id, Quaternion.LookRotation(newFwd, Vector3.up));
     }
 
 }
