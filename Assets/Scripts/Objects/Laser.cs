@@ -15,9 +15,6 @@ public class Laser : MonoBehaviour
     // The prism that spawned this laser, if any
     private Prism _rootPrism;
 
-    // 
-    private Collider currentHole;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -36,13 +33,11 @@ public class Laser : MonoBehaviour
         List<Vector3> points = new List <Vector3>();    // All points that the line renderer should render
         points.Add(nextHit);    // Add start position to LineRenderer
         bool laserShouldStop = false;   // Should the laser stop before the next raycast?
-
-        // TODO move these
-        // Variables that define constants like how often the line breaks and gravity constants etc 
-        bool inHole = false; //is the raycast in a black hole?
-        float gravityConstant = 50f;
-        float deltaLine = 0.1f;
-        float maxDistance = 1000;
+        float maxDistance = 1000; // Max Distance of raycast
+        bool inHole = false; // Is the raycast in a black hole?
+        float deltaLine = 0.1f; // How often the laser bends in a black hole (smaller = more times, changing this affects how much the laser bends too)
+        BlackHole currentHole = null; // The black hole the raycast is currently in
+        float currentHoleRadius = 0.0f; // The radius of the black hole the raycast is currently in
 
         // Main raycast loop
         // Raycasts will start from the successive hit points, and continue while the laser is hitting objects
@@ -61,7 +56,7 @@ public class Laser : MonoBehaviour
 
                     // Update the origin and direction of the next laser
                     nextHit = point;
-                    nextDir = r;
+                    nextDir = r.normalized * nextDir.magnitude;
 
                     // Add the hit point to the LineRenderer
                     points.Add(point);
@@ -115,16 +110,16 @@ public class Laser : MonoBehaviour
 
                     break;
                 case "Hole":
-                    Debug.Log("Hit hole");
-                    inHole = !inHole;
+                    // Laser is now being affected by the black hole
+                    inHole = true;
 
-                    currentHole = raycastHit.collider;
+                    // Set up the properties of the black hole we are currently in
+                    currentHole = raycastHit.collider.GetComponent<BlackHole> ();
+                    currentHoleRadius = (currentHole.transform.position - raycastHit.point).magnitude;
 
-                    nextDir = BlackHoleDealer(raycastHit.point, nextDir, gravityConstant);
-
-                    nextHit = raycastHit.point + nextDir * deltaLine;
-
-                    points.Add(raycastHit.point);
+                    // Set the entering point of the black hole to the lines and the startpoint for the next raycast
+                    nextHit = raycastHit.point;
+                    points.Add(nextHit);
 
                     break;
 
@@ -132,19 +127,35 @@ public class Laser : MonoBehaviour
 
             }
 
+            // As long as the laser is within the gravitational field of the black hole it should be curving towards it
             if (inHole) {
-                Debug.Log("Still in hole");
+                // Calculating the place the new bended raycast will start
+                if(nextHit != raycastHit.point) // This is to prevent skipping when colliding with objects
+                    nextHit += nextDir * deltaLine; //Note that when the laser collides with something (in a black hole) or enters a black hole the raycast will skip a little
 
-                points.Add(nextHit);
+                // Calculating the force of gravity based on distance from laser to black hole
+                Vector3 distance = (currentHole.transform.position - nextHit);
+                Vector3 gravityPull = distance.normalized * (currentHole.getGravityConstant() / Mathf.Pow(distance.magnitude, 2));
 
-                nextDir = BlackHoleDealer(nextHit, nextDir, gravityConstant);
+                // Adding gravity pull to current trajectory of laser
+                nextDir += gravityPull;
+                nextDir.y = 0;
 
-                nextHit = nextHit + nextDir * deltaLine;
-                maxDistance = nextDir.magnitude * deltaLine;
+                maxDistance = nextDir.magnitude * deltaLine; // Making sure Raycast only goes a short distance (as we need to keep bending)
 
-                if ((nextHit - currentHole.transform.position).magnitude < 1 || (nextHit - currentHole.transform.position).magnitude > 10) inHole = false;
-            }  else
-                maxDistance = 1000;
+                points.Add(nextHit); // Add the current point to the line renderer
+
+                // If we exit the gravitational field of the black hole
+                if ((nextHit - currentHole.transform.position).magnitude > currentHoleRadius) {
+                    inHole = false; // No longer in a black hole
+                    nextDir.Normalize(); // Make sure the "speed" of the laser is reset
+                    maxDistance = 1000; // Make sure the raycast goes far again
+                }
+               
+                // Laser has been absorbed by the black hole
+                if ((nextHit - currentHole.transform.position).magnitude < currentHole.getAbsorptionRadius())
+                    laserShouldStop = true;
+            }  
 
             if(laserShouldStop) break;
         }
@@ -159,19 +170,6 @@ public class Laser : MonoBehaviour
         for(int i = 0; i< points.Count; i++){
             lineRender.SetPosition(i, points[i]); 
         }
-    }
-
-    private Vector3 BlackHoleDealer(Vector3 point, Vector3 currentTrajectory, float gravityConstant) {
-        // Center of the black hole
-        Vector3 blackHolePos = currentHole.transform.position;
-        //Vector3 point = raycastHit.point;
-
-        Vector3 distance = (blackHolePos - point);
-        Vector3 gravityPull = distance.normalized * (gravityConstant / Mathf.Pow(distance.magnitude, 2));
-
-        currentTrajectory += gravityPull;
-        currentTrajectory.y = 0;
-        return currentTrajectory;
     }
 
     // Set the color of this laser
