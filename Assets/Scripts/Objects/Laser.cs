@@ -34,10 +34,11 @@ public class Laser : MonoBehaviour
         points.Add(nextHit);    // Add start position to LineRenderer
         bool laserShouldStop = false;   // Should the laser stop before the next raycast?
         float maxDistance = 1000; // Max Distance of raycast
-        float deltaLine = 0.1f; // How often the laser bends in a black hole (smaller = more times, changing this affects how much the laser bends too)
+        float deltaLine = 1f; // How often the laser bends in a black hole (smaller = more times)
         bool inHole = false; // Is the raycast in a black hole?
         BlackHole currentHole = null; // The black hole the raycast is currently in
         float currentHoleRadius = 0.0f; // The radius of the black hole the raycast is currently in
+        int holeIterations = 0; //Number of times we've cast a ray in a hole
 
         // Check if a laser is spawned inside of a black hole
         Collider[] startingIn = Physics.OverlapSphere(nextHit, 0, LayerMask.GetMask("Laser Hittable"));
@@ -46,6 +47,7 @@ public class Laser : MonoBehaviour
                 inHole = true;
                 currentHole = c.GetComponent<BlackHole>();
                 currentHoleRadius = c.GetComponent<SphereCollider> ().radius * c.transform.localScale.x;
+                maxDistance = nextDir.magnitude * deltaLine;
                 break;
             }
         }
@@ -146,7 +148,7 @@ public class Laser : MonoBehaviour
 
                 // Calculating the force of gravity based on distance from laser to black hole
                 Vector3 distance = (currentHole.transform.position - nextHit);
-                Vector3 gravityPull = distance.normalized * (currentHole.getGravityConstant() / Mathf.Pow(distance.magnitude, 2));
+                Vector3 gravityPull = distance.normalized * (currentHole.getGravityConstant() * deltaLine * 10 / Mathf.Pow(distance.magnitude, 2));
 
                 // Adding gravity pull to current trajectory of laser
                 nextDir += gravityPull;
@@ -156,6 +158,8 @@ public class Laser : MonoBehaviour
 
                 points.Add(nextHit); // Add the current point to the line renderer
 
+                holeIterations++;
+
                 // If we exit the gravitational field of the black hole
                 if ((nextHit - currentHole.transform.position).magnitude > currentHoleRadius) {
                     inHole = false; // No longer in a black hole
@@ -164,7 +168,7 @@ public class Laser : MonoBehaviour
                 }
                
                 // Laser has been absorbed by the black hole
-                if ((nextHit - currentHole.transform.position).magnitude < currentHole.getAbsorptionRadius())
+                if ((nextHit - currentHole.transform.position).magnitude < currentHole.getAbsorptionRadius() || holeIterations * deltaLine > 2 * currentHoleRadius * Mathf.PI) //Approximation so a laser doesn't sattelite a black hole too often
                     laserShouldStop = true;
             }  
 
