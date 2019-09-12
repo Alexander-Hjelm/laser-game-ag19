@@ -587,6 +587,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spawnablePrefabs:
   - {fileID: 1703332369583924907, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce, type: 3}
+  - {fileID: 1703332369583924907, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce, type: 3}
+  - {fileID: 1703332369583924907, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce, type: 3}
+  - {fileID: 1703332369583924907, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce, type: 3}
 --- !u!4 &937247507
 Transform:
   m_ObjectHideFlags: 0
