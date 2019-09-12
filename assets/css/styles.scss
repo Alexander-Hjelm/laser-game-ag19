@@ -1,0 +1,294 @@
+---
+---
+
+@import "{{ site.theme }}";
+#main_content_wrap{
+  overflow-y: scroll;
+}
+
+/*** My Main Window ***/
+
+  #myMain{
+  }
+
+  .centering {
+    text-align: center;
+  	margin-left: auto;
+  	margin-right: auto;
+    display: block;
+  }
+
+  /*** Background image rows ***/
+  .backGroundRow {
+    width: 100%;
+    height: 300px;
+    background-color: rgba(0,0,0,1); /* Base */
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(100, 100, 100, 1));
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  /******************************/
+
+  /*** Images on index site ***/
+  .imageTextContainer{
+    height: 400px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    overflow-y:scroll;
+    box-shadow: 0 2px 2rem rgba(0,0,0,0.30);
+  }
+
+  .imageTextRight {
+    margin-right: 200px;
+    overflow-y: scroll;
+  }
+
+  .imageTextLeft {
+    margin-left: 200px;
+    overflow-y: scroll;
+  }
+
+  .image{
+    padding: 0;
+    margin: 0;
+    height: 400px;
+    width: 710px;
+    border: 0;
+    object-fit: cover;
+  }
+
+  .imageLeft{
+    float: left;
+  }
+
+  .imageRight {
+    float: right;
+  }
+
+  /*** ProgramIcons ***/
+  .programsUsed{
+    position: relative;
+    top: 50px;
+  }
+
+  .programIcon{
+    margin: 0;
+    padding: 0;
+    border: 0px;
+    margin-right: 40px;
+    height: 200px;
+    width: 200px;
+    object-fit: scale-down;
+    box-shadow: 0 0 0 black; // Removes the box shadow jekyll theme usess
+    -webkit-box-shadow: 0 0 0 black;
+  }
+
+  .portrait{
+    margin: 0;
+    padding: 0;
+    border: 0px;
+    height: 400px;
+    width: 240px;
+    object-fit: scale-down;
+    box-shadow: 0 2px 2rem rgba(0,0,0,0.30);
+    -webkit-box-shadow: 0 2px 2rem rgba(0,0,0,0.30);
+  }
+  /*** END OF PROGRAMICONS ***/
+
+/*** End of My Main Window ***/
+
+/*** Technologies site ****/
+
+.centerTable{
+  padding: 0;
+  vertical-align: middle;
+  border: 0px solid black;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.portraitTable{
+  display: inline-block;
+  padding: 10px;
+  vertical-align: middle;
+  border: 0px solid Black;
+  align-content: center;
+}
+
+.logo {
+  height: 100px;
+  width: 200px;
+  object-fit: scale-down;
+}
+
+/*** END OF TECHNOLOGIES ***/
+
+/*** GALLERY PAGE ***/
+#GalleryContainer{
+  width: auto;
+}
+
+.smallGallery{
+  width: 480px;
+  height: 270px;
+  border: 1px solid black;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.30);
+}
+/*** END OF GALLERY ***/
+
+/*** NAVBAR **/
+.currentPage {
+  background-color: #0090FF;
+}
+
+ul{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  border: 1px solid #777;
+  width: max-content;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.50);
+  position: relative;
+  bottom: -50px;
+}
+
+li{
+  float: left;
+  border-right: 1px solid #777;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover{
+  background-color: #111;
+  color: #0090FF;
+}
+
+/*** END OF NAVBAR ***/
+
+@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
+
+body {
+  font-family: 'Montserrat','Helvetica Neue',Arial,sans-serif;
+  color: #001A33;
+  overflow-x: hidden;
+  margin: auto;
+  background-color: #fbfdfd;
+}
+
+/* Remove this when website is done */
+#myNav {
+  box-shadow: 0 2px 2rem rgba(0,0,0,0.30);
+}
+
+
+/* Banner Image */
+
+.bannerDiv {
+  display: flex;
+  height: 70vh;
+  background-color: white;
+  overflow: hidden;
+  border-bottom: 2px solid black;
+  padding-top: auto;
+  padding-bottom: auto;
+  position: relative;
+  top: 20px;
+}
+
+.myGradient {
+  background-color: rgba(136,255,237,.5); /* Base */
+  background-image: linear-gradient(to bottom right, rgba(136,255,237,.5), rgba(255,162,136,.5)); /* Fallback */
+  background-image: linear-gradient(to bottom right, rgba(136,255,237,.5), rgba(255,162,136,.5)), url('http://localhost/wordpress1/JungleMap-2.jpg');
+  background-size: cover;
+  background-attachment: fixed;
+  z-index: 10;
+  height: 1080px;
+  width: 100%;
+  position: relative;
+  top: -20px;
+}
+/* End of Banner Image */
+
+/* Main Content DIV */
+
+.mainContent {
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-top: 70px;
+  min-height: 850px;
+}
+
+.box {
+  margin-left:-15%;
+  height: 30vh;
+  width: 200%;
+  display: flex;
+  background-attachment: fixed;
+  background-size: cover;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+}
+
+/* HighLightBox */
+
+/* End of  Main Content DIV*/
+
+.spacebottom {
+  margin-bottom: 50px;
+}
+
+
+/* Footer NavBar */
+.navbar-nav li{
+  padding-left:30px;
+  padding-right:30px;
+}
+
+body > footer > div > nav > div > ul > li > a {
+  color: white;
+}
+
+/* End of Footer NavBar */
+
+/* START OF SIDEBAR */
+.mySidebar {
+  align-self: top;
+  align-items: center;
+}
+
+/* END OF SIDEBAR */
+
+/** START OF BLOG POSTS **/
+
+#content {
+  border-right: 2px solid grey !important;
+}
+
+.blogContainer{
+  max-width: 100%;
+}
+
+.blogEnd{
+  margin: auto;
+  padding: auto;
+  text-align: center; /* Place child elements in center*/
+
+}
+
+.postNavLink{
+  font-size: 20px;
+  color: black;
+}
+
+
+/** END OF BLOG POSTS **/
