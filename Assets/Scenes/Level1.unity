@@ -349,6 +349,7 @@ MonoBehaviour:
   _spawnablePrefabs:
   - {fileID: 1703332369583924907, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce, type: 3}
   - {fileID: 1703332369583924907, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce, type: 3}
+  nextLevel: 1
 --- !u!4 &667395554
 Transform:
   m_ObjectHideFlags: 0
