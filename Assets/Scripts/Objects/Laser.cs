@@ -20,9 +20,12 @@ public class Laser : MonoBehaviour
     {
         // Set LineRenderer reference
         lineRender = GetComponent <LineRenderer>();
-        // Set material color
-        lineRender.material = new Material(Shader.Find("Unlit/Color"));
+        // Material setup
+        lineRender.material = new Material(Shader.Find("Unlit/LaserUnlitShader"));
         lineRender.material.color = color;
+        Texture mainTex = Resources.Load<Texture>("Textures/laser_main");
+        Debug.Log(mainTex);
+        lineRender.material.SetTexture("_MainTex", mainTex);
     }
 
     void Update()
