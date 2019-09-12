@@ -8,6 +8,7 @@ TagManager:
   - Target
   - Wall
   - Prism
+  - Hole
   layers:
   - Default
   - TransparentFX
