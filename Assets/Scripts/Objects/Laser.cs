@@ -174,6 +174,7 @@ public class Laser : MonoBehaviour
                     inHole = false; // No longer in a black hole
                     nextDir.Normalize(); // Make sure the "speed" of the laser is reset
                     maxDistance = 1000; // Make sure the raycast goes far again
+                    holeIterations = 0;
                 }
                
                 // Laser has been absorbed by the black hole
