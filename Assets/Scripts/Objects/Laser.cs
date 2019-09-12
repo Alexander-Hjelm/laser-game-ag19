@@ -20,12 +20,18 @@ public class Laser : MonoBehaviour
     {
         // Set LineRenderer reference
         lineRender = GetComponent <LineRenderer>();
+
         // Material setup
         lineRender.material = new Material(Shader.Find("Unlit/LaserUnlitShader"));
         lineRender.material.color = color;
         Texture mainTex = Resources.Load<Texture>("Textures/laser_main");
-        Debug.Log(mainTex);
         lineRender.material.SetTexture("_MainTex", mainTex);
+        lineRender.material.SetFloat("_MainScrollSpeed", 20);
+        lineRender.material.SetFloat("_NoiseScaleX", 10);
+        lineRender.material.SetFloat("_NoiseScaleY", 8);
+        lineRender.material.SetFloat("_NoiseAmount", 0.2f);
+        lineRender.material.mainTextureScale = new Vector2(0.05f, 0.5f);
+        lineRender.material.SetTextureOffset("_MainTex", new Vector2(0f, 0.2f));
     }
 
     void Update()
