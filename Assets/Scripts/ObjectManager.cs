@@ -7,7 +7,8 @@ using UnityEngine;
 public enum Objects
 {
     Mirror,
-    Wall
+    Wall,
+    Prism
 }
 
 public class ObjectManager : MonoBehaviour
