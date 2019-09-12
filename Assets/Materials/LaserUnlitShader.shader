@@ -4,7 +4,7 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _MaskTex ("TextureMask", 2D) = "white" {}
-        _Color ("Color", Color) = (1,1,1,1)
+        [HDR] _Color ("Color", Color) = (1,1,1,1)
         _MainScrollSpeed ("Main Scroll Speed", Range(0, 30)) = 2
         _NoiseScaleX ("Noise Scale X", Range(0.01, 10)) = 1
         _NoiseScaleY ("Noise Scale Y", Range(0.01, 10)) = 1
