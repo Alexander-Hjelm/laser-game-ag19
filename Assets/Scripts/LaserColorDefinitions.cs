@@ -17,12 +17,15 @@ public class LaserColorDefinitions
         }
     }
 
+    private static Color yellow = new Color(1f,1f,0f,1f); // unity's built in yellow isn't exact
+
+
     private static Dictionary<Color, ColorPair> _splitColors = new Dictionary<Color, ColorPair>()
     {
-        {Color.red, new ColorPair(Color.magenta, Color.yellow)},
+        {Color.red, new ColorPair(Color.magenta, LaserColorDefinitions.yellow)},
         {Color.blue, new ColorPair(Color.cyan, Color.magenta)},
-        {Color.green, new ColorPair(Color.yellow, Color.cyan)},
-        {Color.yellow, new ColorPair(Color.red, Color.green)},
+        {Color.green, new ColorPair(LaserColorDefinitions.yellow, Color.cyan)},
+        {LaserColorDefinitions.yellow, new ColorPair(Color.red, Color.green)},
         {Color.magenta, new ColorPair(Color.blue, Color.red)},
         {Color.cyan, new ColorPair(Color.green, Color.green)}
 

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 2940819281177143955}
   - component: {fileID: 8198264384966562821}
   - component: {fileID: 6368391472454894454}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Prism
-  m_TagString: Wall
+  m_TagString: Prism
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
