@@ -70,6 +70,6 @@ public class ObjectManager : MonoBehaviour
 
     private Vector3 ScreenToWorld(float x, float y)
     {
-        return new Vector3((x - .5f) * 44f, 0, (.5f - y) * 44f);
+        return Camera.main.ViewportToWorldPoint(new Vector3(x, 1 - y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
     }
 }
