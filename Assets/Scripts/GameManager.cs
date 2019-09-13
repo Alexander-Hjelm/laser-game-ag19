@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,6 +50,9 @@ public class GameManager : MonoBehaviour
     // The particle system that will spawn when a laser hits a surface
     [SerializeField] private GameObject _laserHitParticleSystem;
 
+    //The next level to load
+    [SerializeField] private int nextLevel;
+
     // Singleton instance
     private static GameManager _instance;
 
@@ -78,6 +82,12 @@ public class GameManager : MonoBehaviour
         if (_hitTargetIds.Count == _targetIds.Count)
         {
             Debug.Log("You win!");
+            SceneManager.LoadScene(nextLevel);
+            _targetIds.Clear();
+            _hitTargetIds.Clear();
+            _spawnedObjectsById.Clear();
+            _splitLasersThisFrame.Clear();
+            _notifiedLasersThisFrame.Clear();
         }
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
 
