@@ -22,12 +22,14 @@ public class GameManager : MonoBehaviour
         public Vector3 Position;
         public Vector3 Normal;
         public GameObject ParticleSystemInstance;
+        public bool UpdatedCurrentFrame;
 
         public LaserHitStruct(Vector3 position, Vector3 normal, GameObject particleSystemInstance)
         {
             Position = position;
             Normal = normal;
             ParticleSystemInstance = particleSystemInstance;
+            UpdatedCurrentFrame = true;
         }
     }
 
@@ -101,11 +103,25 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        //TODO: Remove any laser bounde particles that have not been updated on this frame
+
         // Set the Updated flag to false for all lasers
         // Next frame they will be deleted unless they call the GameManager to set their Updated to true first
         foreach (Laser laser in lasersToBeDisabledNextFrame)
         {
             _notifiedLasersThisFrame[laser] = false;
+        }
+
+        // Go through all registered particle system instances for all bouncing lasers
+        // if one has the same position and normal, update it, and then we are done.
+        // TODO: Currently laser references are leaking. Delete all lasers that are null in the _notifiedHitPointsThisFrame structure
+        foreach(Laser laser in _notifiedHitPointsThisFrame.Keys)
+        {
+            for( int i=0; i<_notifiedHitPointsThisFrame[laser].Count; i++ )
+            {
+                LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[laser][i];
+                laserHitStruct.UpdatedCurrentFrame = false;
+            }
         }
 
         // Delete the GameManager reference to all lasers that were deleted in the game world
@@ -132,13 +148,30 @@ public class GameManager : MonoBehaviour
     // The GameManager will proceed with spawning a hit particle system at that point
     public static void NotifyLaserHit(Laser laser, Vector3 position, Vector3 normal)
     {
+        // If the GameManager does not know about this laser, register it
         if(!_notifiedHitPointsThisFrame.ContainsKey(laser))
         {
             _notifiedHitPointsThisFrame[laser] = new List<LaserHitStruct>();
         }
 
+        // Go through all registered particle system instances for that laser,
+        // if one has the same position and normal, update it, and then we are done.
+        for( int i=0; i<_notifiedHitPointsThisFrame[laser].Count; i++ )
+        {
+            LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[laser][i];
+            if(laserHitStruct.Position == position && laserHitStruct.Normal == normal)
+            {
+                laserHitStruct.UpdatedCurrentFrame = true;
+                return;
+            }
+
+        }
+
         GameObject particleSystemInstance = GameObject.Instantiate(_instance._laserHitParticleSystem, position, Quaternion.LookRotation(normal));
         _notifiedHitPointsThisFrame[laser].Add(new LaserHitStruct(position, normal, particleSystemInstance));
+
+        
+
 
     }
 
