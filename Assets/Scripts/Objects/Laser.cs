@@ -80,6 +80,10 @@ public class Laser : MonoBehaviour
                     nextHit = point;
                     nextDir = r.normalized * nextDir.magnitude;
 
+                    // Notify game manager that the laser has hit a wall
+                    // The GameManager will proceed to spawn a laser hit particle system
+                    GameManager.NotifyLaserHit(this, nextHit, normal);
+
                     // Add the hit point to the LineRenderer
                     points.Add(point);
                     break;
@@ -104,6 +108,10 @@ public class Laser : MonoBehaviour
                 case "Wall":
                     // Set final hitpoint 
                     nextHit = raycastHit.point;
+
+                    // Notify game manager that the laser has hit a wall
+                    // The GameManager will proceed to spawn a laser hit particle system
+                    GameManager.NotifyLaserHit(this, nextHit, -nextDir);
 
                     // Laser should not continue to raycast
                     laserShouldStop = true;
