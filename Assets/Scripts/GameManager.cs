@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     //The next level to load
     [SerializeField] private int nextLevel;
 
+
     // Singleton instance
     private static GameManager _instance;
 
