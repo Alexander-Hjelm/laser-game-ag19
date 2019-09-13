@@ -11,7 +11,7 @@ public class LaserBounceEffect : MonoBehaviour
         {Color.green, "Materials/FireBallGreen"},
         {Color.magenta, "Materials/FireBallMagenta"},
         {Color.cyan, "Materials/FireBallCyan"},
-        {Color.yellow, "Materials/FireBallYellow"}
+        {new Color(1,1,0,1), "Materials/FireBallYellow"}
     };
 
     private Dictionary<Color, string> _sparksMaterialPathByColor = new Dictionary<Color, string>()
@@ -21,7 +21,7 @@ public class LaserBounceEffect : MonoBehaviour
         {Color.green, "Materials/SparksGreen"},
         {Color.magenta, "Materials/SparksMagenta"},
         {Color.cyan, "Materials/SparksCyan"},
-        {Color.yellow, "Materials/SparksYellow"}
+        {new Color(1,1,0,1), "Materials/SparksYellow"}
     };
     
     public void SetColor(Color color)
