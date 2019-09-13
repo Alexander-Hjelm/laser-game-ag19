@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private struct LaserHitStruct
+    private class LaserHitStruct
     {
         public Vector3 Position;
         public Vector3 Normal;
@@ -30,6 +30,16 @@ public class GameManager : MonoBehaviour
             Normal = normal;
             ParticleSystemInstance = particleSystemInstance;
             UpdatedCurrentFrame = true;
+        }
+
+        public void SetUpdatedCurrentFrame(bool updatedCurrentFrame)
+        {
+            UpdatedCurrentFrame = updatedCurrentFrame;
+        }
+
+        public bool GetUpdatedCurrentFrame()
+        {
+            return UpdatedCurrentFrame;
         }
     }
 
@@ -107,10 +117,10 @@ public class GameManager : MonoBehaviour
         for( int i=0; i<_notifiedHitPointsThisFrame.Count; i++ )
         {
             LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[i];
-            Debug.Log(laserHitStruct.UpdatedCurrentFrame);
+            Debug.Log(laserHitStruct.GetUpdatedCurrentFrame());
 
-            // Remove any laser bounde particles that have not been updated on this frame
-            if(laserHitStruct.UpdatedCurrentFrame == false)
+            // Remove any laser bounce particles that have not been updated on this frame
+            if(laserHitStruct.GetUpdatedCurrentFrame() == false)
             {
                 Debug.Log("Destroy laser hit parcticle");
                 Destroy(laserHitStruct.ParticleSystemInstance);
@@ -119,7 +129,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 Debug.Log("Set laser hit to false");
-                laserHitStruct.UpdatedCurrentFrame = false;
+                laserHitStruct.SetUpdatedCurrentFrame(false);
             }
         }
 
@@ -166,10 +176,12 @@ public class GameManager : MonoBehaviour
             LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[i];
             if(laserHitStruct.Position == position && laserHitStruct.Normal == normal)
             {
-                laserHitStruct.UpdatedCurrentFrame = true;
+                Debug.Log("Set laser hit to true");
+                laserHitStruct.SetUpdatedCurrentFrame(true);
                 return;
             }
         }
+        Debug.Log("Added new laser particle");
 
         GameObject particleSystemInstance = GameObject.Instantiate(_instance._laserHitParticleSystem, position, Quaternion.LookRotation(normal));
         _notifiedHitPointsThisFrame.Add(new LaserHitStruct(position, normal, particleSystemInstance));
