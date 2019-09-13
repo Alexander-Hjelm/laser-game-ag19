@@ -182,6 +182,7 @@ public class GameManager : MonoBehaviour
         }
 
         GameObject particleSystemInstance = GameObject.Instantiate(_instance._laserHitParticleSystem, position, Quaternion.LookRotation(normal));
+        particleSystemInstance.GetComponent<LaserBounceEffect>().SetColor(laser.GetColor());
         _notifiedHitPointsThisFrame.Add(new LaserHitStruct(position, normal, particleSystemInstance));
     }
 

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6722122206147857396}
   - component: {fileID: 6888320682118521284}
   - component: {fileID: 6890494288013848686}
+  - component: {fileID: 6439655906126290153}
   m_Layer: 0
   m_Name: LaserHitParticleSystem
   m_TagString: Untagged
@@ -4765,6 +4766,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &6439655906126290153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6727324321462836102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63c313448116e4f749db2bbc3127cbd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6727377632117055128
 GameObject:
   m_ObjectHideFlags: 0
@@ -14285,6 +14298,11 @@ PrefabInstance:
         type: 3}
       propertyPath: VelocityModule.z.minScalar
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 198000012283690144, guid: 96b2ec0239d11fa4b9792311efceb8ed,
+        type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4267998418013034, guid: 96b2ec0239d11fa4b9792311efceb8ed, type: 3}
       propertyPath: m_LocalPosition.y
