@@ -55,7 +55,7 @@ public class GameManager : MonoBehaviour
     private static Dictionary<Laser, bool> _notifiedLasersThisFrame = new Dictionary<Laser, bool>();
 
     // All laser hit points that have been registered on this frame
-    private static Dictionary<Laser, List<LaserHitStruct>> _notifiedHitPointsThisFrame = new Dictionary<Laser, List<LaserHitStruct>>();
+    private static List<LaserHitStruct> _notifiedHitPointsThisFrame = new List<LaserHitStruct>();
 
     private void Awake()
     {
@@ -103,25 +103,36 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        //TODO: Remove any laser bounde particles that have not been updated on this frame
+        List<LaserHitStruct> laserHitStructsToBeDereffed = new List<LaserHitStruct>();
+        for( int i=0; i<_notifiedHitPointsThisFrame.Count; i++ )
+        {
+            LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[i];
+            Debug.Log(laserHitStruct.UpdatedCurrentFrame);
+
+            // Remove any laser bounde particles that have not been updated on this frame
+            if(laserHitStruct.UpdatedCurrentFrame == false)
+            {
+                Debug.Log("Destroy laser hit parcticle");
+                Destroy(laserHitStruct.ParticleSystemInstance);
+                laserHitStructsToBeDereffed.Add(laserHitStruct);
+            }
+            else
+            {
+                Debug.Log("Set laser hit to false");
+                laserHitStruct.UpdatedCurrentFrame = false;
+            }
+        }
+
+        foreach(LaserHitStruct laserHitStruct in laserHitStructsToBeDereffed)
+        {
+            _notifiedHitPointsThisFrame.Remove(laserHitStruct);
+        }
 
         // Set the Updated flag to false for all lasers
         // Next frame they will be deleted unless they call the GameManager to set their Updated to true first
         foreach (Laser laser in lasersToBeDisabledNextFrame)
         {
             _notifiedLasersThisFrame[laser] = false;
-        }
-
-        // Go through all registered particle system instances for all bouncing lasers
-        // if one has the same position and normal, update it, and then we are done.
-        // TODO: Currently laser references are leaking. Delete all lasers that are null in the _notifiedHitPointsThisFrame structure
-        foreach(Laser laser in _notifiedHitPointsThisFrame.Keys)
-        {
-            for( int i=0; i<_notifiedHitPointsThisFrame[laser].Count; i++ )
-            {
-                LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[laser][i];
-                laserHitStruct.UpdatedCurrentFrame = false;
-            }
         }
 
         // Delete the GameManager reference to all lasers that were deleted in the game world
@@ -148,31 +159,20 @@ public class GameManager : MonoBehaviour
     // The GameManager will proceed with spawning a hit particle system at that point
     public static void NotifyLaserHit(Laser laser, Vector3 position, Vector3 normal)
     {
-        // If the GameManager does not know about this laser, register it
-        if(!_notifiedHitPointsThisFrame.ContainsKey(laser))
-        {
-            _notifiedHitPointsThisFrame[laser] = new List<LaserHitStruct>();
-        }
-
         // Go through all registered particle system instances for that laser,
         // if one has the same position and normal, update it, and then we are done.
-        for( int i=0; i<_notifiedHitPointsThisFrame[laser].Count; i++ )
+        for( int i=0; i<_notifiedHitPointsThisFrame.Count; i++ )
         {
-            LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[laser][i];
+            LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[i];
             if(laserHitStruct.Position == position && laserHitStruct.Normal == normal)
             {
                 laserHitStruct.UpdatedCurrentFrame = true;
                 return;
             }
-
         }
 
         GameObject particleSystemInstance = GameObject.Instantiate(_instance._laserHitParticleSystem, position, Quaternion.LookRotation(normal));
-        _notifiedHitPointsThisFrame[laser].Add(new LaserHitStruct(position, normal, particleSystemInstance));
-
-        
-
-
+        _notifiedHitPointsThisFrame.Add(new LaserHitStruct(position, normal, particleSystemInstance));
     }
 
     // Notify the game manager that a laser has split at the given prism and position.
