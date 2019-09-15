@@ -20,12 +20,13 @@ public class ObjectManager : MonoBehaviour
     public MaxObject[] MaxObjectsPerType;
     public GameObject AuraDisplay;
 
-    private struct TUIOObject
+    private class TUIOObject
     {
         public int? id;
         public long gameId;
         public Objects type;
         public Vector2 screenPosition;
+        public float angle;
     }
 
     private Dictionary<int, TUIOObject> _gameObjects;
@@ -40,11 +41,12 @@ public class ObjectManager : MonoBehaviour
     private void Update()
     {
         var rw = AuraDisplay.GetComponent<RawImage>();
-        var arr = _gameObjects.Values.Select(go => new Vector4(go.screenPosition.x, go.screenPosition.y, 0.1f)).ToArray();
+        var arr = _gameObjects.Values.Select(go => new Vector4(go.screenPosition.x, go.screenPosition.y, 0.1f, 0.05f)).ToArray();
         rw.material.SetInt("_ObjectsLength", arr.Length);
         if (arr.Length > 0)
         {
             rw.material.SetVectorArray("_Objects", arr);
+            rw.material.SetFloatArray("_ObjectAngles", _gameObjects.Values.Select(go => go.angle).ToArray());
         }
     }
 
@@ -78,7 +80,8 @@ public class ObjectManager : MonoBehaviour
             id = e.Object.Id,
             gameId = gameId,
             type = type,
-            screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y)
+            screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y),
+            angle = e.Object.Angle
         };
         _gameObjects.Add(e.Object.Id, tuioObj);
     }
@@ -93,6 +96,7 @@ public class ObjectManager : MonoBehaviour
         var go = _gameObjects[e.Object.Id];
         var gameId = go.gameId;
         go.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
+        go.angle = e.Object.Angle;
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(e.Object.X, e.Object.Y));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);

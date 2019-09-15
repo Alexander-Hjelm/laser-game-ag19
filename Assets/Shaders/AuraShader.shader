@@ -36,7 +36,8 @@
             sampler2D _MainTex;
             float4 _MainTex_ST;
             int _ObjectsLength;
-            float4 _Objects[10];
+			float4 _Objects[10];
+			float _ObjectAngles[10];
             float _AspectRatio;
 
             v2f vert (appdata v)
@@ -51,10 +52,14 @@
             {
                 for(int i = 0; i < _ObjectsLength; i++) {
                     float4 obj = _Objects[i];
+					float angle = _ObjectAngles[i];
                     float2 distVec = x.uv - obj.xy;
                     distVec.x *= _AspectRatio;
-                    float dist = distVec.x*distVec.x + distVec.y*distVec.y;
-                    if (dist < obj.z*obj.z)
+					// Ellipse
+					float numerator = distVec.x * cos(angle) - distVec.y * sin(angle);
+					float numerator2 = distVec.x * sin(angle) + distVec.y * cos(angle);
+					float dist = (numerator * numerator) / (obj.z * obj.z) + (numerator2 * numerator2) / (obj.w * obj.w);
+                    if (dist < 1)
                         return fixed4(1,0,0,1);
                 }
                 return fixed4(0,0,0,0);

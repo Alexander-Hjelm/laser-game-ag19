@@ -24,6 +24,6 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - _AspectRatio: 1
+    - _AspectRatio: 1.7777778
     m_Colors:
     - _MyVector: {r: 0.5, g: 0.5, b: 0.1, a: 0.1}
