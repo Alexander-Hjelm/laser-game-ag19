@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TUIOsharp.DataProcessors;
@@ -130,5 +130,13 @@ public class ObjectManager : MonoBehaviour
     private Vector3 ScreenToWorld(float x, float y)
     {
         return Camera.main.ViewportToWorldPoint(new Vector3(x, 1 - y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
+    }
+
+    public MaxObject[] GetMaxObjectsPerType () {
+        return MaxObjectsPerType;
+    }
+
+    public int CountSpawnedObjectsOfType(Objects type) {
+        return _gameObjects.Values.Count(g => g.type == type);
     }
 }
