@@ -15,9 +15,13 @@ public class ObjectManager : MonoBehaviour
 {
     [System.Serializable]
     public class MaxObject { public Objects type; public int max; }
+    [System.Serializable]
+    public class ObjectScreenSize { public Objects type; public Vector2 size; }
 
     [SerializeField()]
     public MaxObject[] MaxObjectsPerType;
+    [SerializeField()]
+    public ObjectScreenSize[] ObjectScreenSizes;
     public GameObject AuraDisplay;
 
     private class TUIOObject
@@ -41,7 +45,15 @@ public class ObjectManager : MonoBehaviour
     private void Update()
     {
         var rw = AuraDisplay.GetComponent<RawImage>();
-        var arr = _gameObjects.Values.Select(go => new Vector4(go.screenPosition.x, go.screenPosition.y, 0.1f, 0.05f)).ToArray();
+        var arr = _gameObjects.Values.Select(go =>
+        {
+            var oss = ObjectScreenSizes.FirstOrDefault(o => o.type == go.type);
+            if (oss == null)
+            {
+                return new Vector4(go.screenPosition.x, go.screenPosition.y, 0.1f, 0.1f);
+            }
+            return new Vector4(go.screenPosition.x, go.screenPosition.y, oss.size.x, oss.size.y);
+        }).ToArray();
         rw.material.SetInt("_ObjectsLength", arr.Length);
         if (arr.Length > 0)
         {

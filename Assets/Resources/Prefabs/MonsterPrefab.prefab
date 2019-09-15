@@ -1035,6 +1035,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxObjectsPerType: []
+  ObjectScreenSizes:
+  - type: 0
+    size: {x: 0.07, y: 0.04}
   AuraDisplay: {fileID: 281851474295906067}
 --- !u!1001 &3233214410982664178
 PrefabInstance:
