@@ -4,6 +4,7 @@
     {
         _MainTex ("Texture", 2D) = "white" {}
         _AspectRatio ("Screen Aspect Ratio", Float) = 1
+		_AuraColor ("Aura Color", Color) = (0, 1, 0, 1)
        }
     SubShader
     {
@@ -39,6 +40,7 @@
 			float4 _Objects[10];
 			float _ObjectAngles[10];
             float _AspectRatio;
+			float4 _AuraColor;
 
             v2f vert (appdata v)
             {
@@ -48,8 +50,9 @@
                 return o;
             }
 
-            fixed4 frag (v2f x) : SV_Target
-            {
+			fixed4 frag(v2f x) : SV_Target
+			{
+				float4 color = float4(0,0,0,0);
                 for(int i = 0; i < _ObjectsLength; i++) {
                     float4 obj = _Objects[i];
 					float angle = _ObjectAngles[i];
@@ -59,10 +62,12 @@
 					float numerator = distVec.x * cos(angle) - distVec.y * sin(angle);
 					float numerator2 = distVec.x * sin(angle) + distVec.y * cos(angle);
 					float dist = (numerator * numerator) / (obj.z * obj.z) + (numerator2 * numerator2) / (obj.w * obj.w);
-                    if (dist < 1)
-                        return fixed4(1,0,0,1);
+					float sintime = 0.9 + 0.1 * sin(50 * _Time.x);
+					if (dist < sintime) {
+						color = max(color, float4(_AuraColor.rgb, sintime - dist));
+					}
                 }
-                return fixed4(0,0,0,0);
+                return color;
             }
             ENDCG
         }
