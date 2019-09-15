@@ -52,7 +52,7 @@ public class ObjectManager : MonoBehaviour
         var type = (Objects) e.Object.ClassId;
         var maxStruct = MaxObjectsPerType.FirstOrDefault(m => m.type == type);
 
-        if (maxStruct != null && _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max)
+        if (maxStruct == null || _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max)
         {
             Debug.Log("More than one");
             return;
