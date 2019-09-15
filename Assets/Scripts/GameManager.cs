@@ -18,8 +18,37 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private class LaserHitStruct
+    {
+        public Vector3 Position;
+        public Vector3 Normal;
+        public GameObject ParticleSystemInstance;
+        public bool UpdatedCurrentFrame;
+
+        public LaserHitStruct(Vector3 position, Vector3 normal, GameObject particleSystemInstance)
+        {
+            Position = position;
+            Normal = normal;
+            ParticleSystemInstance = particleSystemInstance;
+            UpdatedCurrentFrame = true;
+        }
+
+        public void SetUpdatedCurrentFrame(bool updatedCurrentFrame)
+        {
+            UpdatedCurrentFrame = updatedCurrentFrame;
+        }
+
+        public bool GetUpdatedCurrentFrame()
+        {
+            return UpdatedCurrentFrame;
+        }
+    }
+
     // All prefabs that can be spawned
     [SerializeField] private GameObject[] _spawnablePrefabs;
+
+    // The particle system that will spawn when a laser hits a surface
+    [SerializeField] private GameObject _laserHitParticleSystem;
 
     //The next level to load
     [SerializeField] private int nextLevel;
@@ -38,6 +67,9 @@ public class GameManager : MonoBehaviour
 
     // A flag for each laser that says if its split lasers should be deleted on this frame or not
     private static Dictionary<Laser, bool> _notifiedLasersThisFrame = new Dictionary<Laser, bool>();
+
+    // All laser hit points that have been registered on this frame
+    private static List<LaserHitStruct> _notifiedHitPointsThisFrame = new List<LaserHitStruct>();
 
     private void Awake()
     {
@@ -91,6 +123,31 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // Go over and update the LaerHitStructs that have been stored so far
+        List<LaserHitStruct> laserHitStructsToBeDereffed = new List<LaserHitStruct>();
+        for( int i=0; i<_notifiedHitPointsThisFrame.Count; i++ )
+        {
+            LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[i];
+
+            // Remove any laser bounce particles that have not been updated on this frame
+            // Deref them later
+            if(laserHitStruct.GetUpdatedCurrentFrame() == false)
+            {
+                Destroy(laserHitStruct.ParticleSystemInstance);
+                laserHitStructsToBeDereffed.Add(laserHitStruct);
+            }
+            else
+            {
+                laserHitStruct.SetUpdatedCurrentFrame(false);
+            }
+        }
+
+        // Deref and laserHitStructs whose particles where deleted before
+        foreach(LaserHitStruct laserHitStruct in laserHitStructsToBeDereffed)
+        {
+            _notifiedHitPointsThisFrame.Remove(laserHitStruct);
+        }
+
         // Set the Updated flag to false for all lasers
         // Next frame they will be deleted unless they call the GameManager to set their Updated to true first
         foreach (Laser laser in lasersToBeDisabledNextFrame)
@@ -116,6 +173,27 @@ public class GameManager : MonoBehaviour
     public static void HitTarget(int id)
     {
         _hitTargetIds.Add(id);
+    }
+
+    // Notify the GameManager that a certain laser has hit a position on this frame
+    // The GameManager will proceed with spawning a hit particle system at that point
+    public static void NotifyLaserHit(Laser laser, Vector3 position, Vector3 normal)
+    {
+        // Go through all registered particle system instances for that laser,
+        // if one has the same position and normal, update it, and then we are done.
+        for( int i=0; i<_notifiedHitPointsThisFrame.Count; i++ )
+        {
+            LaserHitStruct laserHitStruct = _notifiedHitPointsThisFrame[i];
+            if(laserHitStruct.Position == position && laserHitStruct.Normal == normal)
+            {
+                laserHitStruct.SetUpdatedCurrentFrame(true);
+                return;
+            }
+        }
+
+        GameObject particleSystemInstance = GameObject.Instantiate(_instance._laserHitParticleSystem, position, Quaternion.LookRotation(normal));
+        particleSystemInstance.GetComponent<LaserBounceEffect>().SetColor(laser.GetColor());
+        _notifiedHitPointsThisFrame.Add(new LaserHitStruct(position, normal, particleSystemInstance));
     }
 
     // Notify the game manager that a laser has split at the given prism and position.
