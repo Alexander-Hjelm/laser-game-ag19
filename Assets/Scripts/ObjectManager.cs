@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TUIOsharp.DataProcessors;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Objects
 {
@@ -15,15 +16,22 @@ public class ObjectManager : MonoBehaviour
 {
     [System.Serializable]
     public class MaxObject { public Objects type; public int max; }
+    [System.Serializable]
+    public class ObjectScreenSize { public Objects type; public Vector2 size; }
 
     [SerializeField()]
     public MaxObject[] MaxObjectsPerType;
+    [SerializeField()]
+    public ObjectScreenSize[] ObjectScreenSizes;
+    public GameObject AuraDisplay;
 
-    private struct TUIOObject
+    private class TUIOObject
     {
         public int? id;
         public long gameId;
         public Objects type;
+        public Vector2 screenPosition;
+        public float angle;
     }
 
     private Dictionary<int, TUIOObject> _gameObjects;
@@ -33,6 +41,26 @@ public class ObjectManager : MonoBehaviour
         TUIOInput.OnObjectAdded += OnObjectAdded;
         TUIOInput.OnObjectUpdated += OnObjectUpdated;
         TUIOInput.OnObjectRemoved += OnObjectRemoved;
+    }
+
+    private void Update()
+    {
+        var rw = AuraDisplay.GetComponent<RawImage>();
+        var arr = _gameObjects.Values.Select(go =>
+        {
+            var oss = ObjectScreenSizes.FirstOrDefault(o => o.type == go.type);
+            if (oss == null)
+            {
+                return new Vector4(go.screenPosition.x, go.screenPosition.y, 0.1f, 0.1f);
+            }
+            return new Vector4(go.screenPosition.x, go.screenPosition.y, oss.size.x, oss.size.y);
+        }).ToArray();
+        rw.material.SetInt("_ObjectsLength", arr.Length);
+        if (arr.Length > 0)
+        {
+            rw.material.SetVectorArray("_Objects", arr);
+            rw.material.SetFloatArray("_ObjectAngles", _gameObjects.Values.Select(go => go.angle).ToArray());
+        }
     }
 
     private void OnObjectAdded(object sender, TuioObjectEventArgs e)
@@ -64,7 +92,9 @@ public class ObjectManager : MonoBehaviour
         {
             id = e.Object.Id,
             gameId = gameId,
-            type = type
+            type = type,
+            screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y),
+            angle = e.Object.Angle
         };
         _gameObjects.Add(e.Object.Id, tuioObj);
     }
@@ -76,8 +106,10 @@ public class ObjectManager : MonoBehaviour
             Debug.LogWarning("Tried to update an object that was not added before. Maybe you reached max objects?");
             return;
         }
-
-        var gameId = _gameObjects[e.Object.Id].gameId;
+        var go = _gameObjects[e.Object.Id];
+        var gameId = go.gameId;
+        go.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
+        go.angle = e.Object.Angle;
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(e.Object.X, e.Object.Y));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
