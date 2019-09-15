@@ -12,10 +12,12 @@ public enum Objects
     Prism
 }
 
+[System.Serializable]
+public class MaxObject { public Objects type; public int max; }
+
 public class ObjectManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class MaxObject { public Objects type; public int max; }
+    
     [System.Serializable]
     public class ObjectScreenSize { public Objects type; public Vector2 size; }
 
