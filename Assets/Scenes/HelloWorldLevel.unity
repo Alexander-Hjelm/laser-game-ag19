@@ -500,7 +500,7 @@ PrefabInstance:
     - target: {fileID: 1703332369583924919, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34
+      value: -31.98
       objectReference: {fileID: 0}
     - target: {fileID: 1703332369583924919, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce,
         type: 3}
@@ -510,7 +510,7 @@ PrefabInstance:
     - target: {fileID: 1703332369583924919, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 22.3
+      value: 17.65
       objectReference: {fileID: 0}
     - target: {fileID: 1703332369583924919, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce,
         type: 3}
@@ -1057,6 +1057,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: MaxObjectsPerType.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: MaxObjectsPerType.Array.data[0].max
+      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d17127dce9434cbe7b19ec54a3445846, type: 3}
