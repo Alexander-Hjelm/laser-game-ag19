@@ -104,4 +104,8 @@ public class ObjectManager : MonoBehaviour
     public MaxObject[] GetMaxObjectsPerType () {
         return MaxObjectsPerType;
     }
+
+    public int CountSpawnedObjectsOfType(Objects type) {
+        return _gameObjects.Values.Count(g => g.type == type);
+    }
 }

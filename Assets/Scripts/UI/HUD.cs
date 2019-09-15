@@ -7,13 +7,15 @@ using UnityEngine.UI;
 public class HUD : MonoBehaviour
 {
     private Text hudText;
+    private ObjectManager objMan;
     private MaxObject[] mo;
 
     // Start is called before the first frame update
     void Start()
     {
         hudText = GetComponent<Text>();
-        mo = GameObject.FindGameObjectWithTag("GameController").GetComponent<ObjectManager> ().GetMaxObjectsPerType ();
+        objMan = GameObject.FindGameObjectWithTag("GameController").GetComponent<ObjectManager>();
+        mo = objMan.GetMaxObjectsPerType ();
 
         UpdateHUD();
     }
@@ -21,7 +23,7 @@ public class HUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        UpdateHUD(); // TODO possibly move this to only be called when an object is added or removed
     }
 
     private void UpdateHUD () {
@@ -30,15 +32,13 @@ public class HUD : MonoBehaviour
             switch (cur.type) {
                 case Objects.Mirror:
                     sb.Append("Mirror x ");
-                    sb.Append(cur.max);
-                    sb.Append(" ");
                     break;
                 case Objects.Prism:
                     sb.Append("Prism x ");
-                    sb.Append(cur.max);
-                    sb.Append(" ");
                     break;
             }
+            sb.Append(cur.max - objMan.CountSpawnedObjectsOfType(cur.type));
+            sb.Append(" ");
         }
         hudText.text = sb.ToString();
     }
