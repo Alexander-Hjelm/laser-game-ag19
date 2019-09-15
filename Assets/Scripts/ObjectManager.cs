@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TUIOsharp.DataProcessors;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum Objects
 {
@@ -17,12 +18,14 @@ public class ObjectManager : MonoBehaviour
 
     [SerializeField()]
     public MaxObject[] MaxObjectsPerType;
+    public GameObject AuraDisplay;
 
     private struct TUIOObject
     {
         public int? id;
         public long gameId;
         public Objects type;
+        public Vector2 screenPosition;
     }
 
     private Dictionary<int, TUIOObject> _gameObjects;
@@ -32,6 +35,17 @@ public class ObjectManager : MonoBehaviour
         TUIOInput.OnObjectAdded += OnObjectAdded;
         TUIOInput.OnObjectUpdated += OnObjectUpdated;
         TUIOInput.OnObjectRemoved += OnObjectRemoved;
+    }
+
+    private void Update()
+    {
+        var rw = AuraDisplay.GetComponent<RawImage>();
+        var arr = _gameObjects.Values.Select(go => new Vector4(go.screenPosition.x, go.screenPosition.y, 0.1f)).ToArray();
+        rw.material.SetInt("_ObjectsLength", arr.Length);
+        if (arr.Length > 0)
+        {
+            rw.material.SetVectorArray("_Objects", arr);
+        }
     }
 
     private void OnObjectAdded(object sender, TuioObjectEventArgs e)
@@ -63,7 +77,8 @@ public class ObjectManager : MonoBehaviour
         {
             id = e.Object.Id,
             gameId = gameId,
-            type = type
+            type = type,
+            screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y)
         };
         _gameObjects.Add(e.Object.Id, tuioObj);
     }
@@ -75,8 +90,9 @@ public class ObjectManager : MonoBehaviour
             Debug.LogWarning("Tried to update an object that was not added before. Maybe you reached max objects?");
             return;
         }
-
-        var gameId = _gameObjects[e.Object.Id].gameId;
+        var go = _gameObjects[e.Object.Id];
+        var gameId = go.gameId;
+        go.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(e.Object.X, e.Object.Y));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
