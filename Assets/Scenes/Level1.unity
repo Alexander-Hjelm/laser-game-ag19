@@ -641,6 +641,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -10
       objectReference: {fileID: 0}
+    - target: {fileID: 6906836157238672644, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906836157238672644, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 6906836157716941127, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
       propertyPath: forward.x
@@ -651,15 +661,15 @@ PrefabInstance:
       propertyPath: forward.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6906836157238672644, guid: d17127dce9434cbe7b19ec54a3445846,
+    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -30
+      propertyPath: MaxObjectsPerType.Array.size
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6906836157238672644, guid: d17127dce9434cbe7b19ec54a3445846,
+    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 15
+      propertyPath: MaxObjectsPerType.Array.data[0].max
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d17127dce9434cbe7b19ec54a3445846, type: 3}
