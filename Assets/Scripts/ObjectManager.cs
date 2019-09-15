@@ -11,10 +11,11 @@ public enum Objects
     Prism
 }
 
+[System.Serializable]
+public class MaxObject { public Objects type; public int max; }
+
 public class ObjectManager : MonoBehaviour
 {
-    [System.Serializable]
-    public class MaxObject { public Objects type; public int max; }
 
     [SerializeField()]
     public MaxObject[] MaxObjectsPerType;
@@ -98,5 +99,9 @@ public class ObjectManager : MonoBehaviour
     private Vector3 ScreenToWorld(float x, float y)
     {
         return Camera.main.ViewportToWorldPoint(new Vector3(x, 1 - y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
+    }
+
+    public MaxObject[] GetMaxObjectsPerType () {
+        return MaxObjectsPerType;
     }
 }
