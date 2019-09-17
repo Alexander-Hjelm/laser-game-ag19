@@ -4,6 +4,9 @@
     {% assign remainder = forloop.index | modulo: 2 %}
     {% if remainder == 0 %}
     <td class="portraitTable">
+      <img id="offsetDiv"></img>
+    </td>
+    <td class="portraitTable">
       <h3> {{item.name}} </h3>
       <img class="portrait" src="{{item.url}}"/>
     </td>
@@ -17,6 +20,9 @@
     <td class="portraitTable">
       <h3> {{item.name}} </h3>
       <img class="portrait" src="{{item.url}}"/>
+    </td>
+    <td class="portraitTable">
+      <img id="offsetDiv"></img>
     </td>
     {% endif %}
   </tr>
