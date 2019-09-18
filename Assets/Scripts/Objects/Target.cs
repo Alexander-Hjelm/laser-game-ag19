@@ -7,14 +7,14 @@ public class Target : MonoBehaviour
 {
     [SerializeField] private int _id;
     [SerializeField] private Color _color;
+    [SerializeField] private MeshRenderer _coreMeshRenderer;    // The core mesh that will change color depeding on what color was assigned
 
     private void Start()
     {
         GameManager.RegisterTarget(_id);
 
-        MeshRenderer meshRenderer = GetComponent <MeshRenderer>();
-        meshRenderer.material = new Material(Shader.Find("Standard"));
-        meshRenderer.material.color = _color;
+        _coreMeshRenderer.material = new Material(Shader.Find("Standard"));
+        _coreMeshRenderer.material.color = _color;
     }
 
     public int GetId()
