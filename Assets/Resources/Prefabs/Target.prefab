@@ -46,7 +46,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _id: 0
-  _color: {r: 0, g: 0, b: 0, a: 0}
+  _color: {r: 1, g: 0, b: 0, a: 1}
+  _coreMeshRenderer: {fileID: 8214158883161029837}
 --- !u!135 &4136505064757422712
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -142,6 +143,12 @@ PrefabInstance:
 --- !u!4 &2794527101358777044 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 150a3ed7c342e4b9393828047213a15e,
+    type: 3}
+  m_PrefabInstance: {fileID: 7183966366979361230}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8214158883161029837 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1318462475825722627, guid: 150a3ed7c342e4b9393828047213a15e,
     type: 3}
   m_PrefabInstance: {fileID: 7183966366979361230}
   m_PrefabAsset: {fileID: 0}
