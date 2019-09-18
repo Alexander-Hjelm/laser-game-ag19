@@ -72,6 +72,17 @@ public class Laser : MonoBehaviour
                     Vector3 point = raycastHit.point;
                     Vector3 normal = raycastHit.normal;
 
+                    // If the normal vector of the hit surface is not parallel with the mirror's fwd vector,
+                    // Treat the hit object as a wall. This ensures that we can only hit the front of the mirror
+                    float dot = Vector3.Dot(normal, raycastHit.collider.transform.forward);
+                    if( Mathf.Abs(dot) < 0.99f )
+                    {
+                        nextHit = raycastHit.point;
+                        GameManager.NotifyLaserHit(this, nextHit, -nextDir);
+                        laserShouldStop = true;
+                        break;
+                    }
+
                     // Do some projection to find the direction of the reflected laser
                     Vector3 v = point - nextHit;
                     Vector3 r = v - 2*Vector3.Project(v, normal);
