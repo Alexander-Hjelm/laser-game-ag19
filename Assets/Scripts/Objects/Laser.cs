@@ -210,7 +210,7 @@ public class Laser : MonoBehaviour
             points.Add(nextHit + nextDir*10000);
 
         // Render the laser
-        lineRender.SetVertexCount(points.Count);
+        lineRender.positionCount = points.Count;
         for(int i = 0; i< points.Count; i++){
             lineRender.SetPosition(i, points[i]); 
         }

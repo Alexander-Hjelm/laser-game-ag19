@@ -8,13 +8,13 @@ public class BGMManager : MonoBehaviour
     public static BGMManager instance = null;
 
     void Awake() {
-        if(instance != null) {
+        if(instance != null) { // There can only be one
             Destroy(gameObject);
             return;
         }
 
         instance = this;
 
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject); // Persistent between levels
     }
 }
