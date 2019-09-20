@@ -71,23 +71,40 @@ public class GameManager : MonoBehaviour
     // All laser hit points that have been registered on this frame
     private static List<LaserHitStruct> _notifiedHitPointsThisFrame = new List<LaserHitStruct>();
 
+    // Has the load next level call been issued?
+    private bool _nextLevelLoaded = false;
+
+    // The time at which this scene was started
+    private float _sceneStartTime;
+
     private void Awake()
     {
         _instance = this;
     }
 
+    private void Start()
+    {
+        _sceneStartTime = Time.time;
+    }
+
     private void Update()
     {
-        // Check if all Targets have been hit on this frame. If so, we shuold finish the level
-        if (_hitTargetIds.Count == _targetIds.Count)
+        // Check if all Targets have been hit on this frame. If so, we shuold finish the level,
+        // but only if we have not previously issued the LoadScene call (avoid issuing multiple calls),
+        // and also only if one second has passed (make sure the level has been properly set up)
+        if (_hitTargetIds.Count == _targetIds.Count
+                && !_nextLevelLoaded
+                && Time.time - _sceneStartTime > 1f)
         {
+            Debug.Log(Time.time - _sceneStartTime);
             Debug.Log("You win!");
-            SceneManager.LoadScene(nextLevel);
             _targetIds.Clear();
             _hitTargetIds.Clear();
             _spawnedObjectsById.Clear();
             _splitLasersThisFrame.Clear();
             _notifiedLasersThisFrame.Clear();
+            SceneManager.LoadScene(nextLevel);
+            _nextLevelLoaded = true;
         }
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
 
