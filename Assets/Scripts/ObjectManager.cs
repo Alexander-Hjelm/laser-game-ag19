@@ -8,8 +8,7 @@ using UnityEngine.UI;
 public enum Objects
 {
     Mirror,
-    Wall,
-    Prism
+    Prism,
 }
 
 [System.Serializable]
