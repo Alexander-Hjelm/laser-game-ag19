@@ -110,8 +110,9 @@ public class ObjectManager : MonoBehaviour
         var go = _gameObjects[e.Object.Id];
         var gameId = go.gameId;
         go.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
-        go.angle = e.Object.Angle;
-        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
+        // Use deltatime and a diff of angles to update, this will give a smoother feeling
+        go.angle += (e.Object.Angle - go.angle) * Time.deltaTime;
+        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * go.angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(e.Object.X, e.Object.Y));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
     }
