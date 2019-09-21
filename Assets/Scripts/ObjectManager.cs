@@ -36,8 +36,12 @@ public class ObjectManager : MonoBehaviour
     }
 
     private Dictionary<int, TUIOObject> _gameObjects;
+
+    private Vector4[] _shaderArray;
+
     private void Awake()
     {
+        _shaderArray = new Vector4[10];
         _gameObjects = new Dictionary<int, TUIOObject>();
         TUIOInput.OnObjectAdded += OnObjectAdded;
         TUIOInput.OnObjectUpdated += OnObjectUpdated;
@@ -47,6 +51,7 @@ public class ObjectManager : MonoBehaviour
     private void Update()
     {
         var rw = AuraDisplay.GetComponent<RawImage>();
+
         var arr = _gameObjects.Values.Select(go =>
         {
             var oss = ObjectScreenSizes.FirstOrDefault(o => o.type == go.type);
@@ -56,10 +61,11 @@ public class ObjectManager : MonoBehaviour
             }
             return new Vector4(go.screenPosition.x, go.screenPosition.y, oss.size.x, oss.size.y);
         }).ToArray();
+        Array.Copy(arr, _shaderArray, arr.Length);
         rw.material.SetInt("_ObjectsLength", arr.Length);
         if (arr.Length > 0)
         {
-            rw.material.SetVectorArray("_Objects", arr);
+            rw.material.SetVectorArray("_Objects", _shaderArray);
             rw.material.SetFloatArray("_ObjectAngles", _gameObjects.Values.Select(go => go.angle).ToArray());
         }
     }
