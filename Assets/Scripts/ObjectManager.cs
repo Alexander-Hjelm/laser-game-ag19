@@ -38,10 +38,12 @@ public class ObjectManager : MonoBehaviour
     private Dictionary<int, TUIOObject> _gameObjects;
 
     private Vector4[] _shaderArray;
+    private float[] _shaderAngleArray;
 
     private void Awake()
     {
         _shaderArray = new Vector4[10];
+        _shaderAngleArray = new float[10];
         _gameObjects = new Dictionary<int, TUIOObject>();
         TUIOInput.OnObjectAdded += OnObjectAdded;
         TUIOInput.OnObjectUpdated += OnObjectUpdated;
@@ -62,11 +64,13 @@ public class ObjectManager : MonoBehaviour
             return new Vector4(go.screenPosition.x, go.screenPosition.y, oss.size.x, oss.size.y);
         }).ToArray();
         Array.Copy(arr, _shaderArray, arr.Length);
+        var angles = _gameObjects.Values.Select(go => go.angle).ToArray();
+        Array.Copy(angles, _shaderAngleArray, angles.Length);
         rw.material.SetInt("_ObjectsLength", arr.Length);
         if (arr.Length > 0)
         {
             rw.material.SetVectorArray("_Objects", _shaderArray);
-            rw.material.SetFloatArray("_ObjectAngles", _gameObjects.Values.Select(go => go.angle).ToArray());
+            rw.material.SetFloatArray("_ObjectAngles",_shaderAngleArray);
         }
     }
 
