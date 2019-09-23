@@ -5,5 +5,7 @@ using UnityEngine;
 public abstract class Switch : MonoBehaviour
 {
     [SerializeField]
-    private Switchable switchable;
+    protected Switchable switchable;
+
+    public abstract void ActivateSwitch();
 }
