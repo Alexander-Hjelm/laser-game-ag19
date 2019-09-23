@@ -164,11 +164,11 @@ public class Laser : MonoBehaviour
 
                     break;
                     case "LaserSwitch":
+                        //Laser hit a switch that should activate
                         raycastHit.collider.GetComponent<Switch>().ActivateSwitch();
                         // Set final hitpoint 
                         nextHit = raycastHit.point;
 
-                        // Notify game manager that the laser has hit a wall
                         // The GameManager will proceed to spawn a laser hit particle system
                         GameManager.NotifyLaserHit(this, nextHit, -nextDir);
 
