@@ -11,19 +11,22 @@ public enum Objects
     Prism,
 }
 
-[System.Serializable]
-public class MaxObject { public Objects type; public int max; }
-
 public class ObjectManager : MonoBehaviour
 {
     
     [System.Serializable]
     public class ObjectScreenSize { public Objects type; public Vector2 size; }
+    [System.Serializable]
+    public class MaxObject { public Objects type; public int max; }
+    [System.Serializable]
+    public class ObjectZone { public Objects type; public Collider[] colliders; }
 
     [SerializeField()]
     public MaxObject[] MaxObjectsPerType;
     [SerializeField()]
     public ObjectScreenSize[] ObjectScreenSizes;
+    [SerializeField()]
+    public ObjectZone[] ObjectPlaceableZones;
     public GameObject AuraDisplay;
 
     private class TUIOObject
