@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     // The particle system that will spawn when a laser hits a surface
     [SerializeField] private GameObject _laserHitParticleSystem;
+    [SerializeField] private GameObject _laserEmitterPrefab;
 
     //The next level to load
     [SerializeField] private int nextLevel;
@@ -275,8 +276,7 @@ public class GameManager : MonoBehaviour
     private static Laser SpawnLaser(Color color, Prism rootPrism)
     {
         // Laser resource
-        GameObject laserPrefab = Resources.Load<GameObject>("Prefabs/LaserStartPosition");
-        Laser laserInstance = GameObject.Instantiate(laserPrefab).GetComponent<Laser>();
+        Laser laserInstance = GameObject.Instantiate(_instance._laserEmitterPrefab).GetComponent<Laser>();
         laserInstance.SetColor(color);
         laserInstance.SetRootPrism(rootPrism);
         return laserInstance;
@@ -357,6 +357,16 @@ public class GameManager : MonoBehaviour
     public static void SetRotationOfSpawnedObject(long id, Vector3 newFwd)
     {
         SetRotationOfSpawnedObject(id, Quaternion.LookRotation(newFwd, Vector3.up));
+    }
+
+    public static GameObject GetSpawnedObject(long id)
+    {
+        if (!_spawnedObjectsById.ContainsKey(id))
+        {
+            Debug.LogError($"Tried to access Object with id = {id}, but that object has not been spawned by the GameManager");
+        }
+
+        return _spawnedObjectsById[id];
     }
 
 }
