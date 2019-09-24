@@ -109,9 +109,14 @@ public class ObjectManager : MonoBehaviour
             return;
         }
 
-        if (IsPlaceable(tuioObj))
+        var (isPlaced, zone) = TryPlace(tuioObj);
+        if (isPlaced)
         {
             AddObjectToWorld(tuioObj);
+            if (tuioObj.gameId != 0)
+            {
+                zone.OnEnter(GameManager.GetSpawnedObject(tuioObj.gameId));
+            }
         }
         else
         {
@@ -128,10 +133,15 @@ public class ObjectManager : MonoBehaviour
                 var badgo = _badObjects[e.Object.Id];
                 badgo.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
                 badgo.angle = e.Object.Angle;
-                if (IsPlaceable(badgo))
+                var (isPlaced, zone) = TryPlace(badgo);
+                if (isPlaced)
                 {
                     AddObjectToWorld(badgo);
                     _badObjects.Remove(e.Object.Id);
+                    if (badgo.gameId != 0)
+                    {
+                        zone.OnEnter(GameManager.GetSpawnedObject(badgo.gameId));
+                    }
                 }
                 return;
             }
@@ -146,11 +156,14 @@ public class ObjectManager : MonoBehaviour
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(go.screenPosition));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
 
-        if (!IsPlaceable(go))
+        var (placed, _) = TryPlace(go);
+        if (!placed)
         {
             GameManager.RemoveSpawnedObject(gameId);
             _gameObjects.Remove(go.id);
             _badObjects.Add(go.id, go);
+            go.gameId = 0;
+            Debug.LogWarning("REMOVED");
         }
     }
 
@@ -189,7 +202,7 @@ public class ObjectManager : MonoBehaviour
         _gameObjects.Add(obj.id, obj);
     }
 
-    private bool IsPlaceable(TUIOObject obj)
+    private (bool, Zone) TryPlace(TUIOObject obj)
     {
         var worldPos = ScreenToWorld(obj.screenPosition);
         var zonesOfType = zones.Where(zone => zone.Type == obj.type);
@@ -197,25 +210,24 @@ public class ObjectManager : MonoBehaviour
         if (!zonesOfType.Any())
         {
             // If there is no zone of this type, allow placement allover
-            return true;
+            return (true, null);
         }
 
         var inside = false;
+        Zone retZone = null;
         foreach (var zone in zones)
         {
-            if (zone.Type != obj.type)
-            {
-                continue;
-            }
+            if (zone.Type != obj.type) continue;
+
             // IsPlaceable needs to be called on every single zone, as it acts as an update as well
             // However, if we can be placed in one zone, it means object can be placed
-            if (zone.IsPlaceable(obj.id, worldPos))
-            {
-                inside = true;
-            }
+            if (!zone.TryPlace(obj.id, worldPos)) continue;
+
+            inside = true;
+            retZone = zone;
         }
 
-        return inside;
+        return (inside, retZone);
     }
 
     public MaxObject[] GetMaxObjectsPerType () {

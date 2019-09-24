@@ -8,7 +8,7 @@ public class Zone : MonoBehaviour
     public int MaxInZone;
     private List<int> _CurrentObjects = new List<int>();
 
-    public bool IsPlaceable(int id, Vector3 position)
+    public bool TryPlace(int id, Vector3 position)
     {
         var contains = _CurrentObjects.Contains(id);
         var isInside = IsInside(position);
@@ -26,6 +26,11 @@ public class Zone : MonoBehaviour
 
         _CurrentObjects.Add(id);
         return true;
+
+    }
+
+    public virtual void OnEnter(GameObject other)
+    {
 
     }
 

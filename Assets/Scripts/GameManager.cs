@@ -342,4 +342,14 @@ public class GameManager : MonoBehaviour
         SetRotationOfSpawnedObject(id, Quaternion.LookRotation(newFwd, Vector3.up));
     }
 
+    public static GameObject GetSpawnedObject(long id)
+    {
+        if (!_spawnedObjectsById.ContainsKey(id))
+        {
+            Debug.LogError($"Tried to access Object with id = {id}, but that object has not been spawned by the GameManager");
+        }
+
+        return _spawnedObjectsById[id];
+    }
+
 }
