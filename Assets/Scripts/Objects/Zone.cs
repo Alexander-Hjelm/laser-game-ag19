@@ -56,6 +56,18 @@ public class Zone : MonoBehaviour
         addedLineRenderers[2].SetPosition(1, center + new Vector3(offsetX, 0f, -offsetZ));
         addedLineRenderers[3].SetPosition(0, center + new Vector3(offsetX, 0f, -offsetZ));
         addedLineRenderers[3].SetPosition(1, center + new Vector3(offsetX, 0f, offsetZ));
+
+        // Add text mesh
+        GameObject textChild = new GameObject();
+        textChild.name = "TextMeshChild";
+        textChild.transform.parent = transform;
+        textChild.transform.position = transform.position;
+        TextMesh textMesh = textChild.AddComponent(typeof(TextMesh)) as TextMesh;
+        textMesh.transform.rotation = Quaternion.LookRotation(-Vector3.up, Vector3.forward);
+        textMesh.anchor = TextAnchor.MiddleCenter;
+        textMesh.text = "Place " + System.Enum.GetName(typeof(Objects), Type) + " here...";
+
+        
     }
 
     /**
