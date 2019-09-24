@@ -228,6 +228,11 @@ public class Laser : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GameManager.UnregisterLaser(this);
+    }
+
     // Set the color of this laser
     // NOTE: Must be called before start() on the instanced laser object, otherwise it will have no effect
     public void SetColor(Color color)
