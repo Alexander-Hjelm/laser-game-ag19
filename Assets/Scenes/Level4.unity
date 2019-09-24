@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.5174439, g: 0.59862083, b: 0.6415094, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -50,7 +50,7 @@ LightmapSettings:
     m_BounceScale: 1
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
-    m_EnvironmentLightingMode: 0
+    m_EnvironmentLightingMode: 1
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 1
   m_LightmapEditorSettings:
@@ -197,15 +197,25 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
+    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
-      propertyPath: MaxObjectsPerType.Array.size
-      value: 1
+      propertyPath: m_LocalRotation.y
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
+    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
-      propertyPath: MaxObjectsPerType.Array.data[0].max
-      value: 2
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -30
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 6906836157238672644, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
@@ -247,35 +257,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 6906836157238672645, guid: d17127dce9434cbe7b19ec54a3445846,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     - target: {fileID: 6906836157238672697, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -30
-      objectReference: {fileID: 0}
-    - target: {fileID: 6906836157716941126, guid: d17127dce9434cbe7b19ec54a3445846,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: 6906836157716941127, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
@@ -292,6 +277,26 @@ PrefabInstance:
       propertyPath: forward.z
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: MaxObjectsPerType.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: MaxObjectsPerType.Array.data[0].max
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906836157837251261, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906836157238672645, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d17127dce9434cbe7b19ec54a3445846, type: 3}
 --- !u!1001 &233441822
@@ -305,6 +310,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 4506597279527526826, guid: ad9fe0c3501d83747989452bc39139a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 4506597279527526830, guid: ad9fe0c3501d83747989452bc39139a2,
         type: 3}
@@ -371,6 +381,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.22
       objectReference: {fileID: 0}
+    - target: {fileID: 4506597279527526828, guid: ad9fe0c3501d83747989452bc39139a2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2e71b2e95c4e68f4fb401b1c6cf0d971, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9fe0c3501d83747989452bc39139a2, type: 3}
 --- !u!1001 &310563476
@@ -609,6 +624,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4506597279527526826, guid: ad9fe0c3501d83747989452bc39139a2,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4506597279527526830, guid: ad9fe0c3501d83747989452bc39139a2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -674,6 +694,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 2.22
       objectReference: {fileID: 0}
+    - target: {fileID: 4506597279527526828, guid: ad9fe0c3501d83747989452bc39139a2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 2e71b2e95c4e68f4fb401b1c6cf0d971, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad9fe0c3501d83747989452bc39139a2, type: 3}
 --- !u!1 &2040352274
