@@ -131,11 +131,15 @@ public class ObjectManager : MonoBehaviour
                 var badgo = _badObjects[e.Object.Id];
                 badgo.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
                 badgo.angle = e.Object.Angle;
+                // Let's see if the bad object is now a proper one
+                // First check if max objects has been reached
                 if (!MaxObjectsReached(badgo.type))
                 {
+                    // Try to place the object
                     var (isPlaced, zone) = TryPlace(badgo);
                     if (isPlaced)
                     {
+                        // If it was placed add it to the world and set the correct zone
                         AddObjectToWorld(badgo, zone);
                         _badObjects.Remove(e.Object.Id);
                         badgo.zone = zone;
@@ -155,6 +159,7 @@ public class ObjectManager : MonoBehaviour
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
 
         var (placed, z) = TryPlace(go);
+        // If we are no longer within a correct zone, or the same zone turn the object into a bad object
         if (!placed || z != go.zone)
         {
             GameManager.RemoveSpawnedObject(gameId);
@@ -201,7 +206,7 @@ public class ObjectManager : MonoBehaviour
         zone.OnEnter(GameManager.GetSpawnedObject(obj.gameId));
 
     }
-
+    
     private (bool, Zone) TryPlace(TUIOObject obj)
     {
         var worldPos = ScreenToWorld(obj.screenPosition);

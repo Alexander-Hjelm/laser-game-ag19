@@ -8,6 +8,9 @@ public class Zone : MonoBehaviour
     public int MaxInZone;
     private List<int> _CurrentObjects = new List<int>();
 
+    /**
+     * Returns true if object has been placed within zone or is still within zone
+     */
     public bool TryPlace(int id, Vector3 position)
     {
         var contains = _CurrentObjects.Contains(id);
@@ -29,6 +32,9 @@ public class Zone : MonoBehaviour
 
     }
 
+    /**
+     * Called whenever an appropriate GameObject enters this zone.
+     */
     public virtual void OnEnter(GameObject other)
     {
 
