@@ -9,6 +9,7 @@ TagManager:
   - Wall
   - Prism
   - Hole
+  - LaserSwitch
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - 
   - 
   - Laser Hittable
-  - 
+  - No Light
   - 
   - 
   - 

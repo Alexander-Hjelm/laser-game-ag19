@@ -26,5 +26,5 @@ Material:
     m_Floats:
     - _AspectRatio: 1.7777778
     m_Colors:
-    - _AuraColor: {r: 0.11802995, g: 0.7830189, b: 0, a: 1}
+    - _AuraColor: {r: 0.6037736, g: 0, b: 0.017205868, a: 1}
     - _MyVector: {r: 0.5, g: 0.5, b: 0.1, a: 0.1}

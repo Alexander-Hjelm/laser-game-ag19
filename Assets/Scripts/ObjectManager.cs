@@ -28,7 +28,7 @@ public class ObjectManager : MonoBehaviour
 
     private class TUIOObject
     {
-        public int? id;
+        public int id;
         public long gameId;
         public Objects type;
         public Vector2 screenPosition;
@@ -36,9 +36,17 @@ public class ObjectManager : MonoBehaviour
     }
 
     private Dictionary<int, TUIOObject> _gameObjects;
+    private Dictionary<int, TUIOObject> _badObjects;
+
+    private Vector4[] _shaderArray;
+    private float[] _shaderAngleArray;
+
     private void Awake()
     {
+        _shaderArray = new Vector4[10];
+        _shaderAngleArray = new float[10];
         _gameObjects = new Dictionary<int, TUIOObject>();
+        _badObjects = new Dictionary<int, TUIOObject>();
         TUIOInput.OnObjectAdded += OnObjectAdded;
         TUIOInput.OnObjectUpdated += OnObjectUpdated;
         TUIOInput.OnObjectRemoved += OnObjectRemoved;
@@ -47,7 +55,8 @@ public class ObjectManager : MonoBehaviour
     private void Update()
     {
         var rw = AuraDisplay.GetComponent<RawImage>();
-        var arr = _gameObjects.Values.Select(go =>
+
+        var arr = _badObjects.Values.Select(go =>
         {
             var oss = ObjectScreenSizes.FirstOrDefault(o => o.type == go.type);
             if (oss == null)
@@ -56,11 +65,14 @@ public class ObjectManager : MonoBehaviour
             }
             return new Vector4(go.screenPosition.x, go.screenPosition.y, oss.size.x, oss.size.y);
         }).ToArray();
+        Array.Copy(arr, _shaderArray, arr.Length);
+        var angles = _badObjects.Values.Select(go => go.angle).ToArray();
+        Array.Copy(angles, _shaderAngleArray, angles.Length);
         rw.material.SetInt("_ObjectsLength", arr.Length);
         if (arr.Length > 0)
         {
-            rw.material.SetVectorArray("_Objects", arr);
-            rw.material.SetFloatArray("_ObjectAngles", _gameObjects.Values.Select(go => go.angle).ToArray());
+            rw.material.SetVectorArray("_Objects", _shaderArray);
+            rw.material.SetFloatArray("_ObjectAngles",_shaderAngleArray);
         }
     }
 
@@ -81,22 +93,23 @@ public class ObjectManager : MonoBehaviour
         var type = (Objects) e.Object.ClassId;
         var maxStruct = MaxObjectsPerType.FirstOrDefault(m => m.type == type);
 
+        var tuioObj = new TUIOObject()
+        {
+            id = e.Object.Id,
+            type = type,
+            screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y),
+            angle = e.Object.Angle
+        };
+
         if (maxStruct == null || _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max)
         {
-            Debug.Log("More than one");
+            _badObjects.Add(tuioObj.id, tuioObj);
             return;
         }
 
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
         var gameId = GameManager.SpawnPrefab(type.ToString(), ScreenToWorld(e.Object.X, e.Object.Y), rot);
-        var tuioObj = new TUIOObject()
-        {
-            id = e.Object.Id,
-            gameId = gameId,
-            type = type,
-            screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y),
-            angle = e.Object.Angle
-        };
+        tuioObj.gameId = gameId;
         _gameObjects.Add(e.Object.Id, tuioObj);
     }
 
@@ -104,6 +117,13 @@ public class ObjectManager : MonoBehaviour
     {
         if (!_gameObjects.ContainsKey(e.Object.Id))
         {
+            if (_badObjects.ContainsKey(e.Object.Id))
+            {
+                var badgo = _badObjects[e.Object.Id];
+                badgo.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
+                badgo.angle = e.Object.Angle;
+                return;
+            }
             Debug.LogWarning("Tried to update an object that was not added before. Maybe you reached max objects?");
             return;
         }
@@ -121,6 +141,11 @@ public class ObjectManager : MonoBehaviour
     {
         if (!_gameObjects.ContainsKey(e.Object.Id))
         {
+            if (_badObjects.ContainsKey(e.Object.Id))
+            {
+                _badObjects.Remove(e.Object.Id);
+                return;
+            }
             Debug.LogError("Tried to remove an object that was not added priorly.");
             return;
         }
