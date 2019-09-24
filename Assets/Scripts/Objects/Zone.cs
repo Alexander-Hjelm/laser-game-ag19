@@ -8,6 +8,51 @@ public class Zone : MonoBehaviour
     public int MaxInZone;
     private List<int> _CurrentObjects = new List<int>();
 
+    private void Start()
+    {
+        LineRenderer[] addedLineRenderers = new LineRenderer[4];
+
+        // Graphics Setup (Only once, assuming the zone is stationary)
+        for(int x=0; x<4; x++)
+        {
+            GameObject lrChild = new GameObject();
+            lrChild.name = "LineRendererChild";
+            lrChild.transform.parent = transform;
+            lrChild.transform.position = transform.position;
+            LineRenderer lineRenderer = lrChild.AddComponent(typeof(LineRenderer)) as LineRenderer;
+            lineRenderer.SetVertexCount(2);
+
+            // Material setup
+            Color color = Color.white;
+            lineRenderer.material = new Material(Shader.Find("Unlit/LaserUnlitShader"));
+            lineRenderer.material.color = color*1.1f; // Multiply by HDR intensity
+            Texture mainTex = Resources.Load<Texture>("Textures/laser_main");
+            lineRenderer.material.SetTexture("_MainTex", mainTex);
+            lineRenderer.material.SetFloat("_MainScrollSpeed", 20);
+            lineRenderer.material.SetFloat("_NoiseScaleX", 10);
+            lineRenderer.material.SetFloat("_NoiseScaleY", 8);
+            lineRenderer.material.SetFloat("_NoiseAmount", 0.2f);
+            lineRenderer.material.mainTextureScale = new Vector2(0.05f, 0.6f);
+            lineRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, 0.2f));
+
+            addedLineRenderers[x] = lineRenderer;
+        }
+
+        // Set line renderer positions
+        BoxCollider boxCollider = GetComponent<BoxCollider>();
+        Vector3 center = transform.position + boxCollider.center;
+        float offsetX = boxCollider.size.x * transform.localScale.x / 2;
+        float offsetZ = boxCollider.size.z * transform.localScale.z / 2;
+        addedLineRenderers[0].SetPosition(0, center + new Vector3(offsetX, 0f, offsetZ));
+        addedLineRenderers[0].SetPosition(1, center + new Vector3(-offsetX, 0f, offsetZ));
+        addedLineRenderers[1].SetPosition(0, center + new Vector3(-offsetX, 0f, offsetZ));
+        addedLineRenderers[1].SetPosition(1, center + new Vector3(-offsetX, 0f, -offsetZ));
+        addedLineRenderers[2].SetPosition(0, center + new Vector3(-offsetX, 0f, -offsetZ));
+        addedLineRenderers[2].SetPosition(1, center + new Vector3(offsetX, 0f, -offsetZ));
+        addedLineRenderers[3].SetPosition(0, center + new Vector3(offsetX, 0f, -offsetZ));
+        addedLineRenderers[3].SetPosition(1, center + new Vector3(offsetX, 0f, offsetZ));
+    }
+
     public bool TryPlace(int id, Vector3 position)
     {
         var contains = _CurrentObjects.Contains(id);
