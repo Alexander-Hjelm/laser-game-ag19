@@ -113,11 +113,7 @@ public class ObjectManager : MonoBehaviour
         var (isPlaced, zone) = TryPlace(tuioObj);
         if (isPlaced)
         {
-            AddObjectToWorld(tuioObj);
-            if (tuioObj.gameId != 0)
-            {
-                zone.OnEnter(GameManager.GetSpawnedObject(tuioObj.gameId));
-            }
+            AddObjectToWorld(tuioObj, zone);
         }
         else
         {
@@ -137,12 +133,8 @@ public class ObjectManager : MonoBehaviour
                 var (isPlaced, zone) = TryPlace(badgo);
                 if (isPlaced)
                 {
-                    AddObjectToWorld(badgo);
+                    AddObjectToWorld(badgo, zone);
                     _badObjects.Remove(e.Object.Id);
-                    if (badgo.gameId != 0)
-                    {
-                        zone.OnEnter(GameManager.GetSpawnedObject(badgo.gameId));
-                    }
                 }
                 return;
             }
@@ -195,12 +187,14 @@ public class ObjectManager : MonoBehaviour
         return Camera.main.ViewportToWorldPoint(new Vector3(x,  y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
     }
 
-    private void AddObjectToWorld(TUIOObject obj)
+    private void AddObjectToWorld(TUIOObject obj, Zone zone)
     {
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * obj.angle, Vector3.up);
         var gameId = GameManager.SpawnPrefab(obj.type.ToString(), ScreenToWorld(obj.screenPosition), rot);
         obj.gameId = gameId;
         _gameObjects.Add(obj.id, obj);
+        zone.OnEnter(GameManager.GetSpawnedObject(obj.gameId));
+
     }
 
     private (bool, Zone) TryPlace(TUIOObject obj)
