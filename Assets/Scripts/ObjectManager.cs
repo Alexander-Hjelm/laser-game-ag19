@@ -110,10 +110,14 @@ public class ObjectManager : MonoBehaviour
             return;
         }
 
-        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
-        var gameId = GameManager.SpawnPrefab(type.ToString(), ScreenToWorld(e.Object.X, e.Object.Y), rot);
-        tuioObj.gameId = gameId;
-        _gameObjects.Add(e.Object.Id, tuioObj);
+        if (IsPlacable(tuioObj))
+        {
+            AddObjectToWorld(tuioObj);
+        }
+        else
+        {
+            _badObjects.Add(tuioObj.id, tuioObj);
+        }
     }
 
     private void OnObjectUpdated(object sender, TuioObjectEventArgs e)
@@ -125,6 +129,11 @@ public class ObjectManager : MonoBehaviour
                 var badgo = _badObjects[e.Object.Id];
                 badgo.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
                 badgo.angle = e.Object.Angle;
+                if (IsPlacable(badgo))
+                {
+                    AddObjectToWorld(badgo);
+                    _badObjects.Remove(e.Object.Id);
+                }
                 return;
             }
             Debug.LogWarning("Tried to update an object that was not added before. Maybe you reached max objects?");
@@ -134,9 +143,16 @@ public class ObjectManager : MonoBehaviour
         var gameId = go.gameId;
         go.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
         go.angle = e.Object.Angle;
-        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * e.Object.Angle, Vector3.up);
-        GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(e.Object.X, e.Object.Y));
+        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * go.angle, Vector3.up);
+        GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(go.screenPosition));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
+
+        if (!IsPlacable(go))
+        {
+            GameManager.RemoveSpawnedObject(gameId);
+            _gameObjects.Remove(go.id);
+            _badObjects.Add(go.id, go);
+        }
     }
 
     private void OnObjectRemoved(object sender, TuioObjectEventArgs e)
@@ -156,9 +172,42 @@ public class ObjectManager : MonoBehaviour
         _gameObjects.Remove(e.Object.Id);
     }
 
+    private Vector3 ScreenToWorld(Vector2 pos)
+    {
+        return ScreenToWorld(pos.x, pos.y);
+    }
+
     private Vector3 ScreenToWorld(float x, float y)
     {
-        return Camera.main.ViewportToWorldPoint(new Vector3(x, 1 - y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
+        return Camera.main.ViewportToWorldPoint(new Vector3(x,  y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
+    }
+
+    private bool IsInside(Collider collider, Vector3 point)
+    {
+        var closest = collider.ClosestPoint(point);
+        var dist = (point - closest).magnitude;
+        return dist >= -Mathf.Epsilon && dist < Mathf.Epsilon;
+    }
+
+    private void AddObjectToWorld(TUIOObject obj)
+    {
+        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * obj.angle, Vector3.up);
+        var gameId = GameManager.SpawnPrefab(obj.type.ToString(), ScreenToWorld(obj.screenPosition), rot);
+        obj.gameId = gameId;
+        _gameObjects.Add(obj.id, obj);
+    }
+
+    private bool IsPlacable(TUIOObject obj)
+    {
+        var worldPos = ScreenToWorld(obj.screenPosition);
+        var zone = ObjectPlaceableZones.Where(z => z.type == obj.type);
+        if (!zone.Any())
+        {
+            return true;
+        }
+
+        var placeable = zone.First().colliders.Any(collider => IsInside(collider, worldPos));
+        return placeable;
     }
 
     public MaxObject[] GetMaxObjectsPerType () {
