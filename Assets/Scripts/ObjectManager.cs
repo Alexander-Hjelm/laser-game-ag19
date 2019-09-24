@@ -18,15 +18,11 @@ public class ObjectManager : MonoBehaviour
     public class ObjectScreenSize { public Objects type; public Vector2 size; }
     [System.Serializable]
     public class MaxObject { public Objects type; public int max; }
-    [System.Serializable]
-    public class ObjectZone { public Objects type; public Zone[] zones; }
 
     [SerializeField()]
     public MaxObject[] MaxObjectsPerType;
     [SerializeField()]
     public ObjectScreenSize[] ObjectScreenSizes;
-    [SerializeField()]
-    public ObjectZone[] ObjectPlaceableZones;
     public GameObject AuraDisplay;
 
     private class TUIOObject
@@ -44,6 +40,8 @@ public class ObjectManager : MonoBehaviour
     private Vector4[] _shaderArray;
     private float[] _shaderAngleArray;
 
+    private Zone[] zones;
+
     private void Awake()
     {
         _shaderArray = new Vector4[10];
@@ -53,6 +51,7 @@ public class ObjectManager : MonoBehaviour
         TUIOInput.OnObjectAdded += OnObjectAdded;
         TUIOInput.OnObjectUpdated += OnObjectUpdated;
         TUIOInput.OnObjectRemoved += OnObjectRemoved;
+        zones = FindObjectsOfType<Zone>();
     }
 
     private void Update()
@@ -110,7 +109,7 @@ public class ObjectManager : MonoBehaviour
             return;
         }
 
-        if (IsPlacable(tuioObj))
+        if (IsPlaceable(tuioObj))
         {
             AddObjectToWorld(tuioObj);
         }
@@ -129,7 +128,7 @@ public class ObjectManager : MonoBehaviour
                 var badgo = _badObjects[e.Object.Id];
                 badgo.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
                 badgo.angle = e.Object.Angle;
-                if (IsPlacable(badgo))
+                if (IsPlaceable(badgo))
                 {
                     AddObjectToWorld(badgo);
                     _badObjects.Remove(e.Object.Id);
@@ -147,7 +146,7 @@ public class ObjectManager : MonoBehaviour
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(go.screenPosition));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
 
-        if (!IsPlacable(go))
+        if (!IsPlaceable(go))
         {
             GameManager.RemoveSpawnedObject(gameId);
             _gameObjects.Remove(go.id);
@@ -182,13 +181,6 @@ public class ObjectManager : MonoBehaviour
         return Camera.main.ViewportToWorldPoint(new Vector3(x,  y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
     }
 
-    private bool IsInside(Collider collider, Vector3 point)
-    {
-        var closest = collider.ClosestPoint(point);
-        var dist = (point - closest).magnitude;
-        return dist >= -Mathf.Epsilon && dist < Mathf.Epsilon;
-    }
-
     private void AddObjectToWorld(TUIOObject obj)
     {
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * obj.angle, Vector3.up);
@@ -197,17 +189,33 @@ public class ObjectManager : MonoBehaviour
         _gameObjects.Add(obj.id, obj);
     }
 
-    private bool IsPlacable(TUIOObject obj)
+    private bool IsPlaceable(TUIOObject obj)
     {
         var worldPos = ScreenToWorld(obj.screenPosition);
-        var zone = ObjectPlaceableZones.Where(z => z.type == obj.type);
-        if (!zone.Any())
+        var zonesOfType = zones.Where(zone => zone.Type == obj.type);
+
+        if (!zonesOfType.Any())
         {
+            // If there is no zone of this type, allow placement allover
             return true;
         }
 
-        var placeable = zone.First().zones.Any(z => IsInside(z.GetComponent<Collider>(), worldPos));
-        return placeable;
+        var inside = false;
+        foreach (var zone in zones)
+        {
+            if (zone.Type != obj.type)
+            {
+                continue;
+            }
+            // IsPlaceable needs to be called on every single zone, as it acts as an update as well
+            // However, if we can be placed in one zone, it means object can be placed
+            if (zone.IsPlaceable(obj.id, worldPos))
+            {
+                inside = true;
+            }
+        }
+
+        return inside;
     }
 
     public MaxObject[] GetMaxObjectsPerType () {
