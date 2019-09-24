@@ -19,7 +19,7 @@ public class ObjectManager : MonoBehaviour
     [System.Serializable]
     public class MaxObject { public Objects type; public int max; }
     [System.Serializable]
-    public class ObjectZone { public Objects type; public Collider[] colliders; }
+    public class ObjectZone { public Objects type; public Zone[] zones; }
 
     [SerializeField()]
     public MaxObject[] MaxObjectsPerType;
@@ -206,7 +206,7 @@ public class ObjectManager : MonoBehaviour
             return true;
         }
 
-        var placeable = zone.First().colliders.Any(collider => IsInside(collider, worldPos));
+        var placeable = zone.First().zones.Any(z => IsInside(z.GetComponent<Collider>(), worldPos));
         return placeable;
     }
 
