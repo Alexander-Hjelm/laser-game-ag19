@@ -10,6 +10,11 @@ public class Zone : MonoBehaviour
 
     private void Start()
     {
+        GraphicsSetup();
+    }
+
+    private void GraphicsSetup()
+    {
         LineRenderer[] addedLineRenderers = new LineRenderer[4];
 
         // Graphics Setup (Only once, assuming the zone is stationary)
