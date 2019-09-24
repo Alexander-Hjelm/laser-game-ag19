@@ -734,7 +734,7 @@ MonoBehaviour:
   MaxObjectsPerType: []
   ObjectScreenSizes:
   - type: 0
-    size: {x: 0.1, y: 0.05}
+    size: {x: 0.05, y: 0.05}
   - type: 1
     size: {x: 0.05, y: 0.05}
   AuraDisplay: {fileID: 6513013091248792466}

@@ -163,6 +163,18 @@ public class Laser : MonoBehaviour
                     points.Add(nextHit);
 
                     break;
+                    case "LaserSwitch":
+                        //Laser hit a switch that should activate
+                        raycastHit.collider.GetComponent<Switch>().ActivateSwitch();
+                        // Set final hitpoint 
+                        nextHit = raycastHit.point;
+
+                        // The GameManager will proceed to spawn a laser hit particle system
+                        GameManager.NotifyLaserHit(this, nextHit, -nextDir);
+
+                        // Laser should not continue to raycast
+                        laserShouldStop = true;
+                    break;
 
                 // TODO: Add more cases here for different objects that the laser can interact with
 
