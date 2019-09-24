@@ -9,6 +9,7 @@ public enum Objects
 {
     Mirror,
     Prism,
+    Laser
 }
 
 public class ObjectManager : MonoBehaviour
