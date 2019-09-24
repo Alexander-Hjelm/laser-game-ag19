@@ -33,6 +33,7 @@ public class ObjectManager : MonoBehaviour
         public Objects type;
         public Vector2 screenPosition;
         public float angle;
+        public Zone zone;
     }
 
     private Dictionary<int, TUIOObject> _gameObjects;
@@ -94,7 +95,6 @@ public class ObjectManager : MonoBehaviour
         }
 
         var type = (Objects) e.Object.ClassId;
-        var maxStruct = MaxObjectsPerType.FirstOrDefault(m => m.type == type);
 
         var tuioObj = new TUIOObject()
         {
@@ -104,7 +104,7 @@ public class ObjectManager : MonoBehaviour
             angle = e.Object.Angle
         };
 
-        if (maxStruct == null || _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max)
+        if (MaxObjectsReached(tuioObj.type))
         {
             _badObjects.Add(tuioObj.id, tuioObj);
             return;
@@ -114,6 +114,7 @@ public class ObjectManager : MonoBehaviour
         if (isPlaced)
         {
             AddObjectToWorld(tuioObj, zone);
+            tuioObj.zone = zone;
         }
         else
         {
@@ -130,11 +131,15 @@ public class ObjectManager : MonoBehaviour
                 var badgo = _badObjects[e.Object.Id];
                 badgo.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
                 badgo.angle = e.Object.Angle;
-                var (isPlaced, zone) = TryPlace(badgo);
-                if (isPlaced)
+                if (!MaxObjectsReached(badgo.type))
                 {
-                    AddObjectToWorld(badgo, zone);
-                    _badObjects.Remove(e.Object.Id);
+                    var (isPlaced, zone) = TryPlace(badgo);
+                    if (isPlaced)
+                    {
+                        AddObjectToWorld(badgo, zone);
+                        _badObjects.Remove(e.Object.Id);
+                        badgo.zone = zone;
+                    }
                 }
                 return;
             }
@@ -149,14 +154,14 @@ public class ObjectManager : MonoBehaviour
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(go.screenPosition));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
 
-        var (placed, _) = TryPlace(go);
-        if (!placed)
+        var (placed, z) = TryPlace(go);
+        if (!placed || z != go.zone)
         {
             GameManager.RemoveSpawnedObject(gameId);
             _gameObjects.Remove(go.id);
             _badObjects.Add(go.id, go);
             go.gameId = 0;
-            Debug.LogWarning("REMOVED");
+            go.zone = null;
         }
     }
 
@@ -223,6 +228,12 @@ public class ObjectManager : MonoBehaviour
         }
 
         return (inside, retZone);
+    }
+
+    private bool MaxObjectsReached(Objects type)
+    {
+        var maxStruct = MaxObjectsPerType.FirstOrDefault(m => m.type == type);
+        return maxStruct == null || _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max;
     }
 
     public MaxObject[] GetMaxObjectsPerType () {
