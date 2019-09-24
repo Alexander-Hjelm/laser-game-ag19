@@ -1203,6 +1203,8 @@ MonoBehaviour:
   - {fileID: 1106500908527327460, guid: 8b1eab6acc4c78742a5b25136d27d3e2, type: 3}
   _laserHitParticleSystem: {fileID: 6727324321462836102, guid: ebbbd7dbffcdd9b4a8deabc248e2bc6e,
     type: 3}
+  _laserEmitterPrefab: {fileID: 2159412834737224317, guid: 75182426017a6636aa35786e4f61bb75,
+    type: 3}
   nextLevel: 0
 --- !u!114 &8578246427998241935
 MonoBehaviour:
