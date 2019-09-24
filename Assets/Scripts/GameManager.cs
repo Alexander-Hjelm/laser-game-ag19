@@ -81,6 +81,10 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+        // Clear data from last scene
+        _splitLasersThisFrame.Clear();
+        _notifiedLasersThisFrame.Clear();
+        _notifiedHitPointsThisFrame.Clear();
     }
 
     private void Start()
@@ -191,6 +195,19 @@ public class GameManager : MonoBehaviour
     public static void HitTarget(int id)
     {
         _hitTargetIds.Add(id);
+    }
+
+    public static void UnregisterLaser(Laser laser)
+    {
+        if(_notifiedLasersThisFrame.ContainsKey(laser))
+        {
+            _notifiedLasersThisFrame.Remove(laser);
+        }
+        if(_splitLasersThisFrame.ContainsKey(laser))
+        {
+            _splitLasersThisFrame.Remove(laser);
+        }
+
     }
 
     // Notify the GameManager that a certain laser has hit a position on this frame
