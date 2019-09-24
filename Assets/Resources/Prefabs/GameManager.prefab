@@ -49,6 +49,8 @@ MonoBehaviour:
   - {fileID: 1703332369583924907, guid: 0f6ec2fc0dbe978fc8a2a2ac210e8bce, type: 3}
   - {fileID: 4506597279527526826, guid: ad9fe0c3501d83747989452bc39139a2, type: 3}
   - {fileID: 851270914476694193, guid: 65e3eea1706ccf2d9b934dd4b98cedd8, type: 3}
+  - {fileID: 1106500908527327460, guid: 8b1eab6acc4c78742a5b25136d27d3e2, type: 3}
+  _laserHitParticleSystem: {fileID: 0}
   nextLevel: 0
 --- !u!114 &5980050591804686391
 MonoBehaviour:
@@ -77,3 +79,5 @@ MonoBehaviour:
   MaxObjectsPerType:
   - type: 0
     max: 1
+  ObjectScreenSizes: []
+  AuraDisplay: {fileID: 0}

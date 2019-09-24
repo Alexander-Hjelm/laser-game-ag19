@@ -53,6 +53,9 @@ public class Zone : MonoBehaviour
         addedLineRenderers[3].SetPosition(1, center + new Vector3(offsetX, 0f, offsetZ));
     }
 
+    /**
+     * Returns true if object has been placed within zone or is still within zone
+     */
     public bool TryPlace(int id, Vector3 position)
     {
         var contains = _CurrentObjects.Contains(id);
@@ -74,6 +77,9 @@ public class Zone : MonoBehaviour
 
     }
 
+    /**
+     * Called whenever an appropriate GameObject enters this zone.
+     */
     public virtual void OnEnter(GameObject other)
     {
 

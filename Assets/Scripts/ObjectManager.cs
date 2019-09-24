@@ -9,6 +9,7 @@ public enum Objects
 {
     Mirror,
     Prism,
+    Laser
 }
 
 public class ObjectManager : MonoBehaviour
@@ -32,6 +33,7 @@ public class ObjectManager : MonoBehaviour
         public Objects type;
         public Vector2 screenPosition;
         public float angle;
+        public Zone zone;
     }
 
     private Dictionary<int, TUIOObject> _gameObjects;
@@ -93,7 +95,6 @@ public class ObjectManager : MonoBehaviour
         }
 
         var type = (Objects) e.Object.ClassId;
-        var maxStruct = MaxObjectsPerType.FirstOrDefault(m => m.type == type);
 
         var tuioObj = new TUIOObject()
         {
@@ -103,7 +104,7 @@ public class ObjectManager : MonoBehaviour
             angle = e.Object.Angle
         };
 
-        if (maxStruct == null || _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max)
+        if (MaxObjectsReached(tuioObj.type))
         {
             _badObjects.Add(tuioObj.id, tuioObj);
             return;
@@ -112,11 +113,8 @@ public class ObjectManager : MonoBehaviour
         var (isPlaced, zone) = TryPlace(tuioObj);
         if (isPlaced)
         {
-            AddObjectToWorld(tuioObj);
-            if (tuioObj.gameId != 0)
-            {
-                zone.OnEnter(GameManager.GetSpawnedObject(tuioObj.gameId));
-            }
+            AddObjectToWorld(tuioObj, zone);
+            tuioObj.zone = zone;
         }
         else
         {
@@ -133,14 +131,18 @@ public class ObjectManager : MonoBehaviour
                 var badgo = _badObjects[e.Object.Id];
                 badgo.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
                 badgo.angle = e.Object.Angle;
-                var (isPlaced, zone) = TryPlace(badgo);
-                if (isPlaced)
+                // Let's see if the bad object is now a proper one
+                // First check if max objects has been reached
+                if (!MaxObjectsReached(badgo.type))
                 {
-                    AddObjectToWorld(badgo);
-                    _badObjects.Remove(e.Object.Id);
-                    if (badgo.gameId != 0)
+                    // Try to place the object
+                    var (isPlaced, zone) = TryPlace(badgo);
+                    if (isPlaced)
                     {
-                        zone.OnEnter(GameManager.GetSpawnedObject(badgo.gameId));
+                        // If it was placed add it to the world and set the correct zone
+                        AddObjectToWorld(badgo, zone);
+                        _badObjects.Remove(e.Object.Id);
+                        badgo.zone = zone;
                     }
                 }
                 return;
@@ -156,14 +158,15 @@ public class ObjectManager : MonoBehaviour
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(go.screenPosition));
         GameManager.SetRotationOfSpawnedObject(gameId, rot);
 
-        var (placed, _) = TryPlace(go);
-        if (!placed)
+        var (placed, z) = TryPlace(go);
+        // If we are no longer within a correct zone, or the same zone turn the object into a bad object
+        if (!placed || z != go.zone)
         {
             GameManager.RemoveSpawnedObject(gameId);
             _gameObjects.Remove(go.id);
             _badObjects.Add(go.id, go);
             go.gameId = 0;
-            Debug.LogWarning("REMOVED");
+            go.zone = null;
         }
     }
 
@@ -194,14 +197,16 @@ public class ObjectManager : MonoBehaviour
         return Camera.main.ViewportToWorldPoint(new Vector3(x,  y, Camera.main.transform.position.y)); // y = 0 is our playing field plane
     }
 
-    private void AddObjectToWorld(TUIOObject obj)
+    private void AddObjectToWorld(TUIOObject obj, Zone zone)
     {
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * obj.angle, Vector3.up);
         var gameId = GameManager.SpawnPrefab(obj.type.ToString(), ScreenToWorld(obj.screenPosition), rot);
         obj.gameId = gameId;
         _gameObjects.Add(obj.id, obj);
-    }
+        zone.OnEnter(GameManager.GetSpawnedObject(obj.gameId));
 
+    }
+    
     private (bool, Zone) TryPlace(TUIOObject obj)
     {
         var worldPos = ScreenToWorld(obj.screenPosition);
@@ -228,6 +233,12 @@ public class ObjectManager : MonoBehaviour
         }
 
         return (inside, retZone);
+    }
+
+    private bool MaxObjectsReached(Objects type)
+    {
+        var maxStruct = MaxObjectsPerType.FirstOrDefault(m => m.type == type);
+        return maxStruct == null || _gameObjects.Values.Count(g => g.type == type) >= maxStruct.max;
     }
 
     public MaxObject[] GetMaxObjectsPerType () {
