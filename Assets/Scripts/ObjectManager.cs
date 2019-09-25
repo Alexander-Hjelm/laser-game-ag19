@@ -115,10 +115,12 @@ public class ObjectManager : MonoBehaviour
         {
             AddObjectToWorld(tuioObj, zone);
             tuioObj.zone = zone;
+            zone.SetGraphicsEnabled(false);
         }
         else
         {
             _badObjects.Add(tuioObj.id, tuioObj);
+            zone.SetGraphicsEnabled(true);
         }
     }
 
@@ -143,6 +145,7 @@ public class ObjectManager : MonoBehaviour
                         AddObjectToWorld(badgo, zone);
                         _badObjects.Remove(e.Object.Id);
                         badgo.zone = zone;
+                        zone.SetGraphicsEnabled(false);
                     }
                 }
                 return;
@@ -166,6 +169,7 @@ public class ObjectManager : MonoBehaviour
             _gameObjects.Remove(go.id);
             _badObjects.Add(go.id, go);
             go.gameId = 0;
+            go.zone.SetGraphicsEnabled(true);
             go.zone = null;
         }
     }

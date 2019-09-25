@@ -74,6 +74,15 @@ public class Zone : MonoBehaviour
         fxTextMesh = textMesh;
     }
 
+    public void SetGraphicsEnabled(bool on)
+    {
+        fxTextMesh.gameObject.SetActive(on);
+        foreach(LineRenderer lineRenderer in fxLineRenderers)
+        {
+            lineRenderer.gameObject.SetActive(on);
+        }
+    }
+
     public void SetFxColor(Color color)
     {
         fxTextMesh.color = color;
