@@ -6,6 +6,12 @@ using UnityEngine;
 public class LaserZone : Zone
 {
     public Color LaserColor;
+    
+    private void Start()
+    {
+        SetFxColor(LaserColor);
+    }
+
     public override void OnEnter(GameObject other)
     {
         var laser = other.GetComponentInChildren<Laser>();

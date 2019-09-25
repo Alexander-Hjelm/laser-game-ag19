@@ -30,14 +30,8 @@ public class HUD : MonoBehaviour
     private void UpdateHUD () {
         StringBuilder sb = new StringBuilder("");
         foreach (var cur in mo) {
-            switch (cur.type) {
-                case Objects.Mirror:
-                    sb.Append("Mirror x ");
-                    break;
-                case Objects.Prism:
-                    sb.Append("Prism x ");
-                    break;
-            }
+            sb.Append(cur.type);
+            sb.Append(" X ");
             sb.Append(cur.max - objMan.CountSpawnedObjectsOfType(cur.type));
             sb.Append(" ");
         }
