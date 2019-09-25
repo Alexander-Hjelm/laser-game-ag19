@@ -109,6 +109,7 @@ public class GameManager : MonoBehaviour
             _spawnedObjectsById.Clear();
             _splitLasersThisFrame.Clear();
             _notifiedLasersThisFrame.Clear();
+            GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource> ().clip);
             LevelTransitionAnimation.StartAnimateOut();
             StartCoroutine(LoadNextSceneDelayed());
             _nextLevelLoaded = true;
