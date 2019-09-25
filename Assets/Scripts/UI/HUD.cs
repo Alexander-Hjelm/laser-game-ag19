@@ -8,7 +8,7 @@ public class HUD : MonoBehaviour
 {
     private Text hudText;
     private ObjectManager objMan;
-    private MaxObject[] mo;
+    private ObjectManager.MaxObject[] mo;
 
     // Start is called before the first frame update
     void Start()
@@ -26,17 +26,12 @@ public class HUD : MonoBehaviour
         UpdateHUD(); // TODO possibly move this to only be called when an object is added or removed
     }
 
+    // Counts current placed phycons and updates the HUD to display remaining objects
     private void UpdateHUD () {
         StringBuilder sb = new StringBuilder("");
-        foreach (MaxObject cur in mo) {
-            switch (cur.type) {
-                case Objects.Mirror:
-                    sb.Append("Mirror x ");
-                    break;
-                case Objects.Prism:
-                    sb.Append("Prism x ");
-                    break;
-            }
+        foreach (var cur in mo) {
+            sb.Append(cur.type);
+            sb.Append(" X ");
             sb.Append(cur.max - objMan.CountSpawnedObjectsOfType(cur.type));
             sb.Append(" ");
         }
