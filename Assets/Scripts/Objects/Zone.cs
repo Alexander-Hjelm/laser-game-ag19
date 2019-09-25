@@ -8,6 +8,9 @@ public class Zone : MonoBehaviour
     public int MaxInZone;
     private List<int> _CurrentObjects = new List<int>();
 
+    LineRenderer[] fxLineRenderers = new LineRenderer[4];
+    TextMesh fxTextMesh;
+
     private void Start()
     {
         GraphicsSetup();
@@ -15,7 +18,6 @@ public class Zone : MonoBehaviour
 
     private void GraphicsSetup()
     {
-        LineRenderer[] addedLineRenderers = new LineRenderer[4];
 
         // Graphics Setup (Only once, assuming the zone is stationary)
         for(int x=0; x<4; x++)
@@ -26,21 +28,23 @@ public class Zone : MonoBehaviour
             lrChild.transform.position = transform.position;
             LineRenderer lineRenderer = lrChild.AddComponent(typeof(LineRenderer)) as LineRenderer;
             lineRenderer.SetVertexCount(2);
+            lineRenderer.numCapVertices = 5;
+            lineRenderer.textureMode = LineTextureMode.Tile;
 
             // Material setup
             Color color = Color.white;
             lineRenderer.material = new Material(Shader.Find("Unlit/LaserUnlitShader"));
             lineRenderer.material.color = color*1.1f; // Multiply by HDR intensity
-            Texture mainTex = Resources.Load<Texture>("Textures/laser_main");
+            Texture mainTex = Resources.Load<Texture>("Textures/area_border_main");
             lineRenderer.material.SetTexture("_MainTex", mainTex);
             lineRenderer.material.SetFloat("_MainScrollSpeed", 20);
             lineRenderer.material.SetFloat("_NoiseScaleX", 10);
             lineRenderer.material.SetFloat("_NoiseScaleY", 8);
             lineRenderer.material.SetFloat("_NoiseAmount", 0.2f);
-            lineRenderer.material.mainTextureScale = new Vector2(0.05f, 0.6f);
+            lineRenderer.material.mainTextureScale = new Vector2(0.2f, 0.6f);
             lineRenderer.material.SetTextureOffset("_MainTex", new Vector2(0f, 0.2f));
 
-            addedLineRenderers[x] = lineRenderer;
+            fxLineRenderers[x] = lineRenderer;
         }
 
         // Set line renderer positions
@@ -48,26 +52,34 @@ public class Zone : MonoBehaviour
         Vector3 center = transform.position + boxCollider.center;
         float offsetX = boxCollider.size.x * transform.localScale.x / 2;
         float offsetZ = boxCollider.size.z * transform.localScale.z / 2;
-        addedLineRenderers[0].SetPosition(0, center + new Vector3(offsetX, 0f, offsetZ));
-        addedLineRenderers[0].SetPosition(1, center + new Vector3(-offsetX, 0f, offsetZ));
-        addedLineRenderers[1].SetPosition(0, center + new Vector3(-offsetX, 0f, offsetZ));
-        addedLineRenderers[1].SetPosition(1, center + new Vector3(-offsetX, 0f, -offsetZ));
-        addedLineRenderers[2].SetPosition(0, center + new Vector3(-offsetX, 0f, -offsetZ));
-        addedLineRenderers[2].SetPosition(1, center + new Vector3(offsetX, 0f, -offsetZ));
-        addedLineRenderers[3].SetPosition(0, center + new Vector3(offsetX, 0f, -offsetZ));
-        addedLineRenderers[3].SetPosition(1, center + new Vector3(offsetX, 0f, offsetZ));
+        fxLineRenderers[0].SetPosition(0, center + new Vector3(offsetX, 0f, offsetZ));
+        fxLineRenderers[0].SetPosition(1, center + new Vector3(-offsetX, 0f, offsetZ));
+        fxLineRenderers[1].SetPosition(0, center + new Vector3(-offsetX, 0f, offsetZ));
+        fxLineRenderers[1].SetPosition(1, center + new Vector3(-offsetX, 0f, -offsetZ));
+        fxLineRenderers[2].SetPosition(0, center + new Vector3(-offsetX, 0f, -offsetZ));
+        fxLineRenderers[2].SetPosition(1, center + new Vector3(offsetX, 0f, -offsetZ));
+        fxLineRenderers[3].SetPosition(0, center + new Vector3(offsetX, 0f, -offsetZ));
+        fxLineRenderers[3].SetPosition(1, center + new Vector3(offsetX, 0f, offsetZ));
 
         // Add text mesh
-        GameObject textChild = new GameObject();
-        textChild.name = "TextMeshChild";
-        textChild.transform.parent = transform;
-        textChild.transform.position = transform.position;
-        TextMesh textMesh = textChild.AddComponent(typeof(TextMesh)) as TextMesh;
+        TextMesh textMesh = GetComponentInChildren<TextMesh>();
+        textMesh.transform.position = transform.position;
         textMesh.transform.rotation = Quaternion.LookRotation(-Vector3.up, Vector3.forward);
+        textMesh.transform.localScale = new Vector3(1/transform.localScale.x, 1/transform.localScale.y, 1/transform.localScale.z);
         textMesh.anchor = TextAnchor.MiddleCenter;
+        textMesh.characterSize = 0.1f;
+        textMesh.fontSize = 92;
         textMesh.text = "Place " + System.Enum.GetName(typeof(Objects), Type) + " here...";
+        fxTextMesh = textMesh;
+    }
 
-        
+    public void SetFxColor(Color color)
+    {
+        fxTextMesh.color = color;
+        foreach(LineRenderer lineRenderer in fxLineRenderers)
+        {
+            lineRenderer.material.color = color*1.1f; // Multiply by HDR intensity
+        }
     }
 
     /**
