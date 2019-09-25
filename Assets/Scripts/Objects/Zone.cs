@@ -52,14 +52,15 @@ public class Zone : MonoBehaviour
         Vector3 center = transform.position + boxCollider.center;
         float offsetX = boxCollider.size.x * transform.localScale.x / 2;
         float offsetZ = boxCollider.size.z * transform.localScale.z / 2;
-        fxLineRenderers[0].SetPosition(0, center + new Vector3(offsetX, 0f, offsetZ));
-        fxLineRenderers[0].SetPosition(1, center + new Vector3(-offsetX, 0f, offsetZ));
-        fxLineRenderers[1].SetPosition(0, center + new Vector3(-offsetX, 0f, offsetZ));
-        fxLineRenderers[1].SetPosition(1, center + new Vector3(-offsetX, 0f, -offsetZ));
-        fxLineRenderers[2].SetPosition(0, center + new Vector3(-offsetX, 0f, -offsetZ));
-        fxLineRenderers[2].SetPosition(1, center + new Vector3(offsetX, 0f, -offsetZ));
-        fxLineRenderers[3].SetPosition(0, center + new Vector3(offsetX, 0f, -offsetZ));
-        fxLineRenderers[3].SetPosition(1, center + new Vector3(offsetX, 0f, offsetZ));
+        float padding = 0.25f;
+        fxLineRenderers[0].SetPosition(0, center + new Vector3(offsetX - padding, 0f, offsetZ));
+        fxLineRenderers[0].SetPosition(1, center + new Vector3(-offsetX + padding, 0f, offsetZ));
+        fxLineRenderers[1].SetPosition(0, center + new Vector3(-offsetX, 0f, offsetZ - padding));
+        fxLineRenderers[1].SetPosition(1, center + new Vector3(-offsetX, 0f, -offsetZ + padding));
+        fxLineRenderers[2].SetPosition(0, center + new Vector3(-offsetX + padding, 0f, -offsetZ));
+        fxLineRenderers[2].SetPosition(1, center + new Vector3(offsetX - padding, 0f, -offsetZ));
+        fxLineRenderers[3].SetPosition(0, center + new Vector3(offsetX, 0f, -offsetZ + padding));
+        fxLineRenderers[3].SetPosition(1, center + new Vector3(offsetX, 0f, offsetZ - padding));
 
         // Add text mesh
         TextMesh textMesh = GetComponentInChildren<TextMesh>();
