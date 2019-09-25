@@ -79,6 +79,31 @@ public class ObjectManager : MonoBehaviour
             rw.material.SetVectorArray("_Objects", _shaderArray);
             rw.material.SetFloatArray("_ObjectAngles",_shaderAngleArray);
         }
+
+        foreach (var go in _gameObjects.Values)
+        {
+            // A proper mod function that turns negative values into positive
+            float mod(float x, float m)
+            {
+                return (x % m + m) % m;
+            }
+
+            var transform = GameManager.GetSpawnedObject(go.gameId).transform;
+            var currAngle = transform.eulerAngles.y;
+            var targetAngle = Mathf.Rad2Deg * go.angle;
+            // Two ways of turning towards that angle
+            var deltaAngle = mod(targetAngle - currAngle, 360);
+            var negativeDeltaAngle = deltaAngle - 360f;
+            
+            // Choose the angle that needs the least amount of rotation
+            deltaAngle = -negativeDeltaAngle < deltaAngle ? negativeDeltaAngle : deltaAngle;
+            // Multiply by constant rotational speed
+            deltaAngle *= 4f;
+            // Add to our current angle
+            currAngle += deltaAngle * Time.deltaTime;
+            var rot = Quaternion.AngleAxis(currAngle, Vector3.up);
+            GameManager.SetRotationOfSpawnedObject(go.gameId, rot);
+        }
     }
 
     private void OnObjectAdded(object sender, TuioObjectEventArgs e)
@@ -116,12 +141,12 @@ public class ObjectManager : MonoBehaviour
         {
             AddObjectToWorld(tuioObj, zone);
             tuioObj.zone = zone;
-            zone.SetGraphicsEnabled(false);
+            zone?.SetGraphicsEnabled(false);
         }
         else
         {
             _badObjects.Add(tuioObj.id, tuioObj);
-            zone.SetGraphicsEnabled(true);
+            zone?.SetGraphicsEnabled(true);
         }
     }
 
@@ -160,7 +185,7 @@ public class ObjectManager : MonoBehaviour
         go.angle = e.Object.Angle;
         var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * go.angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(go.screenPosition));
-        GameManager.SetRotationOfSpawnedObject(gameId, rot);
+        //GameManager.SetRotationOfSpawnedObject(gameId, rot);
 
         var (placed, z) = TryPlace(go);
         // If we are no longer within a correct zone, or the same zone turn the object into a bad object
@@ -208,8 +233,7 @@ public class ObjectManager : MonoBehaviour
         var gameId = GameManager.SpawnPrefab(obj.type.ToString(), ScreenToWorld(obj.screenPosition), rot);
         obj.gameId = gameId;
         _gameObjects.Add(obj.id, obj);
-        zone.OnEnter(GameManager.GetSpawnedObject(obj.gameId));
-
+        zone?.OnEnter(GameManager.GetSpawnedObject(obj.gameId));
     }
     
     private (bool, Zone) TryPlace(TUIOObject obj)
