@@ -11,7 +11,7 @@ public class Zone : MonoBehaviour
     LineRenderer[] fxLineRenderers = new LineRenderer[4];
     TextMesh fxTextMesh;
 
-    private void Start()
+    private void Awake()
     {
         GraphicsSetup();
     }
@@ -34,7 +34,7 @@ public class Zone : MonoBehaviour
             // Material setup
             Color color = Color.white;
             lineRenderer.material = new Material(Shader.Find("Unlit/LaserUnlitShader"));
-            lineRenderer.material.color = color*1.1f; // Multiply by HDR intensity
+            lineRenderer.material.color = color*1.3f; // Multiply by HDR intensity
             Texture mainTex = Resources.Load<Texture>("Textures/area_border_main");
             lineRenderer.material.SetTexture("_MainTex", mainTex);
             lineRenderer.material.SetFloat("_MainScrollSpeed", 20);
@@ -78,7 +78,7 @@ public class Zone : MonoBehaviour
         fxTextMesh.color = color;
         foreach(LineRenderer lineRenderer in fxLineRenderers)
         {
-            lineRenderer.material.color = color*1.1f; // Multiply by HDR intensity
+            lineRenderer.material.color = color*1.3f; // Multiply by HDR intensity
         }
     }
 
