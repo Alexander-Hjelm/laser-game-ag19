@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TUIOInput : MonoBehaviour
 {
-    private static TUIOInput _instance;
+    private static TUIOInput _instance; //singleton
 
     private readonly int _port = 3333;
 
@@ -22,7 +22,7 @@ public class TUIOInput : MonoBehaviour
 
     private void Awake()
     {
-        if (_instance != null) throw new UnityException("Two instances of a TUIOInput was found. Please remove one.");
+        if (_instance != null) throw new UnityException("Two instances of a TUIOInput was found. Please remove one."); 
         _staggeredOnObjectAdded = new List<(object, TuioObjectEventArgs)>();
         _staggeredOnObjectRemoved = new List<(object, TuioObjectEventArgs)>();
         _staggeredOnObjectUpdated = new List<(object, TuioObjectEventArgs)>();

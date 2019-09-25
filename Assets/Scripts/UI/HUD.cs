@@ -26,6 +26,7 @@ public class HUD : MonoBehaviour
         UpdateHUD(); // TODO possibly move this to only be called when an object is added or removed
     }
 
+    // Counts current placed phycons and updates the HUD to display remaining objects
     private void UpdateHUD () {
         StringBuilder sb = new StringBuilder("");
         foreach (var cur in mo) {

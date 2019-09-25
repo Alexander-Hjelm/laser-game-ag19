@@ -112,12 +112,6 @@ public class GameManager : MonoBehaviour
             _nextLevelLoaded = true;
         }
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
-
-        // Cheats, spawn prefabs
-        if(Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            SpawnPrefab("Mirror", new Vector3(0f, 0f, -5f), new Vector3(0f, 0f, 1f));
-        }
     }
 
     private void LateUpdate()

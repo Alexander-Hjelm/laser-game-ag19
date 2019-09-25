@@ -5,6 +5,7 @@ using TUIOsharp.DataProcessors;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Spawnable objects
 public enum Objects
 {
     Mirror,
@@ -21,7 +22,7 @@ public class ObjectManager : MonoBehaviour
     public class MaxObject { public Objects type; public int max; }
 
     [SerializeField()]
-    public MaxObject[] MaxObjectsPerType;
+    public MaxObject[] MaxObjectsPerType; // List containing limits for each object type
     [SerializeField()]
     public ObjectScreenSize[] ObjectScreenSizes;
     public GameObject AuraDisplay;
