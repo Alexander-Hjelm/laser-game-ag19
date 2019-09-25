@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
 
     // The particle system that will spawn when a laser hits a surface
     [SerializeField] private GameObject _laserHitParticleSystem;
+    [SerializeField] private GameObject _laserEmitterPrefab;
 
     //The next level to load
     [SerializeField] private int nextLevel;
@@ -71,23 +72,44 @@ public class GameManager : MonoBehaviour
     // All laser hit points that have been registered on this frame
     private static List<LaserHitStruct> _notifiedHitPointsThisFrame = new List<LaserHitStruct>();
 
+    // Has the load next level call been issued?
+    private bool _nextLevelLoaded = false;
+
+    // The time at which this scene was started
+    private float _sceneStartTime;
+
     private void Awake()
     {
         _instance = this;
+        // Clear data from last scene
+        _splitLasersThisFrame.Clear();
+        _notifiedLasersThisFrame.Clear();
+        _notifiedHitPointsThisFrame.Clear();
+    }
+
+    private void Start()
+    {
+        _sceneStartTime = Time.time;
     }
 
     private void Update()
     {
-        // Check if all Targets have been hit on this frame. If so, we shuold finish the level
-        if (_hitTargetIds.Count == _targetIds.Count)
+        // Check if all Targets have been hit on this frame. If so, we shuold finish the level,
+        // but only if we have not previously issued the LoadScene call (avoid issuing multiple calls),
+        // and also only if one second has passed (make sure the level has been properly set up)
+        if (_hitTargetIds.Count == _targetIds.Count
+                && !_nextLevelLoaded
+                && Time.time - _sceneStartTime > 1f)
         {
+            Debug.Log(Time.time - _sceneStartTime);
             Debug.Log("You win!");
-            SceneManager.LoadScene(nextLevel);
             _targetIds.Clear();
             _hitTargetIds.Clear();
             _spawnedObjectsById.Clear();
             _splitLasersThisFrame.Clear();
             _notifiedLasersThisFrame.Clear();
+            SceneManager.LoadScene(nextLevel);
+            _nextLevelLoaded = true;
         }
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
     }
@@ -169,6 +191,19 @@ public class GameManager : MonoBehaviour
         _hitTargetIds.Add(id);
     }
 
+    public static void UnregisterLaser(Laser laser)
+    {
+        if(_notifiedLasersThisFrame.ContainsKey(laser))
+        {
+            _notifiedLasersThisFrame.Remove(laser);
+        }
+        if(_splitLasersThisFrame.ContainsKey(laser))
+        {
+            _splitLasersThisFrame.Remove(laser);
+        }
+
+    }
+
     // Notify the GameManager that a certain laser has hit a position on this frame
     // The GameManager will proceed with spawning a hit particle system at that point
     public static void NotifyLaserHit(Laser laser, Vector3 position, Vector3 normal)
@@ -235,8 +270,7 @@ public class GameManager : MonoBehaviour
     private static Laser SpawnLaser(Color color, Prism rootPrism)
     {
         // Laser resource
-        GameObject laserPrefab = Resources.Load<GameObject>("Prefabs/LaserStartPosition");
-        Laser laserInstance = GameObject.Instantiate(laserPrefab).GetComponent<Laser>();
+        Laser laserInstance = GameObject.Instantiate(_instance._laserEmitterPrefab).GetComponent<Laser>();
         laserInstance.SetColor(color);
         laserInstance.SetRootPrism(rootPrism);
         return laserInstance;
@@ -317,6 +351,16 @@ public class GameManager : MonoBehaviour
     public static void SetRotationOfSpawnedObject(long id, Vector3 newFwd)
     {
         SetRotationOfSpawnedObject(id, Quaternion.LookRotation(newFwd, Vector3.up));
+    }
+
+    public static GameObject GetSpawnedObject(long id)
+    {
+        if (!_spawnedObjectsById.ContainsKey(id))
+        {
+            Debug.LogError($"Tried to access Object with id = {id}, but that object has not been spawned by the GameManager");
+        }
+
+        return _spawnedObjectsById[id];
     }
 
 }

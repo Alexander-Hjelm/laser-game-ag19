@@ -8,7 +8,7 @@ public class HUD : MonoBehaviour
 {
     private Text hudText;
     private ObjectManager objMan;
-    private MaxObject[] mo;
+    private ObjectManager.MaxObject[] mo;
 
     // Start is called before the first frame update
     void Start()
@@ -29,7 +29,7 @@ public class HUD : MonoBehaviour
     // Counts current placed phycons and updates the HUD to display remaining objects
     private void UpdateHUD () {
         StringBuilder sb = new StringBuilder("");
-        foreach (MaxObject cur in mo) {
+        foreach (var cur in mo) {
             switch (cur.type) {
                 case Objects.Mirror:
                     sb.Append("Mirror x ");
