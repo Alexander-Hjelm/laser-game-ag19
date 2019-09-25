@@ -90,6 +90,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _sceneStartTime = Time.time;
+        LevelTransitionAnimation.StartAnimateIn();
     }
 
     private void Update()
@@ -108,7 +109,8 @@ public class GameManager : MonoBehaviour
             _spawnedObjectsById.Clear();
             _splitLasersThisFrame.Clear();
             _notifiedLasersThisFrame.Clear();
-            SceneManager.LoadScene(nextLevel);
+            LevelTransitionAnimation.StartAnimateOut();
+            StartCoroutine(LoadNextSceneDelayed());
             _nextLevelLoaded = true;
         }
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
@@ -177,6 +179,12 @@ public class GameManager : MonoBehaviour
             _notifiedLasersThisFrame.Remove(laser);
             _splitLasersThisFrame.Remove(laser);
         }
+    }
+
+    private IEnumerator LoadNextSceneDelayed()
+    {
+        yield return new WaitForSeconds(1.0f);
+        SceneManager.LoadScene(nextLevel);
     }
 
     // Register a Target. Must be called by the Targets themselves on Awake
