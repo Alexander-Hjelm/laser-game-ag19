@@ -183,9 +183,7 @@ public class ObjectManager : MonoBehaviour
         var gameId = go.gameId;
         go.screenPosition = new Vector2(e.Object.X, 1 - e.Object.Y);
         go.angle = e.Object.Angle;
-        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * go.angle, Vector3.up);
         GameManager.SetPositionOfSpawnedObject(gameId, ScreenToWorld(go.screenPosition));
-        //GameManager.SetRotationOfSpawnedObject(gameId, rot);
 
         var (placed, z) = TryPlace(go);
         // If we are no longer within a correct zone, or the same zone turn the object into a bad object
