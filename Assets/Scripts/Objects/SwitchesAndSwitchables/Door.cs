@@ -33,6 +33,8 @@ public class Door : Switchable
     }
 
     public override void SwitchTo(bool switchTo) {
+        if (switchTo != open)
+            GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource>().clip);
         open = switchTo;
     }
 }
