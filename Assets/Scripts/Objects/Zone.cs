@@ -109,7 +109,7 @@ public class Zone : MonoBehaviour
         }
 
         // If there is no place left in zone, or we are not inside the zone return false
-        if (_CurrentObjects.Count >= MaxInZone || !IsInside(position)) return false;
+        if (_CurrentObjects.Count >= 99999999 || !IsInside(position)) return false;
 
         _CurrentObjects.Add(id);
         return true;
