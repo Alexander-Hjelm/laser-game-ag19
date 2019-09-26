@@ -367,6 +367,7 @@ public class GameManager : MonoBehaviour
         if (!_spawnedObjectsById.ContainsKey(id))
         {
             Debug.LogError($"Tried to access Object with id = {id}, but that object has not been spawned by the GameManager");
+            return null;
         }
 
         return _spawnedObjectsById[id];

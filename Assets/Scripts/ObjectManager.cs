@@ -88,21 +88,24 @@ public class ObjectManager : MonoBehaviour
                 return (x % m + m) % m;
             }
 
-            var transform = GameManager.GetSpawnedObject(go.gameId).transform;
-            var currAngle = transform.eulerAngles.y;
-            var targetAngle = Mathf.Rad2Deg * go.angle;
-            // Two ways of turning towards that angle
-            var deltaAngle = mod(targetAngle - currAngle, 360);
-            var negativeDeltaAngle = deltaAngle - 360f;
-            
-            // Choose the angle that needs the least amount of rotation
-            deltaAngle = -negativeDeltaAngle < deltaAngle ? negativeDeltaAngle : deltaAngle;
-            // Multiply by constant rotational speed
-            deltaAngle *= 4f;
-            // Add to our current angle
-            currAngle += deltaAngle * Time.deltaTime;
-            var rot = Quaternion.AngleAxis(currAngle, Vector3.up);
-            GameManager.SetRotationOfSpawnedObject(go.gameId, rot);
+            var obj = GameManager.GetSpawnedObject(go.gameId);
+            if (obj != null) {
+                var transform = obj.transform;
+                var currAngle = transform.eulerAngles.y;
+                var targetAngle = Mathf.Rad2Deg * go.angle;
+                // Two ways of turning towards that angle
+                var deltaAngle = mod(targetAngle - currAngle, 360);
+                var negativeDeltaAngle = deltaAngle - 360f;
+
+                // Choose the angle that needs the least amount of rotation
+                deltaAngle = -negativeDeltaAngle < deltaAngle ? negativeDeltaAngle : deltaAngle;
+                // Multiply by constant rotational speed
+                deltaAngle *= 4f;
+                // Add to our current angle
+                currAngle += deltaAngle * Time.deltaTime;
+                var rot = Quaternion.AngleAxis(currAngle, Vector3.up);
+                GameManager.SetRotationOfSpawnedObject(go.gameId, rot);
+            }
         }
     }
 
