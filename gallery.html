@@ -2,16 +2,68 @@
 layout: default
 title: Gallery
 ---
-<h1> This is the gallerypage </h1>
-
-<iframe class="VideoBox" src="https://www.youtube.com/embed/M7lc1UVf-VE?autoplay=1&origin=http://example.com" width="600px" height="480px">
+<h1> </h1>
+<iframe class="VideoBox" src="" width="600px" height="480px">
 </iframe>
+
 
 <div id="GalleryContainer">
 
-{% for item in site.data.images %}
+<h2> Renders </h2>
 
-<img class="smallGallery" src="{{item.url}}" alt="could not find image"/>
+{% for item in site.data.RenderImages %}
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="could not find image"
+onclick="loadModal('{{item.url}}')"/>
+
+<!-- Modal -->
+<div class="modal" id="Modal_{{item.url}}">
+  <span class="close" id="Span_{{item.url}}">&times;</span>
+  <img class="modal-content" id="Modal_image_{{item.url}}">
+</div>
+
+{% endfor %}
+
+<h2> Phycons </h2>
+
+{% for item in site.data.3dprints %}
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="could not find image"
+onclick="loadModal('{{item.url}}')"/>
+
+<!-- Modal -->
+<div class="modal" id="Modal_{{item.url}}">
+  <span class="close" id="Span_{{item.url}}">&times;</span>
+  <img class="modal-content" id="Modal_image_{{item.url}}">
+</div>
+
+{% endfor %}
+
+<h2> Hello World Demo </h2>
+
+{% for item in site.data.HWImages %}
+
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="could not find image"
+onclick="loadModal('{{item.url}}')"/>
+
+<!-- Modal -->
+<div class="modal" id="Modal_{{item.url}}">
+  <span class="close" id="Span_{{item.url}}">&times;</span>
+  <img class="modal-content" id="Modal_image_{{item.url}}">
+</div>
+
+{% endfor %}
+
+<h2> ForskarFredag </h2>
+
+{% for item in site.data.FFImages %}
+
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="could not find image"
+onclick="loadModal('{{item.url}}')"/>
+
+<!-- Modal -->
+<div class="modal" id="Modal_{{item.url}}">
+  <span class="close" id="Span_{{item.url}}">&times;</span>
+  <img class="modal-content" id="Modal_image_{{item.url}}">
+</div>
 
 {% endfor %}
 

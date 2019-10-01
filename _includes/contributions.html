@@ -2,7 +2,7 @@
   {% for item in site.data.contribution %}
   <tr>
     {% assign remainder = forloop.index | modulo: 2 %}
-    {% if remainder == 0 %}
+    {% if remainder == 1 %}
     <td class="portraitTable">
       <img id="offsetDiv"></img>
     </td>
@@ -16,7 +16,7 @@
         {{item.contribution}}
       </p>
     </td>
-    {% if remainder == 1 %}
+    {% if remainder == 0 %}
     <td class="portraitTable">
       <h3> {{item.name}} </h3>
       <img class="portrait" src="{{item.url}}"/>
