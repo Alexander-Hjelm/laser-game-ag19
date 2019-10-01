@@ -7,11 +7,15 @@
 }
 
 #header_wrap {
-  background-image: url('./assets/images/LumenPR_names.png');
+  background-image: url('../images/LumenPR_names.png');
   background-size: 2000px 1500px;
   background-position-y: -110px;
   background-position-x:-60px;
   height: 260px;
+}
+
+#mdSites {
+  width: 60%;
 }
 
 /*** My Main Window ***/
@@ -23,7 +27,10 @@
     text-align: center;
   	margin-left: auto;
   	margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
     display: block;
+    vertical-align: middle;
   }
 
   /*** Background image rows ***/
@@ -72,6 +79,16 @@
 
   .imageRight {
     float: right;
+  }
+
+  .quote {
+    padding: 0px !important;
+    position: relative;
+    top: 20px;
+    font-size: 20px;
+    color: white;
+    font-style: oblique;
+    font-weight: bold;;
   }
 
   /*** ProgramIcons ***/

@@ -9,7 +9,7 @@ title: Technologies
 <td class="centerTable"><img class="logo" src="{{ item.image }}" alt=""/></td>
 <td class="centerTable">
 
-<h1> {{item.name}} </h1>
+<h1 style="color:#0090ff;"> {{item.name}} </h1>
 
 </td>
 </tr>
