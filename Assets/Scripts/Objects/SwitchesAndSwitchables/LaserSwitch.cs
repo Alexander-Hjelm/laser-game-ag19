@@ -8,23 +8,35 @@ using UnityEngine;
 public class LaserSwitch : Switch
 {
     private int shutDownCount;
+    private int startUpCount;
+
+    [SerializeField]
+    private int startUpTime;
+    [SerializeField]
+    private int shutDownTime;
     
     // Start is called before the first frame update
     void Start()
     {
         shutDownCount = 0;
+        startUpCount = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
         shutDownCount++;
-        if (shutDownCount >= 2) // Turn switchable off if laser isn't hitting the switch after 2 updates.
+        if (shutDownCount >= shutDownTime) {// Turn switchable off if laser isn't hitting the switch after 2 updates.
             switchable.SwitchTo(false);
+            startUpCount = 0;
+        }
+        if (startUpCount >= startUpTime) {
+            switchable.SwitchTo(true);
+        }
     }
 
     public override void ActivateSwitch() {
-        switchable.SwitchTo(true);
+        startUpCount++;
         shutDownCount = 0;
     }
 }
