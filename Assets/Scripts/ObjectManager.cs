@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
-using TUIOsharp.DataProcessors;
 using UnityEngine;
-using UnityEngine.UI;
-using Object = System.Object;
 
 // Spawnable objects
 public enum ObjectType
