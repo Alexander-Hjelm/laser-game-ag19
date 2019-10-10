@@ -8,9 +8,8 @@
 
 #header_wrap {
   background-image: url('../images/LumenPR_names.png');
-  background-size: 2000px 1500px;
-  background-position-y: -110px;
-  background-position-x:-60px;
+  background-size: 100% 700%;
+  background-position-y: 10%;
   height: 260px;
 }
 
@@ -235,23 +234,25 @@ body {
   display: none;
   position: fixed;
   z-index: 10;
-  padding-top: 100px;
+  padding-top: 1%;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: #111111;
+  background-color: rgba(0,0,0,0.95);
 }
 
 .modal-content {
   display: block;
   width: 80%;
-  height: 95%;
-  max-height: 855px;
-  max-width: 1500px;
-  object-fit: cover;
+  height: 90%;
+  max-width: 3840px;
+  max-height: 2160px;
+  object-fit: scale-down;
   margin: auto;
-  top: -60px;
+  border: 0px solid black !important;
+  box-shadow: 0 0 0 black !important;  // Removes the box shadow jekyll theme usess
+  -webkit-box-shadow: 0 0 0 black !important;
 }
 
 .model-content{
@@ -266,10 +267,9 @@ body {
 
 .close{
   position: absolute;
-  top: 15px;
-  right: 100px;
+  right: 4%;
   color: #f1f1f1;
-  font-size: 100px;
+  font-size: 10em;
   font-weight: bold;
   transition: 0.3s;
 }
