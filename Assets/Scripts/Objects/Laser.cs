@@ -110,12 +110,12 @@ public class Laser : MonoBehaviour
                     {
                         // Notify the GameManager that the Target has been hit on this frame
                         GameManager.HitTarget(targetId);
+
+                        // Target Should light up
+                        target.KeepMaterialOnThisFrame();
                     }
 
                     nextHit = raycastHit.point;
-
-                    // Target Should light up
-                    target.KeepMaterialOnThisFrame();
 
                     // Laser should not continue to raycast
                     laserShouldStop = true;
