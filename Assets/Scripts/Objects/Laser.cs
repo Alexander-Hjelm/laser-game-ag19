@@ -100,9 +100,11 @@ public class Laser : MonoBehaviour
                     break;
 
                 case "Target":
+                    Target target = raycastHit.collider.GetComponent<Target>();
+
                     // Get Target ID
-                    int targetId = raycastHit.collider.GetComponent<Target>().GetId();
-                    Color targetColor = raycastHit.collider.GetComponent<Target>().GetColor();
+                    int targetId = target.GetId();
+                    Color targetColor = target.GetColor();
 
                     if(targetColor == color)
                     {
@@ -111,6 +113,9 @@ public class Laser : MonoBehaviour
                     }
 
                     nextHit = raycastHit.point;
+
+                    // Target Should light up
+                    target.KeepMaterialOnThisFrame();
 
                     // Laser should not continue to raycast
                     laserShouldStop = true;
