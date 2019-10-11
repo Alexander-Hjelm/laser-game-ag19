@@ -235,6 +235,7 @@ public class Laser : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameManager.DestroyLaserRecursive(this, false);
         GameManager.UnregisterLaser(this);
     }
 
