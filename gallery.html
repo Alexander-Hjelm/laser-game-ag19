@@ -19,6 +19,7 @@ onclick="loadModal('{{item.url}}')"/>
 <div class="modal" id="Modal_{{item.url}}">
   <span class="close" id="Span_{{item.url}}">&times;</span>
   <img class="modal-content" id="Modal_image_{{item.url}}">
+  <h3 style="color: white;"> Photo: {{item.photo}}, license: {{item.license}} </h3>
 </div>
 
 {% endfor %}
@@ -26,13 +27,14 @@ onclick="loadModal('{{item.url}}')"/>
 <h2 style="color:#0090ff;"> Phycons </h2>
 
 {% for item in site.data.3dprints %}
-<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="could not find image"
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}"
 onclick="loadModal('{{item.url}}')"/>
 
 <!-- Modal -->
 <div class="modal" id="Modal_{{item.url}}">
   <span class="close" id="Span_{{item.url}}">&times;</span>
-  <img class="modal-content" id="Modal_image_{{item.url}}">
+  <img class="modal-content" id="Modal_image_{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}">
+  <h3 style="color: white;"> Photo: {{item.photo}}, license: {{item.license}} </h3>
 </div>
 
 {% endfor %}
@@ -41,13 +43,14 @@ onclick="loadModal('{{item.url}}')"/>
 
 {% for item in site.data.HWImages %}
 
-<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="could not find image"
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}"
 onclick="loadModal('{{item.url}}')"/>
 
 <!-- Modal -->
 <div class="modal" id="Modal_{{item.url}}">
   <span class="close" id="Span_{{item.url}}">&times;</span>
-  <img class="modal-content" id="Modal_image_{{item.url}}">
+  <img class="modal-content" id="Modal_image_{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}">
+  <h3 style="color: white;"> Photo: {{item.photo}}, license: {{item.license}} </h3>
 </div>
 
 {% endfor %}
@@ -56,13 +59,14 @@ onclick="loadModal('{{item.url}}')"/>
 
 {% for item in site.data.FFImages %}
 
-<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="could not find image"
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}"
 onclick="loadModal('{{item.url}}')"/>
 
 <!-- Modal -->
 <div class="modal" id="Modal_{{item.url}}">
   <span class="close" id="Span_{{item.url}}">&times;</span>
-  <img class="modal-content" id="Modal_image_{{item.url}}">
+  <img class="modal-content" id="Modal_image_{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}">
+  <h3 style="color: white;"> Photo: {{item.photo}}, license: {{item.license}} </h3>
 </div>
 
 {% endfor %}
