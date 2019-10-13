@@ -5,7 +5,6 @@ using UnityEngine;
 public class Zone : MonoBehaviour
 {
     public ObjectType Type;
-    public int MaxInZone;
     private List<long> _CurrentObjects = new List<long>();
 
     LineRenderer[] fxLineRenderers = new LineRenderer[4];
@@ -90,11 +89,6 @@ public class Zone : MonoBehaviour
         {
             lineRenderer.material.color = color*1.3f; // Multiply by HDR intensity
         }
-    }
-
-    public bool CanBePlaced(Vector3 position)
-    {
-        return _CurrentObjects.Count < MaxInZone && IsInside(position);
     }
 
     public void Place(long id)

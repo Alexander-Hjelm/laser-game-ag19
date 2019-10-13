@@ -159,7 +159,7 @@ public class ObjectManager : MonoBehaviour
         Zone retZone = null;
         foreach (var zone in zonesOfType)
         {
-            if (!zone.CanBePlaced(pos)) continue;
+            if (!zone.IsInside(pos)) continue;
 
             canSpawnZone = true;
             retZone = zone;
