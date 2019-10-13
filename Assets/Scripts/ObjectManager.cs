@@ -178,7 +178,7 @@ public class ObjectManager : MonoBehaviour
         var objectZone = zones.Where(zone => zone.Type == type && zone.Contains(id));
         foreach (var zone in objectZone)
         {
-            return zone.Update(id);
+            return zone.UpdateGameObject(id);
         }
 
         return true;

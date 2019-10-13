@@ -101,7 +101,7 @@ public class Zone : MonoBehaviour
      * Update the object with id, removes it from the zone if it no longer is within
      * returns true if removed, false otherwise
      */
-    public bool Update(long id)
+    public bool UpdateGameObject(long id)
     {
         var position = GameManager.GetSpawnedObject(id).transform.position;
         if (IsInside(position)) return true;
