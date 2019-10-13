@@ -12,7 +12,7 @@ public class LaserZone : Zone
         SetFxColor(LaserColor);
     }
 
-    public override void OnEnter(GameObject other)
+    protected override void OnEnter(GameObject other)
     {
         var laser = other.GetComponentInChildren<Laser>();
         laser.SetColor(LaserColor);

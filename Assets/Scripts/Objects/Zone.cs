@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Zone : MonoBehaviour
 {
-    public Objects Type;
+    public ObjectType Type;
     public int MaxInZone;
-    private List<int> _CurrentObjects = new List<int>();
+    private List<long> _CurrentObjects = new List<long>();
 
     LineRenderer[] fxLineRenderers = new LineRenderer[4];
     TextMesh fxTextMesh;
@@ -70,7 +70,7 @@ public class Zone : MonoBehaviour
         textMesh.anchor = TextAnchor.MiddleCenter;
         textMesh.characterSize = 0.1f;
         textMesh.fontSize = 92;
-        textMesh.text = "Place " + System.Enum.GetName(typeof(Objects), Type) + " here...";
+        textMesh.text = "Place " + System.Enum.GetName(typeof(ObjectType), Type) + " here...";
         fxTextMesh = textMesh;
     }
 
@@ -92,36 +92,39 @@ public class Zone : MonoBehaviour
         }
     }
 
-    /**
-     * Returns true if object has been placed within zone or is still within zone
-     */
-    public bool TryPlace(int id, Vector3 position)
+    public bool CanBePlaced(Vector3 position)
     {
-        var contains = _CurrentObjects.Contains(id);
-        var isInside = IsInside(position);
-        if (_CurrentObjects.Contains(id))
-        {
-            if (IsInside(position)) return true;
+        return _CurrentObjects.Count < MaxInZone && IsInside(position);
+    }
 
-            _CurrentObjects.Remove(id);
-            return false;
-
-        }
-
-        // If there is no place left in zone, or we are not inside the zone return false
-        if (_CurrentObjects.Count >= 99999999 || !IsInside(position)) return false;
-
+    public void Place(long id)
+    {
         _CurrentObjects.Add(id);
-        return true;
+        OnEnter(GameManager.GetSpawnedObject(id));
+    }
 
+    /*
+     * Update the object with id, removes it from the zone if it no longer is within
+     * returns true if removed, false otherwise
+     */
+    public bool Update(long id)
+    {
+        var position = GameManager.GetSpawnedObject(id).transform.position;
+        if (IsInside(position)) return true;
+        _CurrentObjects.Remove(id);
+        return false;
+    }
+
+    public bool Contains(long gameId)
+    {
+        return _CurrentObjects.Contains(gameId);
     }
 
     /**
      * Called whenever an appropriate GameObject enters this zone.
      */
-    public virtual void OnEnter(GameObject other)
+    protected virtual void OnEnter(GameObject other)
     {
-
     }
 
     public bool IsInside(Vector3 point)

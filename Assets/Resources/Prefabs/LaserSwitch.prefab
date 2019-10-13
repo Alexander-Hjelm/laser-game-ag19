@@ -106,3 +106,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   switchable: {fileID: 0}
+  startUpTime: 30
+  shutDownTime: 2

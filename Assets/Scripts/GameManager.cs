@@ -117,11 +117,22 @@ public class GameManager : MonoBehaviour
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
     }
 
+    private void DestroyLaserRecursive(Laser laser)
+    {
+        if(_splitLasersThisFrame.ContainsKey(laser))
+        {
+            DestroyLaserRecursive(_splitLasersThisFrame[laser].SplitLaser1);
+            DestroyLaserRecursive(_splitLasersThisFrame[laser].SplitLaser2);
+        }
+        Destroy(laser.gameObject);
+    }
+
     private void LateUpdate()
     {
         // Temporary lists to avoid the _notifiedLasersThisFrame collection being modified in the loop
         List<Laser> lasersToBeDisabledNextFrame = new List<Laser>();
         List<Laser> lasersToBeDereffed = new List<Laser>();
+        List<Laser> splitLasersToBeDestroyed = new List<Laser>();
 
         // Remove any lasers that have not been updated on this frame
         foreach (Laser laser in _notifiedLasersThisFrame.Keys)
@@ -131,8 +142,8 @@ public class GameManager : MonoBehaviour
                 // Split lasers should be deleted
                 Laser splitLaser1 = _splitLasersThisFrame[laser].SplitLaser1;
                 Laser splitLaser2 = _splitLasersThisFrame[laser].SplitLaser2;
-                Destroy(splitLaser1.gameObject);
-                Destroy(splitLaser2.gameObject);
+                splitLasersToBeDestroyed.Add(splitLaser1);
+                splitLasersToBeDestroyed.Add(splitLaser2);
                 lasersToBeDereffed.Add(laser);
             }
             else
@@ -140,6 +151,11 @@ public class GameManager : MonoBehaviour
                 // Split lasers have been updated this frame, so don't delete them, only set the Updated flag to false
                 lasersToBeDisabledNextFrame.Add(laser);
             }
+        }
+
+        foreach(Laser laser in splitLasersToBeDestroyed)
+        {
+            DestroyLaserRecursive(laser);
         }
 
         // Go over and update the LaerHitStructs that have been stored so far
