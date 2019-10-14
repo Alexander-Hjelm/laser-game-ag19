@@ -49,7 +49,12 @@ public class ObjectManager : MonoBehaviour
 
     private void Update()
     {
-        var screenObjects = TUIOInput.GetScreenObjects();
+        // A proper mod function that turns negative values into positive
+        float mod(float x, float m)
+        {
+            return (x % m + m) % m;
+        }
+
         foreach (var (type, classId1, classId2) in ClassAvailability)
         {
             var uniqueId = classId1 + classId2;
@@ -63,8 +68,23 @@ public class ObjectManager : MonoBehaviour
                 {
                     // We have already spawned this game object, instead update it
                     var (gameId,_) = _gameObjects[uniqueId];
+
+                    // Calculate angle for next tick
                     var angle = Direction(screenObject1, screenObject2);
-                    var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * angle, Vector3.up);
+                    var targetAngle = Mathf.Rad2Deg * angle;
+                    var transform = GameManager.GetSpawnedObject(gameId).transform;
+                    var currAngle = transform.eulerAngles.y;
+                    // Two ways of turning towards that angle
+                    var deltaAngle = mod(targetAngle - currAngle, 360);
+                    var negativeDeltaAngle = deltaAngle - 360f;
+                    // Choose the angle that needs the least amount of rotation
+                    deltaAngle = -negativeDeltaAngle < deltaAngle ? negativeDeltaAngle : deltaAngle;
+                    // Multiply by constant rotational speed
+                    deltaAngle *= 2f;
+                    // Add to our current angle
+                    currAngle += deltaAngle * Time.deltaTime;
+                    var rot = Quaternion.AngleAxis(currAngle, Vector3.up);
+
                     var pos = ScreenToWorld(Position(screenObject1, screenObject2));
                     GameManager.SetPositionOfSpawnedObject(gameId, pos);
                     GameManager.SetRotationOfSpawnedObject(gameId, rot);
@@ -139,7 +159,7 @@ public class ObjectManager : MonoBehaviour
         Zone retZone = null;
         foreach (var zone in zonesOfType)
         {
-            if (!zone.CanBePlaced(pos)) continue;
+            if (!zone.IsInside(pos)) continue;
 
             canSpawnZone = true;
             retZone = zone;
@@ -158,7 +178,7 @@ public class ObjectManager : MonoBehaviour
         var objectZone = zones.Where(zone => zone.Type == type && zone.Contains(id));
         foreach (var zone in objectZone)
         {
-            return zone.Update(id);
+            return zone.UpdateGameObject(id);
         }
 
         return true;
