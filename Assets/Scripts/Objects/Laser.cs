@@ -100,14 +100,19 @@ public class Laser : MonoBehaviour
                     break;
 
                 case "Target":
+                    Target target = raycastHit.collider.GetComponent<Target>();
+
                     // Get Target ID
-                    int targetId = raycastHit.collider.GetComponent<Target>().GetId();
-                    Color targetColor = raycastHit.collider.GetComponent<Target>().GetColor();
+                    int targetId = target.GetId();
+                    Color targetColor = target.GetColor();
 
                     if(targetColor == color)
                     {
                         // Notify the GameManager that the Target has been hit on this frame
                         GameManager.HitTarget(targetId);
+
+                        // Target Should light up
+                        target.KeepMaterialOnThisFrame();
                     }
 
                     nextHit = raycastHit.point;
@@ -230,6 +235,7 @@ public class Laser : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameManager.DestroyLaserRecursive(this, false);
         GameManager.UnregisterLaser(this);
     }
 
