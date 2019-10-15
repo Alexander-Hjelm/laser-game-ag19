@@ -133,6 +133,22 @@ public class Laser : MonoBehaviour
                     laserShouldStop = true;
                     break;
 
+                case "GlassWall":
+                    nextHit = raycastHit.point;
+
+                    if(raycastHit.collider.GetComponent<GlassWall>().GetColor() == color)
+                    {
+                        // If color is the same, do nother
+                        laserShouldStop = false;
+                    }
+                    else
+                    {
+                        // Otherwise treat it as a wall
+                        laserShouldStop = true;
+                        GameManager.NotifyLaserHit(this, nextHit, -nextDir);
+                    }
+                    break;
+
                 case "Prism":
                     if(raycastHit.collider.GetComponent<Prism>() == _rootPrism)
                     {
