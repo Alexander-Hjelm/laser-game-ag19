@@ -10,6 +10,7 @@ TagManager:
   - Prism
   - Hole
   - LaserSwitch
+  - GlassWall
   layers:
   - Default
   - TransparentFX
