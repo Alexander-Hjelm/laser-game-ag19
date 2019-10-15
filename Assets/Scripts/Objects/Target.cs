@@ -9,11 +9,48 @@ public class Target : MonoBehaviour
     [SerializeField] private Color _color;
     [SerializeField] private MeshRenderer _coreMeshRenderer;    // The core mesh that will change color depeding on what color was assigned
 
+    [SerializeField] private Material _onMaterial;
+    [SerializeField] private Material _offMaterial;
+
+    private bool _keepMaterialOnThisFrame = false;
+
     private void Start()
     {
         GameManager.RegisterTarget(_id);
 
-        _coreMeshRenderer.material = new Material(Shader.Find("Standard"));
+        _offMaterial = new Material(Shader.Find("Standard"));
+        _onMaterial = _coreMeshRenderer.material;
+        SetMaterialOff();
+    }
+
+    private void LateUpdate()
+    {
+        if(!_keepMaterialOnThisFrame)
+        {
+            SetMaterialOff();
+        }
+        _keepMaterialOnThisFrame = false;
+    }
+
+    public void SetMaterialOn()
+    {
+        SetMaterial(_onMaterial);
+    }
+
+    public void SetMaterialOff()
+    {
+        SetMaterial(_offMaterial);
+    }
+
+    public void KeepMaterialOnThisFrame()
+    {
+        SetMaterialOn();
+        _keepMaterialOnThisFrame = true;
+    }
+
+    private void SetMaterial(Material material)
+    {
+        _coreMeshRenderer.material = material;
         _coreMeshRenderer.material.color = _color;
     }
 
