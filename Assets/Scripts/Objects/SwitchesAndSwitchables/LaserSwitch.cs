@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * This Laser Switch is only activated as long as a laser is hitting it.
@@ -14,7 +15,14 @@ public class LaserSwitch : Switch
     private int startUpTime;
     [SerializeField]
     private int shutDownTime;
+
+    private Image _loaderImage;
     
+    private void Awake()
+    {
+        _loaderImage = GetComponentInChildren<Image>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +41,9 @@ public class LaserSwitch : Switch
         if (startUpCount >= startUpTime) {
             switchable.SwitchTo(true);
         }
+
+        // Only uses startup time for now. Maybe add shutdown time later?
+        _loaderImage.fillAmount = (float)startUpCount / (float)startUpTime;
     }
 
     public override void ActivateSwitch() {
