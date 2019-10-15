@@ -100,14 +100,19 @@ public class Laser : MonoBehaviour
                     break;
 
                 case "Target":
+                    Target target = raycastHit.collider.GetComponent<Target>();
+
                     // Get Target ID
-                    int targetId = raycastHit.collider.GetComponent<Target>().GetId();
-                    Color targetColor = raycastHit.collider.GetComponent<Target>().GetColor();
+                    int targetId = target.GetId();
+                    Color targetColor = target.GetColor();
 
                     if(targetColor == color)
                     {
                         // Notify the GameManager that the Target has been hit on this frame
                         GameManager.HitTarget(targetId);
+
+                        // Target Should light up
+                        target.KeepMaterialOnThisFrame();
                     }
 
                     nextHit = raycastHit.point;
@@ -126,6 +131,22 @@ public class Laser : MonoBehaviour
 
                     // Laser should not continue to raycast
                     laserShouldStop = true;
+                    break;
+
+                case "GlassWall":
+                    nextHit = raycastHit.point;
+
+                    if(raycastHit.collider.GetComponent<GlassWall>().GetColor() == color)
+                    {
+                        // If color is the same, do nother
+                        laserShouldStop = false;
+                    }
+                    else
+                    {
+                        // Otherwise treat it as a wall
+                        laserShouldStop = true;
+                        GameManager.NotifyLaserHit(this, nextHit, -nextDir);
+                    }
                     break;
 
                 case "Prism":
@@ -230,6 +251,7 @@ public class Laser : MonoBehaviour
 
     private void OnDestroy()
     {
+        GameManager.DestroyLaserRecursive(this, false);
         GameManager.UnregisterLaser(this);
     }
 

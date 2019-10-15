@@ -117,14 +117,17 @@ public class GameManager : MonoBehaviour
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
     }
 
-    private void DestroyLaserRecursive(Laser laser)
+    public static void DestroyLaserRecursive(Laser laser, bool destroySelf)
     {
         if(_splitLasersThisFrame.ContainsKey(laser))
         {
-            DestroyLaserRecursive(_splitLasersThisFrame[laser].SplitLaser1);
-            DestroyLaserRecursive(_splitLasersThisFrame[laser].SplitLaser2);
+            DestroyLaserRecursive(_splitLasersThisFrame[laser].SplitLaser1, true);
+            DestroyLaserRecursive(_splitLasersThisFrame[laser].SplitLaser2, true);
         }
-        Destroy(laser.gameObject);
+        // Alexander 11/10 2019: Not entirely sure why the null check on the laser was neccessary here,
+        // but it prevents laser references from leaking later
+        if(destroySelf && laser != null)
+            Destroy(laser.gameObject);
     }
 
     private void LateUpdate()
@@ -155,7 +158,7 @@ public class GameManager : MonoBehaviour
 
         foreach(Laser laser in splitLasersToBeDestroyed)
         {
-            DestroyLaserRecursive(laser);
+            DestroyLaserRecursive(laser, true);
         }
 
         // Go over and update the LaerHitStructs that have been stored so far
