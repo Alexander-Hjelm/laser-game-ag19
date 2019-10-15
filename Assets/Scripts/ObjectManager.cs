@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 // Spawnable objects
 public enum ObjectType
@@ -37,6 +38,10 @@ public class ObjectManager : MonoBehaviour
     [SerializeField()]
     public GameObject AuraDisplay;
 
+    // Aura shader values
+    private Vector4[] _shaderArray = new Vector4[10];
+    private float[] _shaderAngleArray = new float[10];
+
     // All spawned game objects from screen objects go here
     // (unique id from classId1 + classId2, GameObject Id, Type)
     private Dictionary<int, (long, ObjectType)> _gameObjects = new Dictionary<int, (long, ObjectType)>();
@@ -54,6 +59,9 @@ public class ObjectManager : MonoBehaviour
         {
             return (x % m + m) % m;
         }
+
+        List<Vector4> auraObjects = new List<Vector4>();
+        List<float> auraAngles = new List<float>();
 
         foreach (var (type, classId1, classId2) in ClassAvailability)
         {
@@ -110,6 +118,14 @@ public class ObjectManager : MonoBehaviour
                         _gameObjects.Add(uniqueId, (gameId, type));
                         zone?.Place(gameId);
                     }
+                    else
+                    {
+                        // Cannot spawn it, e.g. faulty usage of phycon, thus display an aura around it
+                        var screenPos = Position(screenObject1, screenObject2);
+                        auraObjects.Add(new Vector4(screenPos.x, screenPos.y, 0.1f, 0.1f));
+                        var angle = Direction(screenObject1, screenObject2);
+                        auraAngles.Add(angle);
+                    }
                 }
             }
             else
@@ -121,6 +137,17 @@ public class ObjectManager : MonoBehaviour
                     _gameObjects.Remove(uniqueId);
                 }
             }
+        }
+
+        // Finally update the aura
+        var rw = AuraDisplay.GetComponent<RawImage>();
+        rw.material.SetInt("_ObjectsLength", auraObjects.Count);
+        if (auraObjects.Count > 0)
+        {
+            auraObjects.CopyTo(_shaderArray);
+            auraAngles.CopyTo(_shaderAngleArray);
+            rw.material.SetVectorArray("_Objects", _shaderArray);
+            rw.material.SetFloatArray("_ObjectAngles", _shaderAngleArray);
         }
     }
 
