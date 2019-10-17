@@ -102,19 +102,32 @@ public class GameManager : MonoBehaviour
                 && !_nextLevelLoaded
                 && Time.time - _sceneStartTime > 1f)
         {
-            Debug.Log(Time.time - _sceneStartTime);
-            Debug.Log("You win!");
-            _targetIds.Clear();
-            _hitTargetIds.Clear();
-            _spawnedObjectsById.Clear();
-            _splitLasersThisFrame.Clear();
-            _notifiedLasersThisFrame.Clear();
-            GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource> ().clip);
-            LevelTransitionAnimation.StartAnimateOut();
-            StartCoroutine(LoadNextSceneDelayed());
-            _nextLevelLoaded = true;
+            Win();
         }
+
+        // Manual Win cheat, press Q and P at the same time
+        if (Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.P)
+                && !_nextLevelLoaded)
+        {
+            Win();
+        }
+
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
+    }
+
+    private void Win()
+    {
+        Debug.Log(Time.time - _sceneStartTime);
+        Debug.Log("You win!");
+        _targetIds.Clear();
+        _hitTargetIds.Clear();
+        _spawnedObjectsById.Clear();
+        _splitLasersThisFrame.Clear();
+        _notifiedLasersThisFrame.Clear();
+        GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource> ().clip);
+        LevelTransitionAnimation.StartAnimateOut();
+        StartCoroutine(LoadNextSceneDelayed());
+        _nextLevelLoaded = true;
     }
 
     public static void DestroyLaserRecursive(Laser laser, bool destroySelf)
