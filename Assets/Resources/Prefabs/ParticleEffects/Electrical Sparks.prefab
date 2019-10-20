@@ -40,7 +40,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 615751622121641537}
   serializedVersion: 6
-  lengthInSec: 4
+  lengthInSec: 10
   simulationSpeed: 3
   stopAction: 0
   cullingMode: 0
@@ -48,14 +48,14 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
     serializedVersion: 2
-    minMaxState: 0
-    scalar: 0
+    minMaxState: 3
+    scalar: 3
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -985,7 +985,7 @@ ParticleSystem:
         serializedVersion: 2
         minMaxState: 3
         scalar: 100
-        minScalar: 25
+        minScalar: 50
         maxCurve:
           serializedVersion: 2
           m_Curve:
@@ -1035,8 +1035,8 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
       cycleCount: 1
-      repeatInterval: 0.01
-      probability: 1
+      repeatInterval: 8
+      probability: 0.6
     - serializedVersion: 2
       time: 0.2
       countCurve:
@@ -1093,8 +1093,8 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
       cycleCount: 1
-      repeatInterval: 0.01
-      probability: 0.7
+      repeatInterval: 8
+      probability: 0.3
     - serializedVersion: 2
       time: 0.45
       countCurve:
@@ -1151,8 +1151,8 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
       cycleCount: 1
-      repeatInterval: 0.01
-      probability: 0.5
+      repeatInterval: 8
+      probability: 0.2
   SizeModule:
     enabled: 1
     curve:
