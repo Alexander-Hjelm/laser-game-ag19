@@ -7,7 +7,14 @@
       <img id="offsetDiv"></img>
     </td>
     <td class="portraitTable">
-      <h3> {{item.name}} </h3>
+      <h3>
+        {{item.name}}
+        {%if {{item.linkedIn}} != blank %}
+          <a target="_blank" rel="noopener noreferrer" href="{{item.linkedIn}}">
+            <i class="linkedIn fa fa-linkedin-square"></i>
+          </a>
+        {% endif %}
+      </h3>
       <img class="portrait" src="{{item.url}}"/>
     </td>
     {% endif %}
@@ -18,7 +25,14 @@
     </td>
     {% if remainder == 0 %}
     <td class="portraitTable">
-      <h3> {{item.name}} </h3>
+      <h3>
+        {{item.name}}
+        {%if {{item.linkedIn}} != blank %}
+          <a target="_blank" rel="noopener noreferrer" href="{{item.linkedIn}}">
+            <i class="linkedIn fa fa-linkedin-square"></i>
+          </a>
+        {% endif %}
+      </h3>
       <img class="portrait" src="{{item.url}}"/>
     </td>
     <td class="portraitTable">

@@ -1,18 +1,24 @@
 - url: assets/images/Alexander.png
   name: Alexander Hjelm
-  contribution: Lead Gameplay Programmer <br> VFX Artist
+  contribution: Lead Gameplay Programmer <br> VFX
+  linkedIn:
 - url: assets/images/Andreas.jpg
   name: Andreas Gylling
-  contribution: Website Developer <br> Surface Control Client <br> 3D Asset Creation / VFX
+  contribution: Website Developer <br> 3D Asset Creation <br> VFX <br> Video Editor <br> PR poster <br> Environment Design <br> Phycons
+  linkedIn: https://www.linkedin.com/in/andreas-gylling/
 - url: assets/images/Caroline.jpg
   name: Caroline Yu
   contribution: Sound and Music Artist <br> Technical Writer
+  linkedIn: https://www.linkedin.com/in/caroline-yu-09445a132
 - url: assets/images/Kasim.jpg
   name: Kasım Taşkın
-  contribution: Surface Control Client <br> VFX <br> Shader Creation
+  contribution: Surface Control Client <br> Rotation Improvement <br> Shader Creation
+  linkedIn: https://www.linkedin.com/in/kaszim/
 - url: assets/images/nathan.png
   name: Nathan Bhat
-  contribution: Gameplay Programmer <br> Lead Designer <br> Level Design
+  linkedIn: https://www.linkedin.com/in/nathan-bhat-055152152
+  contribution: Gameplay Programmer <br> Lead Designer <br> Level Design <br> Technical Writer
 - url: assets/images/Ronya.jpg
   name: Ronya Budak
-  contribution: 3D Asset Creation <br> Background Artist <br> Technical Writer
+  contribution: 3D Asset Creation <br> Concept Art <br> Technical Writer
+  linkedIn:
