@@ -17,12 +17,7 @@ We wanted the following properties:
 
 - - - -
 
-# <span style="color:#0090ff"> Challenges </span>
-
-
-- - - -
-
-# <span style="color:#0090ff"> Obstacles </span>
+# <span style="color:#0090ff"> Challenges & Obstacles </span>
 
 #### - Understanding the PixelSense
 One of the major problems with this hardware was the total lack of resources or documentation. The entire documentation and SDK is deprecated. Meaning we didn't even know where to start in order to complete the networking between the pixelSense and our game client.
@@ -32,9 +27,9 @@ One of the major problems with this hardware was the total lack of resources or 
 #### -  Rotation of the phycons
 One of the issues with the PixelSense is that it is really sensitive to light. This in relation with it is not entirely accurate with the rotational read on the fiducial makes the angle of the object to stutter, which proved to be really annoying and difficult for the user. The darker the room, the better it is.
 
-<span style="color:#0090ff;"> **Solution:** </span> We are however looking into another way of calculating an average rotation read from the pixelSense, not relying on 1 tag position and rotation.
+<span style="color:#0090ff;"> **Solution:** </span> We are using two fiducials on a larger phycon in order to calculate a point between these fiducials. This way the low resolution fiducial read won't cause the same amount of stuttering anymore, as the final rotation and position is an interpolation of a directional vector between two fiducial positions.
 
 - - - -
 # <span style="color:#0090ff"> Lessons Learned </span>
 
-Have fun :) 
+Have fun :)
