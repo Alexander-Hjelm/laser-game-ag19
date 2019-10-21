@@ -43,7 +43,7 @@ public class Laser : MonoBehaviour
         points.Add(nextHit);    // Add start position to LineRenderer
         bool laserShouldStop = false;   // Should the laser stop before the next raycast?
         float maxDistance = 1000; // Max Distance of raycast
-        float blackHoleLineDelta = 1f; // How often the laser bends in a black hole (smaller = more times)
+        float blackHoleLineDelta = 0.1f; // How often the laser bends in a black hole (smaller = more times)
         bool inHole = false; // Is the raycast in a black hole?
         BlackHole currentHole = null; // The black hole the raycast is currently in
         float currentHoleRadius = 0.0f; // The radius of the black hole the raycast is currently in
