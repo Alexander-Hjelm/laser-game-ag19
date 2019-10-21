@@ -256,6 +256,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5028045424623544209, guid: 8caaf61fab023f247a6bb09d98504bb9,
+        type: 3}
+      propertyPath: m_Radius
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5028045424623544237, guid: 8caaf61fab023f247a6bb09d98504bb9,
         type: 3}
       propertyPath: gravityConstant
@@ -265,11 +270,6 @@ PrefabInstance:
         type: 3}
       propertyPath: absorptionRadius
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5028045424623544209, guid: 8caaf61fab023f247a6bb09d98504bb9,
-        type: 3}
-      propertyPath: m_Radius
-      value: 2.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8caaf61fab023f247a6bb09d98504bb9, type: 3}
@@ -452,7 +452,7 @@ PrefabInstance:
     - target: {fileID: 8483022979481989138, guid: 0faf778ce9d9ec849aa650fa355c7117,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 10.01
+      value: 11.44
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0faf778ce9d9ec849aa650fa355c7117, type: 3}
@@ -1047,6 +1047,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2804559854901790335, guid: 8b1eab6acc4c78742a5b25136d27d3e2,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2804559854901790334, guid: 8b1eab6acc4c78742a5b25136d27d3e2,
         type: 3}
       propertyPath: color.b
@@ -1056,11 +1061,6 @@ PrefabInstance:
         type: 3}
       propertyPath: color.r
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2804559854901790335, guid: 8b1eab6acc4c78742a5b25136d27d3e2,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8b1eab6acc4c78742a5b25136d27d3e2, type: 3}
@@ -1224,7 +1224,7 @@ PrefabInstance:
     - target: {fileID: 8483022979481989138, guid: 0faf778ce9d9ec849aa650fa355c7117,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 8
+      value: 8.36
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0faf778ce9d9ec849aa650fa355c7117, type: 3}
