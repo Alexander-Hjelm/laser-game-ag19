@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _laserHitParticleSystem;
     [SerializeField] private GameObject _laserEmitterPrefab;
 
+    // The UI Panel that will turn on when the level is completed
+    [SerializeField] private GameObject _winUiPanel;
+
     //The next level to load
     [SerializeField] private int nextLevel;
 
@@ -98,6 +101,7 @@ public class GameManager : MonoBehaviour
     {
         _sceneStartTime = Time.time;
         LevelTransitionAnimation.StartAnimateIn();
+        _winUiPanel.SetActive(false);
     }
 
     private void Update()
@@ -111,6 +115,7 @@ public class GameManager : MonoBehaviour
         {
             // Queue won, but wait until all phycons have been removed until moving to the next level
             _won = true;
+            _winUiPanel.SetActive(true);
         }
 
         // Manual Win cheat, press Q and P at the same time
@@ -123,6 +128,7 @@ public class GameManager : MonoBehaviour
         // We have won and removed all phycons. Proceed
         if (_won && _objectManager.CountSpawnedObjects() == 0)
         {
+            _winUiPanel.SetActive(false);
             Win();
         }
 
