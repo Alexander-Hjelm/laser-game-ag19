@@ -127,6 +127,23 @@ public class GameManager : MonoBehaviour
         }
 
         _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
+
+        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.O)
+                && !_nextLevelLoaded) {
+            Reset();
+        }
+
+            _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
+    }
+
+    private void Reset() {
+        _targetIds.Clear();
+        _hitTargetIds.Clear();
+        _spawnedObjectsById.Clear();
+        _splitLasersThisFrame.Clear();
+        _notifiedLasersThisFrame.Clear();
+        SceneManager.LoadScene(0);
+        _nextLevelLoaded = true;
     }
 
     private void Win()
