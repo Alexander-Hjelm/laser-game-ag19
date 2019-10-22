@@ -72,15 +72,22 @@ public class GameManager : MonoBehaviour
     // All laser hit points that have been registered on this frame
     private static List<LaserHitStruct> _notifiedHitPointsThisFrame = new List<LaserHitStruct>();
 
+    // Reference to the in-scene object manager
+    private ObjectManager _objectManager;
+
     // Has the load next level call been issued?
     private bool _nextLevelLoaded = false;
 
     // The time at which this scene was started
     private float _sceneStartTime;
 
+    // Has the current level been won?
+    private bool _won = false;
+
     private void Awake()
     {
         _instance = this;
+        _objectManager = GetComponent<ObjectManager>();
         // Clear data from last scene
         _splitLasersThisFrame.Clear();
         _notifiedLasersThisFrame.Clear();
@@ -102,12 +109,19 @@ public class GameManager : MonoBehaviour
                 && !_nextLevelLoaded
                 && Time.time - _sceneStartTime > 1f)
         {
-            Win();
+            // Queue won, but wait until all phycons have been removed until moving to the next level
+            _won = true;
         }
 
         // Manual Win cheat, press Q and P at the same time
         if (Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.P)
                 && !_nextLevelLoaded)
+        {
+            Win();
+        }
+
+        // We have won and removed all phycons. Proceed
+        if (_won && _objectManager.CountSpawnedObjects() == 0)
         {
             Win();
         }
