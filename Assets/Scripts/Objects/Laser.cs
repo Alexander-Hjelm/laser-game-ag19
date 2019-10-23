@@ -134,11 +134,11 @@ public class Laser : MonoBehaviour
                     break;
 
                 case "GlassWall":
-                    nextHit = raycastHit.point;
+                    nextHit = raycastHit.point + nextDir*0.1f; // Add a small nextDir factor to reduce the number of points
 
                     if(raycastHit.collider.GetComponent<GlassWall>().GetColor() == color)
                     {
-                        // If color is the same, do nother
+                        // If color is the same, do nothing
                         laserShouldStop = false;
                     }
                     else
