@@ -3,6 +3,9 @@ layout: default
 title: Technologies
 ---
 
+Our technological choices were based mainly on experience.
+- - - - 
+
 {% for item in site.data.technologies%}
 <table class="centerTable">
 <tr>

@@ -1,18 +1,15 @@
 - name: Microsoft Surface - PixelSense
-  description: The actual game is played on the PixelSense where one places object ontop in order to interact with the game and solve the puzzle
+  description: The actual game is played on the PixelSense where one places object ontop in order to interact with the game and solve the puzzle. Using the PixelSense mainly came from the fact that we found Tabletop Interaction interesting and fun when trying the previous year’s demos. We also wanted to challenge ourselves as we heard developing for the PixelSense was no easy task.
   image: assets/images/microsoft.svg
 - name: Unity Game Engine
-  description: The game was made using Unity as it is a very versitile and powerful enough for what we wanted to do.
+  description: The game was made using Unity as it is a very versitile and powerful enough for what we wanted to do. Many of our users had used the Unity game engine prior to this course, but for those who hadn't, Unity is also great for first-time game developers. These facts lead to Unity being an obvious choice for what we wanted to create.
   image: assets/images/.png
-- name: C#
-  description: Coding Language
-  image: assets/images/CSharp.png
 - name: Blender
-  description: We used Blender for all the modelling of this project
+  description: Blender (as well as some of the unity’s tools) was used for graphical asset creation. This choice was easily made, as Blender is widely known as one of the most effective free to use tools for 3D asset creation.
   image: assets/images/blender.png
 - name: GitHub
-  description: Source control
+  description: Source control, obvious choice really.
   image: assets/images/github.png
-- name: Discord
-  description: Communications for important project data.
+- name: Communication
+  description: Github and Discord (and Facebook Messenger) were chosen as communication and code organization tools because we had prior experience using them and felt they suited our needs.
   image: assets/images/.png
