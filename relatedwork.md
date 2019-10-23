@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: textSites
 title: Related Work
 ---
 # <span style="color:#0090ff;"> Related Work </span>
