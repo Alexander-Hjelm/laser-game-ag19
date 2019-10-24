@@ -88,11 +88,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4501913033931056993}
     m_Modifications:
-    - target: {fileID: 615751622121641537, guid: 5a88faa69166e4941a5dab2621343d7f,
-        type: 3}
-      propertyPath: m_Name
-      value: Electrical Sparks
-      objectReference: {fileID: 0}
     - target: {fileID: 615751622121641542, guid: 5a88faa69166e4941a5dab2621343d7f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -147,6 +142,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -1.192
+      objectReference: {fileID: 0}
+    - target: {fileID: 615751622121641537, guid: 5a88faa69166e4941a5dab2621343d7f,
+        type: 3}
+      propertyPath: m_Name
+      value: Electrical Sparks
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a88faa69166e4941a5dab2621343d7f, type: 3}

@@ -1,0 +1,207 @@
+fileFormatVersion: 2
+guid: c464e2a0abdfeea42a4b62a78f9a2e12
+timeCreated: 1513441417
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Plane.015
+    100004: Plane.016
+    100006: 3grass
+    100008: 3grass.001
+    100010: 5Grass
+    100012: 5Grass.001
+    100014: 8grass
+    100016: 8grass.001
+    100018: Circle
+    100020: LargeGrassPile
+    100022: Plane
+    100024: Plane.001
+    100026: Plane.002
+    100028: Plane.003
+    100030: Plane.004
+    100032: Plane.005
+    100034: Plane.006
+    100036: Plane.007
+    100038: Plane.008
+    100040: Plane.009
+    100042: Plane.010
+    100044: Plane.011
+    100046: Plane.012
+    100048: Plane.013
+    100050: Plane.014
+    400000: //RootNode
+    400002: Plane.015
+    400004: Plane.016
+    400006: 3grass
+    400008: 3grass.001
+    400010: 5Grass
+    400012: 5Grass.001
+    400014: 8grass
+    400016: 8grass.001
+    400018: Circle
+    400020: LargeGrassPile
+    400022: Plane
+    400024: Plane.001
+    400026: Plane.002
+    400028: Plane.003
+    400030: Plane.004
+    400032: Plane.005
+    400034: Plane.006
+    400036: Plane.007
+    400038: Plane.008
+    400040: Plane.009
+    400042: Plane.010
+    400044: Plane.011
+    400046: Plane.012
+    400048: Plane.013
+    400050: Plane.014
+    2300000: Plane.015
+    2300002: Plane.016
+    2300004: 3grass
+    2300006: 3grass.001
+    2300008: 5Grass
+    2300010: 5Grass.001
+    2300012: 8grass
+    2300014: 8grass.001
+    2300016: Circle
+    2300018: LargeGrassPile
+    2300020: Plane
+    2300022: Plane.001
+    2300024: Plane.002
+    2300026: Plane.003
+    2300028: Plane.004
+    2300030: Plane.005
+    2300032: Plane.006
+    2300034: Plane.007
+    2300036: Plane.008
+    2300038: Plane.009
+    2300040: Plane.010
+    2300042: Plane.011
+    2300044: Plane.012
+    2300046: Plane.013
+    2300048: Plane.014
+    2300050: //RootNode
+    3300000: Plane.015
+    3300002: Plane.016
+    3300004: 3grass
+    3300006: 3grass.001
+    3300008: 5Grass
+    3300010: 5Grass.001
+    3300012: 8grass
+    3300014: 8grass.001
+    3300016: Circle
+    3300018: LargeGrassPile
+    3300020: Plane
+    3300022: Plane.001
+    3300024: Plane.002
+    3300026: Plane.003
+    3300028: Plane.004
+    3300030: Plane.005
+    3300032: Plane.006
+    3300034: Plane.007
+    3300036: Plane.008
+    3300038: Plane.009
+    3300040: Plane.010
+    3300042: Plane.011
+    3300044: Plane.012
+    3300046: Plane.013
+    3300048: Plane.014
+    3300050: //RootNode
+    4300000: Plane.016
+    4300002: Plane.015
+    4300004: LargeGrassPile
+    4300006: Plane.014
+    4300008: Plane.013
+    4300010: Plane.012
+    4300012: 3grass.001
+    4300014: Plane.011
+    4300016: Plane.010
+    4300018: 5Grass.001
+    4300020: Plane.009
+    4300022: Plane.008
+    4300024: 8grass.001
+    4300026: 8grass
+    4300028: Plane.007
+    4300030: Plane.006
+    4300032: 5Grass
+    4300034: Plane.005
+    4300036: Plane.004
+    4300038: 3grass
+    4300040: Plane.003
+    4300042: Plane.002
+    4300044: Plane.001
+    4300046: Plane
+    4300048: Circle
+    6400000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
