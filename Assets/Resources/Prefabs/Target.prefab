@@ -142,10 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: 0
   _color: {r: 1, g: 0, b: 0, a: 1}
-  _coreMeshRenderer: {fileID: 8214158883161029837, guid: 0df88e3a8ba853914b80af29c9c5990b,
-    type: 3}
-  _onMaterial: {fileID: 0}
-  _offMaterial: {fileID: 0}
+  _coreMeshRenderer: {fileID: 7650982817406764235}
 --- !u!1 &3394156451553716478
 GameObject:
   m_ObjectHideFlags: 0

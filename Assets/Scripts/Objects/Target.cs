@@ -9,8 +9,8 @@ public class Target : MonoBehaviour
     [SerializeField] private Color _color;
     [SerializeField] private MeshRenderer _coreMeshRenderer;    // The core mesh that will change color depeding on what color was assigned
 
-    [SerializeField] private Material _onMaterial;
-    [SerializeField] private Material _offMaterial;
+    private Material _onMaterial;
+    private Material _offMaterial;
 
     private bool _keepMaterialOnThisFrame = false;
 

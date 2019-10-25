@@ -48,8 +48,6 @@ MonoBehaviour:
   _id: 0
   _color: {r: 1, g: 0, b: 0, a: 1}
   _coreMeshRenderer: {fileID: 8214158883161029837}
-  _onMaterial: {fileID: 0}
-  _offMaterial: {fileID: 0}
 --- !u!135 &4136505064757422712
 SphereCollider:
   m_ObjectHideFlags: 0
