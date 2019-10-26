@@ -57,7 +57,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2121d09f7c3404f63bfa166cdb89a805, type: 2}
+  - {fileID: 2100000, guid: c138ca47fbeaaf5ac8b9f40e6d358354, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -88,9 +88,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1668065713641545396}
   - component: {fileID: 3903693310955051910}
-  m_Layer: 0
+  - component: {fileID: -402133259775419069}
+  m_Layer: 8
   m_Name: Target
-  m_TagString: Untagged
+  m_TagString: Target
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -127,6 +128,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-402133259775419069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2413209448526523559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbaf53b7f4d5b0e8e844f65434817ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _id: 0
+  _color: {r: 1, g: 0, b: 0, a: 1}
+  _coreMeshRenderer: {fileID: 7650982817406764235}
 --- !u!1 &3394156451553716478
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,7 +200,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2121d09f7c3404f63bfa166cdb89a805, type: 2}
+  - {fileID: 2100000, guid: 17ff3b252c2bfda4c85f21491d093093, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -216,7 +232,7 @@ GameObject:
   - component: {fileID: 2203513320018800257}
   - component: {fileID: 5864069340054589297}
   - component: {fileID: 7650982817406764235}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: TargetBall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -340,7 +356,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2121d09f7c3404f63bfa166cdb89a805, type: 2}
+  - {fileID: 2100000, guid: f3ed502b096f5b60d9d4b116d50c5127, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -418,7 +434,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2121d09f7c3404f63bfa166cdb89a805, type: 2}
+  - {fileID: 2100000, guid: 65a13781a19f96ef99613ab7e54ef2c9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
