@@ -380,7 +380,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &591026344
 Transform:
   m_ObjectHideFlags: 0
@@ -3228,7 +3228,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e1d5b3f1b44a4f41a222c915f2d93fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxObjectsPerType: []
+  MaxObjectsPerType:
+  - type: 2
+    max: 1
   AuraDisplay: {fileID: 6625729490204617559}
 --- !u!114 &6794680454188241320
 MonoBehaviour:
