@@ -224,6 +224,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Box2
       objectReference: {fileID: 0}
+    - target: {fileID: 1516330322898486, guid: 9840a5ec22df0b3459f4a9f103756ef0, type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 1516330322898486, guid: 9840a5ec22df0b3459f4a9f103756ef0, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 4195246949401632, guid: 9840a5ec22df0b3459f4a9f103756ef0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -14.3
