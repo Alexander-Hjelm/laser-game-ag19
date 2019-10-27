@@ -840,9 +840,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pushObject: {fileID: 1481841978}
-  pushDirection: {x: 0, y: 0, z: 1}
-  distance: 10
-  strength: 3
+  pushTo: {x: -14.3, y: 0, z: 10}
   duration: 1
 --- !u!4 &1636468573 stripped
 Transform:
@@ -1260,7 +1258,7 @@ MonoBehaviour:
     type: 3}
   _laserEmitterPrefab: {fileID: 2159412834737224317, guid: 75182426017a6636aa35786e4f61bb75,
     type: 3}
-  nextLevel: 0
+  nextLevel: 3
 --- !u!114 &672628983402108859
 MonoBehaviour:
   m_ObjectHideFlags: 0

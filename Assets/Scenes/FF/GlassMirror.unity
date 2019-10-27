@@ -4447,7 +4447,7 @@ MonoBehaviour:
     type: 3}
   _laserEmitterPrefab: {fileID: 2159412834737224317, guid: 75182426017a6636aa35786e4f61bb75,
     type: 3}
-  nextLevel: 0
+  nextLevel: 6
 --- !u!114 &7426406982357814131
 MonoBehaviour:
   m_ObjectHideFlags: 0
