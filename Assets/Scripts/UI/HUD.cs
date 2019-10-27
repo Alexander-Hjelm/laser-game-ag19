@@ -26,7 +26,7 @@ public class HUD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //UpdateHUD(); // TODO possibly move this to only be called when an object is added or removed
+        UpdateHUD(); // TODO possibly move this to only be called when an object is added or removed
     }
 
     // Counts current placed phycons and updates the HUD to display remaining objects
@@ -34,7 +34,9 @@ public class HUD : MonoBehaviour
         StringBuilder sb = new StringBuilder("");
         foreach (var cur in mo) {
             sb.Append(icons[(int) cur.type]);
-            sb.Append(" X ");
+            sb.Append(" : ");
+            sb.Append(objMan.CountSpawnedObjectsOfType(cur.type));
+            sb.Append("/");
             sb.Append(cur.max);
             sb.Append(" ");
         }
