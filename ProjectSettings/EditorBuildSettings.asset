@@ -12,6 +12,18 @@ EditorBuildSettings:
     path: Assets/Scenes/FF/Level2.unity
     guid: 81ccfe8f8c2dd1648916199472040478
   - enabled: 1
+    path: Assets/Scenes/FF/FanIntro.unity
+    guid: 3e6619f5c5f30d744a0aa7322d4ad86a
+  - enabled: 1
+    path: Assets/Scenes/FF/FanHard.unity
+    guid: 7b0d012a0011775459aca9f9545fa11b
+  - enabled: 1
+    path: Assets/Scenes/FF/Level7.unity
+    guid: 260b485cf140e554aaa74464d4e71979
+  - enabled: 1
+    path: Assets/Scenes/FF/GlassMirror.unity
+    guid: 4fc8b949949e159479695fc5ac469990
+  - enabled: 1
     path: Assets/Scenes/FF/Level3.unity
     guid: af16044b27ab05343b0a5d6361919caf
   - enabled: 1
