@@ -18,6 +18,7 @@ public class LaserSwitch : Switch
 
     private Image _loaderImage;
     private AudioSource _audioSource;
+    private bool _playAudio;
     
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class LaserSwitch : Switch
     {
         shutDownCount = 0;
         startUpCount = 0;
+        _playAudio = false;
     }
 
     // Update is called once per frame
@@ -43,6 +45,7 @@ public class LaserSwitch : Switch
             {
                 _audioSource.Stop();
             }
+            _playAudio = false;
         }
         if (startUpCount >= startUpTime) {
             switchable.SwitchTo(true);
@@ -53,7 +56,11 @@ public class LaserSwitch : Switch
     }
 
     public override void ActivateSwitch() {
-        _audioSource.PlayOneShot(_audioSource.clip);
+        if (!_playAudio)
+        {
+            _audioSource.PlayOneShot(_audioSource.clip);
+            _playAudio = true;
+        }
         startUpCount++;
         shutDownCount = 0;
     }
