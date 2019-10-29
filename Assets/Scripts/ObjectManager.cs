@@ -218,4 +218,9 @@ public class ObjectManager : MonoBehaviour
     public int CountSpawnedObjectsOfType(ObjectType type) {
         return _gameObjects.Count((obj) => obj.Value.Item2 == type);
     }
+
+    public int CountSpawnedObjects()
+    {
+        return _gameObjects.Count;
+    }
 }

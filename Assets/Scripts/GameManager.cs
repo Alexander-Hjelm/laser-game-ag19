@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject _laserHitParticleSystem;
     [SerializeField] private GameObject _laserEmitterPrefab;
 
+    // The UI Panel that will turn on when the level is completed
+    [SerializeField] private GameObject _winUiPanel;
+
     //The next level to load
     [SerializeField] private int nextLevel;
 
@@ -72,15 +75,22 @@ public class GameManager : MonoBehaviour
     // All laser hit points that have been registered on this frame
     private static List<LaserHitStruct> _notifiedHitPointsThisFrame = new List<LaserHitStruct>();
 
+    // Reference to the in-scene object manager
+    private ObjectManager _objectManager;
+
     // Has the load next level call been issued?
     private bool _nextLevelLoaded = false;
 
     // The time at which this scene was started
     private float _sceneStartTime;
 
+    // Has the current level been won?
+    private bool _won = false;
+
     private void Awake()
     {
         _instance = this;
+        _objectManager = GetComponent<ObjectManager>();
         // Clear data from last scene
         _splitLasersThisFrame.Clear();
         _notifiedLasersThisFrame.Clear();
@@ -91,6 +101,7 @@ public class GameManager : MonoBehaviour
     {
         _sceneStartTime = Time.time;
         LevelTransitionAnimation.StartAnimateIn();
+        _winUiPanel.SetActive(false);
     }
 
     private void Update()
@@ -102,7 +113,9 @@ public class GameManager : MonoBehaviour
                 && !_nextLevelLoaded
                 && Time.time - _sceneStartTime > 1f)
         {
-            Win();
+            // Queue won, but wait until all phycons have been removed until moving to the next level
+            _won = true;
+            _winUiPanel.SetActive(true);
         }
 
         // Manual Win cheat, press Q and P at the same time
@@ -111,6 +124,15 @@ public class GameManager : MonoBehaviour
         {
             Win();
         }
+
+        // We have won and removed all phycons. Proceed
+        if (_won && _objectManager.CountSpawnedObjects() == 0)
+        {
+            _winUiPanel.SetActive(false);
+            Win();
+        }
+
+        _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
 
         if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.O)
                 && !_nextLevelLoaded) {
