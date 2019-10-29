@@ -32,6 +32,7 @@ public class HUD : MonoBehaviour
     // Counts current placed phycons and updates the HUD to display remaining objects
     private void UpdateHUD () {
         StringBuilder sb = new StringBuilder("");
+        sb.Append("<font=\"sofachrome rg SDF\"> <mark=#41438080>");
         foreach (var cur in mo) {
             sb.Append(icons[(int) cur.type]);
             sb.Append(" : ");
@@ -40,6 +41,8 @@ public class HUD : MonoBehaviour
             sb.Append(cur.max);
             sb.Append(" ");
         }
+        sb.Append("</font>");
+        sb.Append("</mark>");
         hudText.text = sb.ToString();
     }
 }
