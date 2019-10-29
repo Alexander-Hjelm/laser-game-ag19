@@ -17,10 +17,12 @@ public class LaserSwitch : Switch
     private int shutDownTime;
 
     private Image _loaderImage;
+    private AudioSource _audioSource;
     
     private void Awake()
     {
         _loaderImage = GetComponentInChildren<Image>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -37,6 +39,10 @@ public class LaserSwitch : Switch
         if (shutDownCount >= shutDownTime) {// Turn switchable off if laser isn't hitting the switch after 2 updates.
             switchable.SwitchTo(false);
             startUpCount = 0;
+            if (_audioSource.isPlaying)
+            {
+                _audioSource.Stop();
+            }
         }
         if (startUpCount >= startUpTime) {
             switchable.SwitchTo(true);
@@ -47,6 +53,7 @@ public class LaserSwitch : Switch
     }
 
     public override void ActivateSwitch() {
+        _audioSource.PlayOneShot(_audioSource.clip);
         startUpCount++;
         shutDownCount = 0;
     }
