@@ -13,22 +13,22 @@ public enum ObjectType
 
 public class ObjectManager : MonoBehaviour
 {
-    // Availability of each Object Type and its corresponding class ids
-    public (ObjectType, int, int)[] ClassAvailability = new (ObjectType, int, int)[]
+    // Availability of each Object Type and its corresponding class ids, and an offset angle
+    public (ObjectType, int, int, float)[] ClassAvailability = new (ObjectType, int, int, float)[]
     {
-        (ObjectType.Mirror, 0, 1),
-        (ObjectType.Mirror, 2, 3),
-        (ObjectType.Mirror, 4, 5),
-        (ObjectType.Mirror, 6, 7),
-        (ObjectType.Mirror, 8, 9),
-        (ObjectType.Prism, 10, 11),
-        (ObjectType.Prism, 12, 13),
-        (ObjectType.Prism, 14, 15),
-        (ObjectType.Prism, 16, 17),
-        (ObjectType.Laser, 18, 19),
-        (ObjectType.Laser, 20, 21),
-        (ObjectType.Laser, 22, 23),
-        (ObjectType.Laser, 24, 25),
+        (ObjectType.Mirror, 0, 1, 0f),
+        (ObjectType.Mirror, 2, 3, 0f),
+        (ObjectType.Mirror, 4, 5, 0f),
+        (ObjectType.Mirror, 6, 7, 0f),
+        (ObjectType.Mirror, 8, 9, 0f),
+        (ObjectType.Prism, 10, 11, 0f),
+        (ObjectType.Prism, 12, 13, 0f),
+        (ObjectType.Prism, 14, 15, 0f),
+        (ObjectType.Prism, 16, 17, 0f),
+        (ObjectType.Laser, 18, 19, 90f),
+        (ObjectType.Laser, 20, 21, 90f),
+        (ObjectType.Laser, 22, 23, 90f),
+        (ObjectType.Laser, 24, 25, 90f),
     };
     [System.Serializable]
     public class MaxObject { public ObjectType type; public int max; }
@@ -63,7 +63,7 @@ public class ObjectManager : MonoBehaviour
         List<Vector4> auraObjects = new List<Vector4>();
         List<float> auraAngles = new List<float>();
 
-        foreach (var (type, classId1, classId2) in ClassAvailability)
+        foreach (var (type, classId1, classId2, offsetAngle) in ClassAvailability)
         {
             var uniqueId = classId1 + classId2;
             // First check if there are two of these in screen objects
@@ -81,7 +81,7 @@ public class ObjectManager : MonoBehaviour
                     var angle = Direction(screenObject1, screenObject2);
                     var targetAngle = Mathf.Rad2Deg * angle;
                     var transform = GameManager.GetSpawnedObject(gameId).transform;
-                    var currAngle = transform.eulerAngles.y;
+                    var currAngle = transform.eulerAngles.y - offsetAngle;
                     // Two ways of turning towards that angle
                     var deltaAngle = mod(targetAngle - currAngle, 360);
                     var negativeDeltaAngle = deltaAngle - 360f;
@@ -91,7 +91,7 @@ public class ObjectManager : MonoBehaviour
                     deltaAngle *= 2f;
                     // Add to our current angle
                     currAngle += deltaAngle * Time.deltaTime;
-                    var rot = Quaternion.AngleAxis(currAngle, Vector3.up);
+                    var rot = Quaternion.AngleAxis(currAngle + offsetAngle, Vector3.up);
 
                     var pos = ScreenToWorld(Position(screenObject1, screenObject2));
                     GameManager.SetPositionOfSpawnedObject(gameId, pos);
@@ -113,7 +113,7 @@ public class ObjectManager : MonoBehaviour
                     {
                         // if we can be spawned, spawn us within that zone
                         var angle = Direction(screenObject1, screenObject2);
-                        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * angle, Vector3.up);
+                        var rot = Quaternion.AngleAxis(Mathf.Rad2Deg * angle + offsetAngle, Vector3.up);
                         var gameId = GameManager.SpawnPrefab(type.ToString(), pos, rot);
                         _gameObjects.Add(uniqueId, (gameId, type));
                         zone?.Place(gameId);
