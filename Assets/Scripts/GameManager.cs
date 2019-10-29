@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
 
     // The UI Panel that will turn on when the level is completed
     [SerializeField] private GameObject _winUiPanel;
+    [SerializeField] private GameObject _fireworkPrefab;
 
     //The next level to load
     [SerializeField] private int nextLevel;
@@ -117,6 +119,11 @@ public class GameManager : MonoBehaviour
             {
                 // Play winning sound on win
                 GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource>().clip);
+                for (var i = 0; i < 30; i++)
+                {
+                    var firework = Instantiate(_fireworkPrefab);
+                    firework.transform.position = new Vector3(Random.Range(-35f, 35f), 0f, Random.Range(-20f, 20f));
+                }
             }
             // Queue won, but wait until all phycons have been removed until moving to the next level
             _won = true;
