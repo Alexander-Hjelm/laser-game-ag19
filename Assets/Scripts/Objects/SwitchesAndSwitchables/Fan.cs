@@ -9,6 +9,7 @@ public class Fan : Switchable
     private float elapsedTime;
     private float startTime;
     private Vector3 startPos;
+    private AudioSource _audioSource;
 
     // The object to push
     public Transform pushObject;
@@ -23,6 +24,7 @@ public class Fan : Switchable
         on = false;
         elapsedTime = 0f;
         startTime = 0f;
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -31,6 +33,10 @@ public class Fan : Switchable
         {
             if (Math.Abs(startTime) < float.Epsilon)
             {
+                if (!_audioSource.isPlaying)
+                {
+                    _audioSource.PlayOneShot(_audioSource.clip);
+                }
                 // if we start moving here
                 startTime = Time.time;
                 startPos = pushObject.position;
