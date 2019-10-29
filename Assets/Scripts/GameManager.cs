@@ -113,6 +113,11 @@ public class GameManager : MonoBehaviour
                 && !_nextLevelLoaded
                 && Time.time - _sceneStartTime > 1f)
         {
+            if (!_won)
+            {
+                // Play winning sound on win
+                GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource>().clip);
+            }
             // Queue won, but wait until all phycons have been removed until moving to the next level
             _won = true;
             _winUiPanel.SetActive(true);
@@ -139,7 +144,7 @@ public class GameManager : MonoBehaviour
             Reset();
         }
 
-            _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
+        _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
     }
 
     private void Reset() {
@@ -161,7 +166,6 @@ public class GameManager : MonoBehaviour
         _spawnedObjectsById.Clear();
         _splitLasersThisFrame.Clear();
         _notifiedLasersThisFrame.Clear();
-        GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource> ().clip);
         LevelTransitionAnimation.StartAnimateOut();
         StartCoroutine(LoadNextSceneDelayed());
         _nextLevelLoaded = true;
