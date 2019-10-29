@@ -16,11 +16,11 @@ public class ObjectManager : MonoBehaviour
     // Availability of each Object Type and its corresponding class ids, and an offset angle
     public (ObjectType, int, int, float)[] ClassAvailability = new (ObjectType, int, int, float)[]
     {
-        (ObjectType.Mirror, 0, 1, 0f),
-        (ObjectType.Mirror, 2, 3, 0f),
-        (ObjectType.Mirror, 4, 5, 0f),
-        (ObjectType.Mirror, 6, 7, 0f),
-        (ObjectType.Mirror, 8, 9, 0f),
+        (ObjectType.Mirror, 0, 1, 90f),
+        (ObjectType.Mirror, 2, 3, 90f),
+        (ObjectType.Mirror, 4, 5, 90f),
+        (ObjectType.Mirror, 6, 7, 90f),
+        (ObjectType.Mirror, 8, 9, 90f),
         (ObjectType.Prism, 10, 11, 0f),
         (ObjectType.Prism, 12, 13, 0f),
         (ObjectType.Prism, 14, 15, 0f),
