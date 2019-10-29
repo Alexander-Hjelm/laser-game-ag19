@@ -2470,6 +2470,8 @@ MonoBehaviour:
   _laserEmitterPrefab: {fileID: 2159412834737224317, guid: 75182426017a6636aa35786e4f61bb75,
     type: 3}
   _winUiPanel: {fileID: 837229607}
+  _fireworkPrefab: {fileID: 1267225901371254417, guid: e92948da10ad7e94e9a8c35eaa487188,
+    type: 3}
   nextLevel: 2
 --- !u!114 &631673024369402602
 MonoBehaviour:
@@ -3293,11 +3295,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3249589751934553560}
     m_Modifications:
-    - target: {fileID: 145816634983290464, guid: 040513f4e7b5f5f46994a7a96a2c3a60,
-        type: 3}
-      propertyPath: m_Name
-      value: Wires_01
-      objectReference: {fileID: 0}
     - target: {fileID: 3773262961847788659, guid: 040513f4e7b5f5f46994a7a96a2c3a60,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3357,6 +3354,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 145816634983290464, guid: 040513f4e7b5f5f46994a7a96a2c3a60,
+        type: 3}
+      propertyPath: m_Name
+      value: Wires_01
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 040513f4e7b5f5f46994a7a96a2c3a60, type: 3}
@@ -3665,11 +3667,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3249589751934553560}
     m_Modifications:
-    - target: {fileID: 3683184896434364527, guid: 1178df9045ccac64d85f4fe655dd709f,
-        type: 3}
-      propertyPath: m_Name
-      value: leafVine1
-      objectReference: {fileID: 0}
     - target: {fileID: 380014303163126396, guid: 1178df9045ccac64d85f4fe655dd709f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3739,6 +3736,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3683184896434364527, guid: 1178df9045ccac64d85f4fe655dd709f,
+        type: 3}
+      propertyPath: m_Name
+      value: leafVine1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1178df9045ccac64d85f4fe655dd709f, type: 3}
@@ -4029,11 +4031,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3249589751934553560}
     m_Modifications:
-    - target: {fileID: 9041217989108615477, guid: 10dad01b405d8a54b80d0637f87deb6f,
-        type: 3}
-      propertyPath: m_Name
-      value: Environment
-      objectReference: {fileID: 0}
     - target: {fileID: 9041217989108615482, guid: 10dad01b405d8a54b80d0637f87deb6f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4089,15 +4086,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9041217989631600493, guid: 10dad01b405d8a54b80d0637f87deb6f,
+    - target: {fileID: 9041217989108615477, guid: 10dad01b405d8a54b80d0637f87deb6f,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 9041217989631600493, guid: 10dad01b405d8a54b80d0637f87deb6f,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -35.2
+      propertyPath: m_Name
+      value: Environment
       objectReference: {fileID: 0}
     - target: {fileID: 9041217988549339526, guid: 10dad01b405d8a54b80d0637f87deb6f,
         type: 3}
@@ -4109,12 +4101,22 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -35.2
       objectReference: {fileID: 0}
-    - target: {fileID: 9041217989645340318, guid: 10dad01b405d8a54b80d0637f87deb6f,
+    - target: {fileID: 9041217989631600493, guid: 10dad01b405d8a54b80d0637f87deb6f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 9041217989631600493, guid: 10dad01b405d8a54b80d0637f87deb6f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -35.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9041217988308974691, guid: 10dad01b405d8a54b80d0637f87deb6f,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9041217988308974691, guid: 10dad01b405d8a54b80d0637f87deb6f,
+    - target: {fileID: 9041217989645340318, guid: 10dad01b405d8a54b80d0637f87deb6f,
         type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -4196,11 +4198,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3249589751934553560}
     m_Modifications:
-    - target: {fileID: 3683184896434364527, guid: 1178df9045ccac64d85f4fe655dd709f,
-        type: 3}
-      propertyPath: m_Name
-      value: leafVine1 (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 380014303163126396, guid: 1178df9045ccac64d85f4fe655dd709f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4270,6 +4267,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3683184896434364527, guid: 1178df9045ccac64d85f4fe655dd709f,
+        type: 3}
+      propertyPath: m_Name
+      value: leafVine1 (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1178df9045ccac64d85f4fe655dd709f, type: 3}
@@ -4995,11 +4997,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3249589751934553560}
     m_Modifications:
-    - target: {fileID: 4685081346368221554, guid: 7b033025d86bb7a40bbd819c77f66c7d,
-        type: 3}
-      propertyPath: m_Name
-      value: PositiveWire_02
-      objectReference: {fileID: 0}
     - target: {fileID: 8601762526553752417, guid: 7b033025d86bb7a40bbd819c77f66c7d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5069,6 +5066,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4685081346368221554, guid: 7b033025d86bb7a40bbd819c77f66c7d,
+        type: 3}
+      propertyPath: m_Name
+      value: PositiveWire_02
       objectReference: {fileID: 0}
     - target: {fileID: 6428913369344116142, guid: 7b033025d86bb7a40bbd819c77f66c7d,
         type: 3}
