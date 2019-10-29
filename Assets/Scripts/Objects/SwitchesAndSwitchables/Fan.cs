@@ -6,17 +6,14 @@ using UnityEngine;
 public class Fan : Switchable
 {
     private bool on;
-    private float distanceMoved;
+    private float elapsedTime;
     private float startTime;
+    private Vector3 startPos;
 
     // The object to push
     public Transform pushObject;
-    // The direction to push
-    public Vector3 pushDirection;
-    // The distance to push
-    public float distance;
-    // How fast it moves in units/s
-    public float strength = 1;
+    // The point to push to
+    public Vector3 pushTo;
     // How long time the whole thing should take in seconds
     public float duration = 1;
 
@@ -24,24 +21,28 @@ public class Fan : Switchable
     void Start()
     {
         on = false;
-        distanceMoved = 0f;
+        elapsedTime = 0f;
         startTime = 0f;
     }
 
     void Update()
     {
-        if (on && distanceMoved < distance)
+        if (on && elapsedTime <= duration)
         {
             if (Math.Abs(startTime) < float.Epsilon)
             {
                 // if we start moving here
                 startTime = Time.time;
+                startPos = pushObject.position;
             }
             // Push object
-            float t = (Time.time - startTime) / duration;
-            var pushVec = Time.deltaTime * distance * Mathf.SmoothStep(0, strength, t) * pushDirection.normalized;
-            pushObject.Translate(pushVec);
-            distanceMoved += pushVec.magnitude;
+            elapsedTime = (Time.time - startTime);
+            float t = elapsedTime / duration;
+            pushObject.position = Vector3.Lerp(startPos, pushTo, Mathf.SmoothStep(0, 1, t));
+        }
+        else {
+            //Reset values
+            Start();
         }
     }
 
