@@ -51,6 +51,10 @@ MonoBehaviour:
   - {fileID: 851270914476694193, guid: 65e3eea1706ccf2d9b934dd4b98cedd8, type: 3}
   - {fileID: 1106500908527327460, guid: 8b1eab6acc4c78742a5b25136d27d3e2, type: 3}
   _laserHitParticleSystem: {fileID: 0}
+  _laserEmitterPrefab: {fileID: 0}
+  _winUiPanel: {fileID: 0}
+  _fireworkPrefab: {fileID: 1267225901371254417, guid: e92948da10ad7e94e9a8c35eaa487188,
+    type: 3}
   nextLevel: 0
 --- !u!114 &5980050591804686391
 MonoBehaviour:
@@ -79,5 +83,4 @@ MonoBehaviour:
   MaxObjectsPerType:
   - type: 0
     max: 1
-  ObjectScreenSizes: []
   AuraDisplay: {fileID: 0}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
 
     // The UI Panel that will turn on when the level is completed
     [SerializeField] private GameObject _winUiPanel;
+    [SerializeField] private GameObject _fireworkPrefab;
 
     //The next level to load
     [SerializeField] private int nextLevel;
@@ -113,6 +115,16 @@ public class GameManager : MonoBehaviour
                 && !_nextLevelLoaded
                 && Time.time - _sceneStartTime > 1f)
         {
+            if (!_won)
+            {
+                // Play winning sound on win
+                GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource>().clip);
+                for (var i = 0; i < 30; i++)
+                {
+                    var firework = Instantiate(_fireworkPrefab);
+                    firework.transform.position = new Vector3(Random.Range(-35f, 35f), 0f, Random.Range(-20f, 20f));
+                }
+            }
             // Queue won, but wait until all phycons have been removed until moving to the next level
             _won = true;
             _winUiPanel.SetActive(true);
@@ -139,7 +151,7 @@ public class GameManager : MonoBehaviour
             Reset();
         }
 
-            _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
+        _hitTargetIds.Clear();  // Regardless of if we won or not, clear _hitTargetIds so that it can be rebuilt on the next frame
     }
 
     private void Reset() {
@@ -161,7 +173,6 @@ public class GameManager : MonoBehaviour
         _spawnedObjectsById.Clear();
         _splitLasersThisFrame.Clear();
         _notifiedLasersThisFrame.Clear();
-        GetComponent<AudioSource>().PlayOneShot(GetComponent<AudioSource> ().clip);
         LevelTransitionAnimation.StartAnimateOut();
         StartCoroutine(LoadNextSceneDelayed());
         _nextLevelLoaded = true;

@@ -192,6 +192,12 @@ PrefabInstance:
       propertyPath: nextLevel
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 631240300832755552, guid: d17127dce9434cbe7b19ec54a3445846,
+        type: 3}
+      propertyPath: _fireworkPrefab
+      value: 
+      objectReference: {fileID: 1267225901371254417, guid: e92948da10ad7e94e9a8c35eaa487188,
+        type: 3}
     - target: {fileID: 6677244078863033830, guid: d17127dce9434cbe7b19ec54a3445846,
         type: 3}
       propertyPath: MaxObjectsPerType.Array.size
