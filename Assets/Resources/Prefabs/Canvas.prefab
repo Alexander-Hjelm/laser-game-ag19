@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 2024609328805247847}
   - component: {fileID: 2024609328805247846}
   - component: {fileID: 2024609328805247845}
+  - component: {fileID: 2407592211273401517}
   m_Layer: 5
   m_Name: LevelCompletePanel
   m_TagString: Untagged
@@ -329,6 +330,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2407592211273401517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2024609328805247844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 857c6c5d9ec325b48a47779af4f517fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Duration: 1
 --- !u!1 &2024609329105957665
 GameObject:
   m_ObjectHideFlags: 0
