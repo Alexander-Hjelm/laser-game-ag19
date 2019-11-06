@@ -1,11 +1,9 @@
 <table class="portraitTable">
   {% for item in site.data.contribution %}
-  <tr>
-    {% assign remainder = forloop.index | modulo: 2 %}
-    {% if remainder == 1 %}
-    <td class="portraitTable">
-      <img id="offsetDiv"></img>
-    </td>
+  {% assign rowRemainder = forloop.index | modulo: 4 %}
+  {% if rowRemainder == 0 %}
+    <tr>
+  {% endif %}
     <td class="portraitTable">
       <h3>
         {{item.name}}
@@ -17,28 +15,13 @@
       </h3>
       <img class="portrait" src="{{item.url}}"/>
     </td>
-    {% endif %}
-    <td class="portraitTable">
+    <td class="portraitTable contribsTd">
       <p>
         {{item.contribution}}
       </p>
     </td>
-    {% if remainder == 0 %}
-    <td class="portraitTable">
-      <h3>
-        {{item.name}}
-        {%if {{item.linkedIn}} != blank %}
-          <a target="_blank" rel="noopener noreferrer" href="{{item.linkedIn}}">
-            <i class="linkedIn fa fa-linkedin-square"></i>
-          </a>
-        {% endif %}
-      </h3>
-      <img class="portrait" src="{{item.url}}"/>
-    </td>
-    <td class="portraitTable">
-      <img id="offsetDiv"></img>
-    </td>
-    {% endif %}
-  </tr>
   {% endfor %}
+  {% if rowRemainder == 0 %}
+    </tr>
+  {% endif %}
 </table>
