@@ -87,4 +87,20 @@ onclick="loadModal('{{item.url}}')"/>
 
 {% endfor %}
 
+<h2 style="color:#0090ff;"> @ Tekniska Museet, final version </h2>
+
+{% for item in site.data.openhouse %}
+
+<img class="smallGallery" id="Image_{{item.url}}" src="{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}"
+onclick="loadModal('{{item.url}}')"/>
+
+<!-- Modal -->
+<div class="modal" id="Modal_{{item.url}}">
+  <span class="close" id="Span_{{item.url}}">&times;</span>
+  <img class="modal-content" id="Modal_image_{{item.url}}" alt="Photo: {{item.photo}}, license: {{item.license}}">
+  <h3 style="color: white;"> Photo: {{item.photo}}, license: {{item.license}} </h3>
+</div>
+
+{% endfor %}
+
 </div>
