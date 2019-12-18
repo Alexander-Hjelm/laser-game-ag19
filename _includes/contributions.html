@@ -1,27 +1,35 @@
-<table class="portraitTable">
+<div class="container-fluid">
+  <div class="row">
   {% for item in site.data.contribution %}
   {% assign rowRemainder = forloop.index | modulo: 4 %}
   {% if rowRemainder == 0 %}
-    <tr>
+  </div>
+  <br></br>
+  <div class="row">
   {% endif %}
-    <td class="portraitTable">
-      <h3>
-        {{item.name}}
-        {%if {{item.linkedIn}} != blank %}
-          <a target="_blank" rel="noopener noreferrer" href="{{item.linkedIn}}">
-            <i class="linkedIn fa fa-linkedin-square"></i>
-          </a>
-        {% endif %}
-      </h3>
-      <img class="portrait" src="{{item.url}}"/>
-    </td>
-    <td class="portraitTable contribsTd">
-      <p>
-        {{item.contribution}}
-      </p>
-    </td>
+      <div class="container col-4">
+        <div class="row">
+          <div class="col-7">
+            <h3>
+              {{item.name}}
+              {%if {{item.linkedIn}} != blank %}
+                </br>
+                <a target="_blank" rel="noopener noreferrer" href="{{item.linkedIn}}">
+                  <i class="linkedIn fa fa-linkedin-square"></i>
+                </a>
+              {% endif %}
+            </h3>
+            <img class="portrait" src="{{item.url}}"/>
+          </div>
+          <div class="col-5 gridCenter">
+            <p>
+              {{item.contribution}}
+            </p>
+          </div>
+        </div>
+      </div>
   {% endfor %}
   {% if rowRemainder == 0 %}
-    </tr>
+  </div>
   {% endif %}
-</table>
+</div>
